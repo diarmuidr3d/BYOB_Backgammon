@@ -10,6 +10,6 @@ package backgammon;
  *
  * @author BYOB
  */
-public class Dice {
+public class Die {
     
 }
