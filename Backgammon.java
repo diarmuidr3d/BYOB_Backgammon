@@ -23,12 +23,13 @@ public class Backgammon {
         b.setBoard();
         b.printBoard();
         
-        int[] a;
-        
-        for (int i = 0; i<10; i++){
+       /* for (int i = 0; i<10; i++){
            a = b.rollDice();
            System.out.println( a[0] + " " + a[1]);
-        }
+        }*/
+        
+       b.makeMove(0, 2);
+       b.printBoard();
     }
       
     }
