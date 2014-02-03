@@ -13,7 +13,10 @@ import java.util.Random;
  * @author BYOB
  */
 public class Board {
-    
+    public static int WHITE_OFF = 24;
+    public static int BLACK_OFF = 25;
+    public static int WHITE_BAR = 26;
+    public static int BLACK_BAR = 27;
     Pin[] boardPins  = new Pin[24]; // 0-23 pins are the actual pins. Setting refers to: http://en.wikipedia.org/wiki/File:Bg-movement.svg
     int whiteBar;
     int blackBar;
@@ -62,38 +65,47 @@ public class Board {
         return a;
     }
     
-    public boolean isMovePossible (int source, int destination) {
-        boolean retValue = false;
-        if (
-                (
-                    (
-                        (boardPins[source].getColour()) == (boardPins[destination].getColour()) 
-                    || 
-                        (boardPins[destination].getColour() == ' ')
-                    )
-                &&
-                    (destination <= 23) 
-                && 
-                    (destination >= 0)
-                )
-           ) 
-        {
-            retValue = true;
+    public int makeMove(int source, int destination) {
+        int retVal = -1;
+        
+        if (boardPins[source].countCheckers() == 0) {
+            System.out.println("Nothing on the source pin");
         }
-        return retValue;
-    }
-    
-    public int makeMove(int source, int destination){
-        int retValue = 0;        
-        if (isMovePossible(source, destination)) {
-            boardPins[destination].setPin((boardPins[source].getColour()), (boardPins[destination].countCheckers() + 1));
-            boardPins[source].setPin((boardPins[source].getColour()), (boardPins[source].countCheckers() - 1));
+        else if (destination == WHITE_OFF) {
+            whiteOff++;
+            boardPins[source].setPin('W', (boardPins[source].countCheckers() - 1));
+            retVal = 0;
         }
-        else {
-            System.out.println("Cannot move to this destination");
-            retValue = -1;
-        } 
-        return retValue;
+        else if (destination == BLACK_OFF) {
+            blackOff++;
+            boardPins[source].setPin('B', (boardPins[source].countCheckers() - 1));
+            retVal = 0;
+        }
+        else if (source == WHITE_BAR) {
+            whiteBar--;
+            boardPins[destination].setPin('W', (boardPins[destination].countCheckers() + 1));
+            retVal = 0;
+        }
+        else if (source == BLACK_BAR) {
+            blackBar--;
+            boardPins[destination].setPin('B', (boardPins[destination].countCheckers() + 1));
+            retVal = 0;
+        }
+        else if ((boardPins[source].getColour() == boardPins[destination].getColour()) || (boardPins[destination].isEmpty())) {
+            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
+            boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].countCheckers() + 1));
+            retVal = 0;
+        }
+        else if (boardPins[destination].countCheckers() == 1) {
+            if (boardPins[destination].getColour() == 'W') whiteBar++;
+            else if (boardPins[destination].getColour() == 'B') blackBar++;
+            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
+            boardPins[destination].setPin(boardPins[source].getColour(), 1);
+            retVal = 0;
+        }
+        return retVal;
     }
-    
 }
+ 
+    
+
