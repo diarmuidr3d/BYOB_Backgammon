@@ -6,7 +6,6 @@
 
 package backgammon;
 
-import java.lang.reflect.Array;
 import java.util.Random;
 
 /**
@@ -52,6 +51,7 @@ public class Board {
     public void printBoard (){
         for (int i=0; i < 24; i++)
             System.out.println(i + " " + boardPins[i].countCheckers() + " " + boardPins[i].getColour());
+        System.out.println(" ");
     }
     
     public int[] rollDice(){
@@ -62,34 +62,38 @@ public class Board {
         return a;
     }
     
-    public int makeMove(int source, int destination){
-        int retValue = 0;
-        
-        //invalid move: more than one checkers of a different colour on the destination pin
-        if ( boardPins[source].getColour()!= boardPins[destination].getColour() && boardPins[destination].countCheckers()> 1){
-            System.out.println("makeMove: Invalid Move.");
-            retValue = -1;
+    public boolean isMovePossible (int source, int destination) {
+        boolean retValue = false;
+        if (
+                (
+                    (
+                        (boardPins[source].getColour()) == (boardPins[destination].getColour()) 
+                    || 
+                        (boardPins[destination].getColour() == ' ')
+                    )
+                &&
+                    (destination <= 23) 
+                && 
+                    (destination >= 0)
+                )
+           ) 
+        {
+            retValue = true;
         }
-        //eating move
-        else if ( boardPins[source].getColour()!= boardPins[destination].getColour() && boardPins[destination].countCheckers()== 1) {
-            switch (boardPins[source].getColour()){
-                case 'W':   
-                    boardPins[source].setPin('W', boardPins[source].countCheckers() - 1);
-                    boardPins[destination].setPin('W', 1);
-                    blackBar++;
-                    break;
-                    
-                case 'B':   
-                    boardPins[source].setPin('B', boardPins[source].countCheckers() - 1);
-                    boardPins[destination].setPin('B', 1);
-                    whiteBar++;
-                    break;  
-                   
-            }
-        }
-            
         return retValue;
-        
+    }
+    
+    public int makeMove(int source, int destination){
+        int retValue = 0;        
+        if (isMovePossible(source, destination)) {
+            boardPins[destination].setPin((boardPins[source].getColour()), (boardPins[destination].countCheckers() + 1));
+            boardPins[source].setPin((boardPins[source].getColour()), (boardPins[source].countCheckers() - 1));
+        }
+        else {
+            System.out.println("Cannot move to this destination");
+            retValue = -1;
+        } 
+        return retValue;
     }
     
 }

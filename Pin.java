@@ -29,7 +29,6 @@ public class Pin {
     
     public int setPin(char col, int number){
             int retValue = 0;
-   
             if (isAColour(col)) colour = col;
             else { 
                 System.out.println("setPin: Wrong value for colour.");
