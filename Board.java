@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package backgammon;
 
 import java.util.Random;
@@ -13,27 +7,99 @@ import java.util.Random;
  * @author BYOB
  */
 public class Board {
-    public static int WHITE_OFF = 24;
-    public static int BLACK_OFF = 25;
-    public static int WHITE_BAR = 26;
-    public static int BLACK_BAR = 27;
-    Pin[] boardPins  = new Pin[24]; // 0-23 pins are the actual pins. Setting refers to: http://en.wikipedia.org/wiki/File:Bg-movement.svg
+    
+    Point[] boardPins  = new Point[24]; // 0-23 pins are the actual pins. Setting refers to: http://en.wikipedia.org/wiki/File:Bg-movement.svg
     int whiteBar;
     int blackBar;
     int whiteOff;
     int blackOff;
+    public static final int WHITE_OFF = 24;
+    public static final int BLACK_OFF = 25;
+    public static final int WHITE_BAR = 26;
+    public static final int BLACK_BAR = 27;
     
-    public Board (){
-        
+    public Board (){        
         for (int j = 0; j<24; j++){
-            boardPins[j] = new Pin();
+            boardPins[j] = new Point();
             whiteBar = 0;
             blackBar = 0;
             whiteOff = 0;
-            blackOff = 0;
-
+            blackOff = 0;        
         }
+    }
+    
+    public String printTopOfBoard()
+	{
+		String topofboard = "";
+		for (int i=11; i >=6; i--)
+		{
+			if(boardPins[i].countCheckers()>0)
+				topofboard = topofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+			else
+				topofboard = topofboard + "|   ";
+        }
+		
+		if(whiteBar == 0)
+			topofboard = topofboard + "    ";
+        else
+        	topofboard = topofboard + whiteBar + "W  ";
+		
+		for (int i=5; i >=0; i--)
+		{
+			if(boardPins[i].countCheckers()>0)
+				topofboard = topofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+			else
+				topofboard = topofboard + "|   ";
+        }
+		
+		if(blackOff == 0)
+			topofboard = topofboard + "    ";
+        else
+        	topofboard = topofboard + blackOff + "B ";
+		
+        return topofboard;
         
+        
+	} 
+	
+	public String printBottomOfBoard(){
+	String bottomofboard = "";
+		for (int i=12; i <= 17; i++)
+		{
+			if(boardPins[i].countCheckers()>0)
+				bottomofboard = bottomofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+			else
+				bottomofboard = bottomofboard + "|   ";
+        }
+		
+        if(blackBar == 0)
+        	bottomofboard = bottomofboard + "    ";
+        else
+        	bottomofboard = bottomofboard + blackBar + "B  ";
+        
+		for (int i=18; i <= 23; i++)
+		{
+			if(boardPins[i].countCheckers()>0)
+				bottomofboard = bottomofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+			else
+				bottomofboard = bottomofboard + "|   ";
+        }
+		
+		if(whiteOff == 0)
+        	bottomofboard = bottomofboard + "   ";
+        else
+        	bottomofboard = bottomofboard + whiteOff + "W ";
+        return bottomofboard;
+	}
+	
+	public void printBoard()
+    {
+    	System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
+    	System.out.println(printTopOfBoard());
+    	System.out.println("\n");
+    	System.out.println(printBottomOfBoard());
+    	System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+        System.out.println("\n\n");
     }
     
     public void setBoard() {
@@ -51,12 +117,6 @@ public class Board {
         
     }
     
-    public void printBoard (){
-        for (int i=0; i < 24; i++)
-            System.out.println(i + " " + boardPins[i].countCheckers() + " " + boardPins[i].getColour());
-        System.out.println(" ");
-    }
-    
     public int[] rollDice(){
         int[] a = new int[2];
         Random randomGenerator = new Random();
@@ -65,45 +125,46 @@ public class Board {
         return a;
     }
     
-    public int makeMove(int source, int destination) {
-        int retVal = -1;
-        
-        if (boardPins[source].countCheckers() == 0) {
+    public int makeMove(int source, int destination){
+      Point sourcePin = boardPins[source];
+      Point destPin = boardPins[destination];
+      int retVal = 0;      
+      if (sourcePin.countCheckers() == 0) {
             System.out.println("Nothing on the source pin");
         }
         else if (destination == WHITE_OFF) {
             whiteOff++;
-            boardPins[source].setPin('W', (boardPins[source].countCheckers() - 1));
+            sourcePin.setPin('W', (sourcePin.countCheckers() - 1));
             retVal = 0;
         }
         else if (destination == BLACK_OFF) {
             blackOff++;
-            boardPins[source].setPin('B', (boardPins[source].countCheckers() - 1));
+            sourcePin.setPin('B', (sourcePin.countCheckers() - 1));
             retVal = 0;
         }
         else if (source == WHITE_BAR) {
             whiteBar--;
-            boardPins[destination].setPin('W', (boardPins[destination].countCheckers() + 1));
+            destPin.setPin('W', (destPin.countCheckers() + 1));
             retVal = 0;
         }
         else if (source == BLACK_BAR) {
             blackBar--;
-            boardPins[destination].setPin('B', (boardPins[destination].countCheckers() + 1));
+            destPin.setPin('B', (destPin.countCheckers() + 1));
             retVal = 0;
         }
-        else if ((boardPins[source].getColour() == boardPins[destination].getColour()) || (boardPins[destination].isEmpty())) {
-            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
-            boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].countCheckers() + 1));
+        else if ((sourcePin.getColour() == destPin.getColour()) || (destPin.isEmpty())) {
+            sourcePin.setPin(sourcePin.getColour(), (sourcePin.countCheckers() - 1));
+            destPin.setPin(sourcePin.getColour(), (destPin.countCheckers() + 1));
             retVal = 0;
         }
-        else if (boardPins[destination].countCheckers() == 1) {
-            if (boardPins[destination].getColour() == 'W') whiteBar++;
-            else if (boardPins[destination].getColour() == 'B') blackBar++;
-            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
-            boardPins[destination].setPin(boardPins[source].getColour(), 1);
+        else if (destPin.countCheckers() == 1) {
+            if (destPin.getColour() == 'W') whiteBar++;
+            else if (destPin.getColour() == 'B') blackBar++;
+            sourcePin.setPin(sourcePin.getColour(), (sourcePin.countCheckers() - 1));
+            destPin.setPin(sourcePin.getColour(), 1);
             retVal = 0;
-        }
-        return retVal;
+        }      
+      return retVal;
     }
 }
  
