@@ -28,10 +28,10 @@ public class Backgammon {
            System.out.println( a[0] + " " + a[1]);
         }*/
         
-       b.makeMove(0, 2);
+       b.makeMove(0, 6);
        b.printBoard();
-    }
       
     }
+}
     
 
