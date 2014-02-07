@@ -144,44 +144,44 @@ public class Board {
  * @param destination It specifies the number of the destination in boardPins[]
  */
     public int makeMove(int source, int destination){
-        Point sourcePin = boardPins[source];
-        Point destPin = boardPins[destination];
         int retVal = 0;      
-        if (sourcePin.countCheckers() == 0) {
+        if (boardPins[source].countCheckers() == 0) {
             System.out.println("Nothing on the source pin");
         }
-        else if (destination == WHITE_OFF) {
-            whiteOff++;
-            sourcePin.setPin('W', (sourcePin.countCheckers() - 1));
-            retVal = 0;
+        else {
+            if (destination == WHITE_OFF) {
+                whiteOff++;
+                boardPins[source].setPin('W', (boardPins[source].countCheckers() - 1));
+                retVal = 0;
+            }
+            if (destination == BLACK_OFF) {
+                blackOff++;
+                boardPins[source].setPin('B', (boardPins[source].countCheckers() - 1));
+                retVal = 0;
+            }
+            if (source == WHITE_BAR) {
+                whiteBar--;
+                boardPins[destination].setPin('W', (boardPins[destination].countCheckers() + 1));
+                retVal = 0;
+            }
+            if (source == BLACK_BAR) {
+                blackBar--;
+                boardPins[destination].setPin('B', (boardPins[destination].countCheckers() + 1));
+                retVal = 0;
+            }
+            if ((boardPins[source].getColour() == boardPins[destination].getColour()) || (boardPins[destination].isEmpty())) {
+                boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
+                boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].countCheckers() + 1));
+                retVal = 0;
+            }
+            if (boardPins[destination].countCheckers() == 1) {
+                if (boardPins[destination].getColour() == 'W') whiteBar++;
+                else if (boardPins[destination].getColour() == 'B') blackBar++;
+                boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
+                boardPins[destination].setPin(boardPins[source].getColour(), 1);
+                retVal = 0;
+            }  
         }
-        else if (destination == BLACK_OFF) {
-            blackOff++;
-            sourcePin.setPin('B', (sourcePin.countCheckers() - 1));
-            retVal = 0;
-        }
-        else if (source == WHITE_BAR) {
-            whiteBar--;
-            destPin.setPin('W', (destPin.countCheckers() + 1));
-            retVal = 0;
-        }
-        else if (source == BLACK_BAR) {
-            blackBar--;
-            destPin.setPin('B', (destPin.countCheckers() + 1));
-            retVal = 0;
-        }
-        else if ((sourcePin.getColour() == destPin.getColour()) || (destPin.isEmpty())) {
-            sourcePin.setPin(sourcePin.getColour(), (sourcePin.countCheckers() - 1));
-            destPin.setPin(sourcePin.getColour(), (destPin.countCheckers() + 1));
-            retVal = 0;
-        }
-        else if (destPin.countCheckers() == 1) {
-            if (destPin.getColour() == 'W') whiteBar++;
-            else if (destPin.getColour() == 'B') blackBar++;
-            sourcePin.setPin(sourcePin.getColour(), (sourcePin.countCheckers() - 1));
-            destPin.setPin(sourcePin.getColour(), 1);
-            retVal = 0;
-        }      
         return retVal;
     }
 }

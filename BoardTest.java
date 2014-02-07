@@ -31,7 +31,7 @@ public class BoardTest {
         
        
         
-       b.makeMove(0, 6);
+       b.makeMove(20, b.WHITE_OFF);
        b.printBoard();
       
     }
