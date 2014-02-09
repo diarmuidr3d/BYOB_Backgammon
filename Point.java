@@ -23,6 +23,7 @@ public class Point {
     }
  /**
  * It returns the number of the checkers on a point.
+ * @return the number of the checkers on a point.
  */   
     public int countCheckers(){
         return checkersCounter;
@@ -100,3 +101,4 @@ public int setPin(char col, int number){
     }
 
 }
+
