@@ -13,21 +13,44 @@ import java.util.Random;
 public class Board {
 
 	Point[] boardPins = new Point[24]; // 0-23 pins are the actual pins. Setting refers to: http://en.wikipedia.org/wiki/File:Bg-movement.svg
+	/* Counters for the bar and the off */
 	int whiteBar;
 	int blackBar;
 	int whiteOff;
 	int blackOff;
+	 /**
+	 * This constant represents the White Off.
+	 */
 	public static final int WHITE_OFF = 24;
+	/**
+	* This constant represents the Black Off.
+	*/
 	public static final int BLACK_OFF = 25;
+	/**
+	* This constant represents the White Bar.
+	*/
 	public static final int WHITE_BAR = 26;
+	/**
+	* This constant represents the Black Bar.
+	*/
 	public static final int BLACK_BAR = 27;
 	
+    
+	/**
+	* Sets an empty board.
+	*/
 	public Board () { 
 		for (int j = 0; j<24; j++){
 			boardPins[j] = new Point(); 
 		}
 	}
 	
+	/**
+	* Sets the board to start a game.
+	* <p>
+	* White and black checkers are put in their initial position by this method
+	* <p>
+	*/ 
 	public void setBoard(){
 		for(int j = 0; j<24; j++){
 			boardPins[j].setPin(' ', 0);
@@ -105,6 +128,13 @@ public class Board {
 		System.out.println("\n\n");
 	}
 	
+	/**
+	* Rolls the dice.                           (1)
+	* <p>
+	* The method generates two random numbers when called.
+	* <p>         
+	* @return Returns an int array a[2] containing the two random numbers.
+	*/   
 	public int[] rollDice(){
 		int[] a = new int[2];
 		Random randomGenerator = new Random();
@@ -158,7 +188,12 @@ public class Board {
 		return retVal;
 	}
 	
-	
+	/**
+	* Makes the specified move from a source to a destination.                         
+	* <p>
+	* @param  source It specifies the number of the source point in boardPins[]
+	* @param destination It specifies the number of the destination in boardPins[]
+	*/
 	public int makeMove(int source, int destination){
 		int retVal = 0;
 		if (source == BLACK_BAR) {
