@@ -1,0 +1,15 @@
+limiting moves
+double moves
+allow person to interact
+	quit from program
+	if can't make move, must be able to pass
+
+HumanPlayer
+	readMove() - Stefano
+	playerMove() - Diarmuid
+
+Board
+	checkBearOff() - Micheal
+
+HumanPlayerTest
+	
