@@ -4,6 +4,7 @@
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -65,8 +66,13 @@ public int[][] readMoves() throws FileNotFoundException {
     }
 
     
-    public int playerMove(){
-        //Diarmuid
-        return 0;
+    public int playerMove(Board b){
+        int retVal = -1;
+        
+        return retVal;
+    }
+    
+    public boolean quitQuestion() {
+        return true;
     }
  }

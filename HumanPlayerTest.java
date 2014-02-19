@@ -3,9 +3,6 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-
-package backgammon;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-
 /**
  *
  * @author BYOB
@@ -73,7 +69,9 @@ public class HumanPlayerTest {
                 
                 //end of the readMoves() method test
                 
-                p.playerMove();
+                Board b = new Board();
+                b.setBoard();
+                p.playerMove(b);
                 
 		
     }
