@@ -66,9 +66,40 @@ public int[][] readMoves() throws FileNotFoundException {
     }
 
     
-    public int playerMove(Board b){
+    public int playerMove(Board b) throws FileNotFoundException{
         int retVal = -1;
-        
+        int[] dice;
+        int[][] move = null;
+        boolean moveComplete = false;
+        while ((b.blackOff < 15) && (b.whiteOff < 15) && quitQuestion()) {
+            dice = b.rollDice();
+            while (!moveComplete) {
+                b.printBoard();
+                if(dice[0] == dice[1]) {
+                    System.out.println("Doubles rolled. 4 moves of "+dice[0]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+                    move = readMoves();
+                    for (int moves[] : move){
+                        System.out.println(move[0] + " " + move[1]);
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        if (b.makeMove(move[i][0], move[i][1]) == 0) {
+                            moveComplete = true;
+                        }
+                    }
+                } else {
+                    System.out.println("2 moves, "+dice[0]+" and "+dice[1]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+                    move = readMoves();
+                    for (int moves[] : move){
+                        System.out.println(move[0] + " " + move[1]);
+                    }
+                    for (int i = 0; i < 2 ; i++) {
+                        if (b.makeMove(move[i][0], move[i][1]) == 0) {
+                            moveComplete = true;
+                        }
+                    }
+                }
+            }
+        }
         return retVal;
     }
     

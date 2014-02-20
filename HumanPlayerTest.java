@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import backgammon.Point;
 /**
  *
  * @author BYOB
@@ -19,7 +20,7 @@ public class HumanPlayerTest {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
                 //Testing the readMoves() method
-                PrintStream psOut = null;
+              /*  PrintStream psOut = null;
                 PrintStream stdOut = System.out;
                 InputStream stdIn = System.in;
                 
@@ -66,10 +67,11 @@ public class HumanPlayerTest {
                 }
                 
                 if (k == 14) System.out.println("readMoves(): Test Passed!");
-                
+                */
                 //end of the readMoves() method test
                 
                 Board b = new Board();
+                HumanPlayer p = new HumanPlayer();
                 b.setBoard();
                 p.playerMove(b);
                 

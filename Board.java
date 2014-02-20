@@ -5,7 +5,7 @@
  */
 
 import java.util.Random;
-
+import backgammon.Point;
 /**
  *
  * @author BYOB
