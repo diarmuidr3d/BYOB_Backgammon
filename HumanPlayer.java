@@ -69,22 +69,28 @@ public int[][] readMoves() throws FileNotFoundException {
         int[] dice;
         int[][] moves;
         boolean moveComplete = false;
+        b.printBoard();
         dice = b.rollDice();
+        if(dice[0] == dice[1]) {
+            System.out.println("Doubles rolled. 4 moves of "+dice[0]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+        } else {
+            System.out.println("2 moves, "+dice[0]+" and "+dice[1]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+        }
         while (!moveComplete) {
-            b.printBoard();
-            if(dice[0] == dice[1]) {
-                System.out.println("Doubles rolled. 4 moves of "+dice[0]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
-            } else {
-                System.out.println("2 moves, "+dice[0]+" and "+dice[1]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
-            }
             moves = readMoves(); 
             for (int move[] : moves) {
-                if ((b.boardPins[move[0]].getColour() == player) && (b.boardPins[move[1]].getColour() == player)) {
+                if (b.boardPins[move[0]].getColour() == player) {
                     if (((b.boardPins[move[0]].getColour() == 'W') && (move[0] < move[1])) || ((b.boardPins[move[0]].getColour() == 'B') && (move[0] > move[1]))) {
                         if (b.makeMove(move[0], move[1]) == 0) {
                             moveComplete = true;
+                        } else {
+                            System.out.println("Uh oh, something went wrong making the move! Please try again.");
                         }
+                    } else {
+                        System.out.println("Oops, moved in the wrong direction! Please try again.");
                     }
+                } else {
+                    System.out.println("Oops, wrong pin, please pick your own colour! Please try again.");
                 }
             }
         }

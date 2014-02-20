@@ -75,8 +75,5 @@ public class HumanPlayerTest {
                 HumanPlayer p = new HumanPlayer();
                 b.setBoard();
                 p.playerMove(b, 'W');
-                
-                
-		
     }
 }
