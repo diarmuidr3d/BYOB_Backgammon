@@ -59,41 +59,29 @@ public int[][] readMoves() throws FileNotFoundException {
                 }
             }
         }
-       
         input.close();
-       
         return movesArray;      
     }
 
     
-    public int playerMove(Board b) throws FileNotFoundException{
+    public int playerMove(Board b, char player) throws FileNotFoundException{
         int retVal = -1;
         int[] dice;
-        int[][] move = null;
+        int[][] moves;
         boolean moveComplete = false;
-        while ((b.blackOff < 15) && (b.whiteOff < 15) && quitQuestion()) {
-            dice = b.rollDice();
-            while (!moveComplete) {
-                b.printBoard();
-                if(dice[0] == dice[1]) {
-                    System.out.println("Doubles rolled. 4 moves of "+dice[0]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
-                    move = readMoves();
-                    for (int moves[] : move){
-                        System.out.println(move[0] + " " + move[1]);
-                    }
-                    for (int i = 0; i < 4; i++) {
-                        if (b.makeMove(move[i][0], move[i][1]) == 0) {
-                            moveComplete = true;
-                        }
-                    }
-                } else {
-                    System.out.println("2 moves, "+dice[0]+" and "+dice[1]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
-                    move = readMoves();
-                    for (int moves[] : move){
-                        System.out.println(move[0] + " " + move[1]);
-                    }
-                    for (int i = 0; i < 2 ; i++) {
-                        if (b.makeMove(move[i][0], move[i][1]) == 0) {
+        dice = b.rollDice();
+        while (!moveComplete) {
+            b.printBoard();
+            if(dice[0] == dice[1]) {
+                System.out.println("Doubles rolled. 4 moves of "+dice[0]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+            } else {
+                System.out.println("2 moves, "+dice[0]+" and "+dice[1]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+            }
+            moves = readMoves(); 
+            for (int move[] : moves) {
+                if ((b.boardPins[move[0]].getColour() == player) && (b.boardPins[move[1]].getColour() == player)) {
+                    if (((b.boardPins[move[0]].getColour() == 'W') && (move[0] < move[1])) || ((b.boardPins[move[0]].getColour() == 'B') && (move[0] > move[1]))) {
+                        if (b.makeMove(move[0], move[1]) == 0) {
                             moveComplete = true;
                         }
                     }

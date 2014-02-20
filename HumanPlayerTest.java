@@ -20,7 +20,8 @@ public class HumanPlayerTest {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
                 //Testing the readMoves() method
-              /*  PrintStream psOut = null;
+            /*
+                PrintStream psOut = null;
                 PrintStream stdOut = System.out;
                 InputStream stdIn = System.in;
                 
@@ -30,11 +31,11 @@ public class HumanPlayerTest {
                 int i;
                 
                 if (test){
-                    psOut = new PrintStream(".\\test\\outputTest.txt");
+                    psOut = new PrintStream("./test/outputTest.txt");
                     System.setOut(psOut);
                 }
                 for (i=0; i<3; i++){
-                    sIn = new FileInputStream(".\\test\\inputTest"+i+".txt");
+                    sIn = new FileInputStream("./test/inputTest"+i+".txt");
                     System.out.println("test " + i);
                     System.setIn(sIn); 
                     int moves[][] = p.readMoves();
@@ -50,8 +51,8 @@ public class HumanPlayerTest {
                 System.setOut(stdOut);
                 System.setIn(stdIn);
                 
-                Scanner actualOut = new Scanner(new BufferedReader(new FileReader(".\\test\\outputTest.txt")));
-                Scanner correctOut = new Scanner(new BufferedReader(new FileReader(".\\test\\outputCheck.txt")));
+                Scanner actualOut = new Scanner(new BufferedReader(new FileReader("./test/outputTest.txt")));
+                Scanner correctOut = new Scanner(new BufferedReader(new FileReader("./test/outputCheck.txt")));
 
                 String s1, s2;
                 int k = 0;
@@ -67,13 +68,14 @@ public class HumanPlayerTest {
                 }
                 
                 if (k == 14) System.out.println("readMoves(): Test Passed!");
-                */
-                //end of the readMoves() method test
                 
+                //end of the readMoves() method test
+                */
                 Board b = new Board();
                 HumanPlayer p = new HumanPlayer();
                 b.setBoard();
-                p.playerMove(b);
+                p.playerMove(b, 'W');
+                
                 
 		
     }
