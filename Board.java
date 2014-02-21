@@ -253,4 +253,35 @@ public class Board {
        }  
        return retVal;    
    }
+   
+   public boolean whiteCheckforBearOff(){
+	   int count=0;
+	   for(int j=18;j<=23;j++){
+		   if(boardPins[j].getColour()=='W'){
+			   count= count+boardPins[j].countCheckers();
+		   }
+	   }
+	   count = count + whiteOff;
+		if(count == 15){
+			return true;
+		}
+		else{
+			return false;
+		}
+   }
+   public boolean blackCheckforBearOff(){
+	   int count = 0;
+	   for(int j=0;j<=5;j++){
+		   if(boardPins[j].getColour()=='B'){
+			   count = count + boardPins[j].countCheckers();
+		   }
+	   }
+	   count = count + blackOff;
+		if(count == 15){
+			return true;
+		}
+		else{
+			return false;
+		}
+   }
 }
