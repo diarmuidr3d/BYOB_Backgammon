@@ -3,6 +3,7 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
+package backgammon;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -12,24 +13,24 @@ import java.util.Scanner;
  * @author BYOB
  */
 public class HumanPlayer {
-    
-public int[][] readMoves() throws FileNotFoundException {
-        
+
+    public int[][] readMoves() throws FileNotFoundException {
+
         Scanner input;
         int[][] movesArray = null;
         int i, j;
         boolean validMoveFound = false;
 
         String inputMoves;
- 
+
         input = new Scanner(System.in);
-        
-        while (!validMoveFound && input.hasNextLine() ) {
+
+        while (!validMoveFound && input.hasNextLine()) {
             inputMoves = input.nextLine();
             inputMoves = inputMoves.trim();
-                                    
-            if (!inputMoves.matches("([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))") &&
-                !inputMoves.matches("([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})")) {
+
+            if (!inputMoves.matches("([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))")
+                    && !inputMoves.matches("([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})")) {
                 System.out.println("Invalid: " + inputMoves);
             } else {
                 validMoveFound = true;
@@ -37,9 +38,9 @@ public int[][] readMoves() throws FileNotFoundException {
                 inputMoves = inputMoves.replaceAll("\\s*-\\s*", "-");
                 String[] splittedMoves = inputMoves.split(" ");
                 movesArray = new int[splittedMoves.length][2];
-                
+
                 i = 0;
-                
+
                 for (String s : splittedMoves) {
                     String[] splittedValues = s.split("-");
                     j = 0;
@@ -51,7 +52,7 @@ public int[][] readMoves() throws FileNotFoundException {
                 }
             }
         }
-        if (movesArray != null){
+        if (movesArray != null) {
             for (i = 0; i < movesArray.length; i++) {
                 for (j = 0; j < movesArray[i].length - 1; j++) {
                     movesArray[i][j]--;
@@ -59,11 +60,13 @@ public int[][] readMoves() throws FileNotFoundException {
                 }
             }
         }
+
         input.close();
-        return movesArray;      
+
+        return movesArray;
     }
     
-	public int quitGame(){
+    	public int quitGame(){
 		String response = "";
 		Scanner input = new Scanner(System.in);
 		System.out.println("Would you like to exit the game: (y/n)\n");
@@ -84,40 +87,43 @@ public int[][] readMoves() throws FileNotFoundException {
 		return 0;
 	}
     
-    public int playerMove(Board b, char player) throws FileNotFoundException{
-        int retVal = -1;
-        int[] dice;
+    public int playerMove(Board b, char player, int[] diceRoll) throws FileNotFoundException {
+        int retVal = 0;
         int[][] moves;
         boolean moveComplete = false;
         b.printBoard();
-        dice = b.rollDice();
-        if(dice[0] == dice[1]) {
-            System.out.println("Doubles rolled. 4 moves of "+dice[0]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+        if (b.isADoubleRoll(diceRoll)) {
+            System.out.println("Doubles rolled. 4 moves of " + diceRoll[0] + " available.\nPlease make your moves in the format Source-Steps Source-Steps.");
         } else {
-            System.out.println("2 moves, "+dice[0]+" and "+dice[1]+" available.\nPlease make your moves in the format Source-Destination Source-Destination.");
+            System.out.println("2 moves, " + diceRoll[0] + " and " + diceRoll[1] + " available.\nPlease make your moves in the format Source-Steps Source-Steps.");
         }
+        
         while (!moveComplete) {
-            moves = readMoves(); 
+            moves = readMoves();
+            
             for (int move[] : moves) {
-                if (b.boardPins[move[0]].getColour() == player) {
+                if (b.boardPins[move[0]].getColour() == player ) {
                     if (((b.boardPins[move[0]].getColour() == 'W') && (move[0] < move[1])) || ((b.boardPins[move[0]].getColour() == 'B') && (move[0] > move[1]))) {
                         if (b.makeMove(move[0], move[1]) == 0) {
                             moveComplete = true;
                         } else {
+                            retVal = -1;
                             System.out.println("Uh oh, something went wrong making the move! Please try again.");
                         }
                     } else {
-                        System.out.println("Oops, moved in the wrong direction! Please try again.");
+                        retVal = -1;
+                        System.out.println("Oops, moved in the wrong direction! Please try again."); 
                     }
                 } else {
-                    System.out.println("Oops, wrong pin, please pick your own colour! Please try again.");
+                    retVal = -1;
+                    System.out.println("Oops, wrong pin, please pick your own colour! Please try again.");  
                 }
             }
         }
         return retVal;
     }
-    
+
     public boolean quitQuestion() {
         return true;
     }
- }
+}
