@@ -62,26 +62,25 @@ public int[][] readMoves() throws FileNotFoundException {
         input.close();
         return movesArray;      
     }
-
-    public int quitGame(){
+    
+	public int quitGame(){
 		String response = "";
-		Scanner scanner = new Scanner(System.in);
-		Scanner input = scanner.useDelimiter("(\\s)*[A-Za-z]+(\\s)*");
+		Scanner input = new Scanner(System.in);
 		System.out.println("Would you like to exit the game: (y/n)\n");
-		while((!response.matches("y")) || (!response.matches("n"))){
+		do{
 			response = input.nextLine();
 			response = response.trim();
 			response = response.toLowerCase();
-			if((!response.matches("y")) || (!response.matches("n"))){
+			if((!response.equals("y")) && (!response.equals("n"))){
 				System.out.println("You have entered an invalid character, Please try again\n");
 			}
-		}
-		if(response.matches("y")){
+		}while((!response.equals("y")) && (!response.equals("n")));
+		if(response.equals("y")){
 			System.out.println("Thank you for playing\n");
 			System.exit(0);
 		}
+		System.out.println("You have choosen to continue playing\n");
 		input.close();
-		scanner.close();
 		return 0;
 	}
     
