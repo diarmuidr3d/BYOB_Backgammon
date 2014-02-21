@@ -3,6 +3,9 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
+
+package backgammon;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,19 +14,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-import backgammon.Point;
+
 /**
  *
- * @author BYOB
+ * @author Stefano
  */
 public class HumanPlayerTest {
 
-	public static void main(String[] args) throws FileNotFoundException, IOException {
-                //Testing the readMoves() method
-            /*
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+           
+            //Testing the readMoves() method
                 PrintStream psOut = null;
                 PrintStream stdOut = System.out;
                 InputStream stdIn = System.in;
+                Board b = new Board();
                 
                 FileInputStream sIn = null;
                 boolean test = true;
@@ -31,11 +38,11 @@ public class HumanPlayerTest {
                 int i;
                 
                 if (test){
-                    psOut = new PrintStream("./test/outputTest.txt");
+                    psOut = new PrintStream(".\\test\\outputTest.txt");
                     System.setOut(psOut);
-                }
+                } 
                 for (i=0; i<3; i++){
-                    sIn = new FileInputStream("./test/inputTest"+i+".txt");
+                    sIn = new FileInputStream(".\\test\\inputTest"+i+".txt");
                     System.out.println("test " + i);
                     System.setIn(sIn); 
                     int moves[][] = p.readMoves();
@@ -51,8 +58,8 @@ public class HumanPlayerTest {
                 System.setOut(stdOut);
                 System.setIn(stdIn);
                 
-                Scanner actualOut = new Scanner(new BufferedReader(new FileReader("./test/outputTest.txt")));
-                Scanner correctOut = new Scanner(new BufferedReader(new FileReader("./test/outputCheck.txt")));
+                Scanner actualOut = new Scanner(new BufferedReader(new FileReader(".\\test\\outputTest.txt")));
+                Scanner correctOut = new Scanner(new BufferedReader(new FileReader(".\\test\\outputCheck.txt")));
 
                 String s1, s2;
                 int k = 0;
@@ -70,10 +77,12 @@ public class HumanPlayerTest {
                 if (k == 14) System.out.println("readMoves(): Test Passed!");
                 
                 //end of the readMoves() method test
-                */
-                Board b = new Board();
-                HumanPlayer p = new HumanPlayer();
+                
                 b.setBoard();
-                p.playerMove(b, 'W');
+                b.setTurn('W');
+                int dice[] = {1,3};
+                p.playerMove(b, b.getTurn(), dice);
+                b.printBoard();
     }
+    
 }
