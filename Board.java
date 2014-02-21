@@ -239,8 +239,8 @@ public class Board {
        }
        //same colour move or empty destination
        else if ((boardPins[source].getColour() == boardPins[destination].getColour()) || (boardPins[destination].isEmpty())) {
-           boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
            boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].countCheckers() + 1));
+           boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
            retVal = 0;
        }
        //eating move
