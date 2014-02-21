@@ -88,37 +88,29 @@ public class HumanPlayer {
 	}
     
     public int playerMove(Board b, char player, int[] diceRoll) throws FileNotFoundException {
+        public int playerMove(Board b, char player, int[] diceRoll) throws FileNotFoundException {
         int retVal = 0;
         int[][] moves;
-        boolean moveComplete = false;
-        b.printBoard();
-        if (b.isADoubleRoll(diceRoll)) {
-            System.out.println("Doubles rolled. 4 moves of " + diceRoll[0] + " available.\nPlease make your moves in the format Source-Steps Source-Steps.");
-        } else {
-            System.out.println("2 moves, " + diceRoll[0] + " and " + diceRoll[1] + " available.\nPlease make your moves in the format Source-Steps Source-Steps.");
+        boolean completeMoves = false;
+        if(b.isADoubleRoll(diceRoll)){
+        	do{
+        		moves = readMoves();
+        		if((moves.length != 4) || (!areValidMove(moves, player))){
+        			continue;
+        		}
+        		else{
+        			for(int[] move : moves){
+        				b.makeMove(move[0], move[1]);
+        				
+        					
+        				
+        				
+        			}
+        		}
+        	}while(!completeMoves);
         }
-        
-        while (!moveComplete) {
-            moves = readMoves();
-            
-            for (int move[] : moves) {
-                if (b.boardPins[move[0]].getColour() == player ) {
-                    if (((b.boardPins[move[0]].getColour() == 'W') && (move[0] < move[1])) || ((b.boardPins[move[0]].getColour() == 'B') && (move[0] > move[1]))) {
-                        if (b.makeMove(move[0], move[1]) == 0) {
-                            moveComplete = true;
-                        } else {
-                            retVal = -1;
-                            System.out.println("Uh oh, something went wrong making the move! Please try again.");
-                        }
-                    } else {
-                        retVal = -1;
-                        System.out.println("Oops, moved in the wrong direction! Please try again."); 
-                    }
-                } else {
-                    retVal = -1;
-                    System.out.println("Oops, wrong pin, please pick your own colour! Please try again.");  
-                }
-            }
+        else{
+        	
         }
         return retVal;
     }
