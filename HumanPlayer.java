@@ -63,6 +63,27 @@ public int[][] readMoves() throws FileNotFoundException {
         return movesArray;      
     }
 
+    public int quitGame(){
+		String response = "";
+		Scanner scanner = new Scanner(System.in);
+		Scanner input = scanner.useDelimiter("(\\s)*[A-Za-z]+(\\s)*");
+		System.out.println("Would you like to exit the game: (y/n)\n");
+		while((!response.matches("y")) || (!response.matches("n"))){
+			response = input.nextLine();
+			response = response.trim();
+			response = response.toLowerCase();
+			if((!response.matches("y")) || (!response.matches("n"))){
+				System.out.println("You have entered an invalid character, Please try again\n");
+			}
+		}
+		if(response.matches("y")){
+			System.out.println("Thank you for playing\n");
+			System.exit(0);
+		}
+		input.close();
+		scanner.close();
+		return 0;
+	}
     
     public int playerMove(Board b, char player) throws FileNotFoundException{
         int retVal = -1;
