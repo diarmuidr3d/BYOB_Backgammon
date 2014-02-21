@@ -147,12 +147,12 @@ public class Board {
         return a;
     }
     
-      /**
+       /**
 	* Makes the specified move from the black bar to a destination.                        
 	* <p>
 	* @param destination It specifies the number of the destination in boardPins[]
 	*/
-    private int moveFromBlackBar(int source, int destination){
+    private int moveFromBlackBar(int destination){
     	int retVal = 0;
     	char b = 'B';
     	char w = 'W';
@@ -213,7 +213,7 @@ public class Board {
        int retVal = 0;
        //from black bar
        if (source == BLACK_BAR) {
-           retVal = moveFromBlackBar(source, destination);
+           retVal = moveFromBlackBar(destination);
            
        }
        //from white bar
