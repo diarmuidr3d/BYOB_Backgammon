@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class HumanPlayer {
 
-    public int[][] readMoves() throws FileNotFoundException {
+    public int[][] readMoves(Board b) throws FileNotFoundException {
 
         Scanner input;
         int[][] movesArray = null;
@@ -24,13 +24,12 @@ public class HumanPlayer {
         String inputMoves;
 
         input = new Scanner(System.in);
-
-        while (!validMoveFound && input.hasNextLine()) {
+        
+        while (!validMoveFound && input.hasNext()) {
             inputMoves = input.nextLine();
             inputMoves = inputMoves.trim();
 
-            if (!inputMoves.matches("([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))")
-                    && !inputMoves.matches("([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})")) {
+            if (!inputMoves.matches("(([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){0,3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))")) {
                 System.out.println("Invalid: " + inputMoves);
             } else {
                 validMoveFound = true;
@@ -56,12 +55,13 @@ public class HumanPlayer {
             for (i = 0; i < movesArray.length; i++) {
                 for (j = 0; j < movesArray[i].length - 1; j++) {
                     movesArray[i][j]--;
-                    movesArray[i][j + 1] = movesArray[i][j] + movesArray[i][j + 1];
+                    if(b.getTurn() == 'W')
+                        movesArray[i][j + 1] = movesArray[i][j] + movesArray[i][j + 1];
+                    else if (b.getTurn() == 'B')
+                        movesArray[i][j + 1] = movesArray[i][j] - movesArray[i][j+1];
                 }
             }
         }
-
-        input.close();
 
         return movesArray;
     }
