@@ -87,31 +87,91 @@ public class HumanPlayer {
 		return 0;
 	}
     
-    public int playerMove(Board b, char player, int[] diceRoll) throws FileNotFoundException {
-        public int playerMove(Board b, char player, int[] diceRoll) throws FileNotFoundException {
+    public int playerMove(Board b, int[] diceRoll) throws FileNotFoundException, IOException {
         int retVal = 0;
-        int[][] moves;
-        boolean completeMoves = false;
-        if(b.isADoubleRoll(diceRoll)){
-        	do{
-        		moves = readMoves();
-        		if((moves.length != 4) || (!areValidMove(moves, player))){
-        			continue;
-        		}
-        		else{
-        			for(int[] move : moves){
-        				b.makeMove(move[0], move[1]);
-        				
-        					
-        				
-        				
-        			}
-        		}
-        	}while(!completeMoves);
+        int movesCounter;
+
+        switch (b.getTurn()) {
+            case 'W':
+                if (b.isADoubleRoll(diceRoll)) {
+                    movesCounter = 4;
+
+                    while (movesCounter != 0) {
+                        System.out.println("Double " + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
+
+                        int[][] moves = readMoves(b);
+
+                        if (moves != null) {
+                            for (int[] move : moves) {
+                                if (b.makeMove(move[0], move[1]) != -1) {
+                                    movesCounter--;
+                                }
+                            }
+                        }
+                    }
+                } else {
+
+                    movesCounter = 2;
+
+                    while (movesCounter != 0) {
+
+                        System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
+
+                        int[][] moves = readMoves(b);
+                        if (moves != null) {
+                            for (int[] move : moves) {
+                               if( b.makeMove(move[0], move[1])!= -1 )
+                                movesCounter--;
+                            }
+                        }
+
+                    }
+
+                }
+                b.setTurn('B');
+                break;
+            case 'B':
+                if (b.isADoubleRoll(diceRoll)) {
+                    movesCounter = 4;
+
+                    while (movesCounter != 0) {
+                        System.out.println("Double " + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
+
+                        int[][] moves = readMoves(b);
+
+                        if (moves != null) {
+                            for (int[] move : moves) {
+                                if (b.makeMove(move[0], move[1]) != -1) {
+                                    movesCounter--;
+                                }
+                            }
+                        }
+                    }
+                } else {
+
+                    movesCounter = 2;
+
+                    while (movesCounter != 0) {
+
+                        System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
+
+                        int[][] moves = readMoves(b);
+                        if (moves != null) {
+                            for (int[] move : moves) {
+                                
+                                if ( b.makeMove(move[0], move[1])!=-1)
+                                movesCounter--;
+                            }
+                        }
+
+                    }
+
+                }
+                b.setTurn('W');
+                break;
+
         }
-        else{
-        	
-        }
+
         return retVal;
     }
 
