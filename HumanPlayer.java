@@ -6,6 +6,7 @@
 package backgammon;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -24,7 +25,7 @@ public class HumanPlayer {
         String inputMoves;
 
         input = new Scanner(System.in);
-        
+
         while (!validMoveFound && input.hasNext()) {
             inputMoves = input.nextLine();
             inputMoves = inputMoves.trim();
@@ -53,40 +54,56 @@ public class HumanPlayer {
         }
         if (movesArray != null) {
             for (i = 0; i < movesArray.length; i++) {
-                for (j = 0; j < movesArray[i].length - 1; j++) {
-                    movesArray[i][j]--;
-                    if(b.getTurn() == 'W')
-                        movesArray[i][j + 1] = movesArray[i][j] + movesArray[i][j + 1];
-                    else if (b.getTurn() == 'B')
-                        movesArray[i][j + 1] = movesArray[i][j] - movesArray[i][j+1];
+                movesArray[i][0]--;
+                if (b.getTurn() == 'W') {
+                    if (movesArray[i][0] == 24) {
+                        movesArray[i][0] = Board.WHITE_BAR;
+                        movesArray[i][1] = movesArray[i][1] - 1;
+                    } else if (movesArray[i][0] + movesArray[i][1] > 24) {
+                        movesArray[i][1] = Board.WHITE_OFF;
+                    } else {
+                        movesArray[i][1] = movesArray[i][0] + movesArray[i][1];
+                    }
+                } else if (b.getTurn() == 'B') {
+                    movesArray[i][0]--;
+                    if (movesArray[i][0] == 24) {
+                        movesArray[i][0] = Board.BLACK_BAR;
+                        movesArray[i][1] = 25 - movesArray[i][1];
+                    } else if (movesArray[i][0] - movesArray[i][1] < 0) {
+                        movesArray[i][1] = Board.BLACK_OFF;
+                    } else {
+                        movesArray[i][1] = movesArray[i][0] - movesArray[i][1];
+                    }
                 }
+
             }
         }
 
         return movesArray;
+
     }
-    
-    	public int quitGame(){
-		String response = "";
-		Scanner input = new Scanner(System.in);
-		System.out.println("Would you like to exit the game: (y/n)\n");
-		do{
-			response = input.nextLine();
-			response = response.trim();
-			response = response.toLowerCase();
-			if((!response.equals("y")) && (!response.equals("n"))){
-				System.out.println("You have entered an invalid character, Please try again\n");
-			}
-		}while((!response.equals("y")) && (!response.equals("n")));
-		if(response.equals("y")){
-			System.out.println("Thank you for playing\n");
-			System.exit(0);
-		}
-		System.out.println("You have choosen to continue playing\n");
-		input.close();
-		return 0;
-	}
-    
+
+    public int quitGame() {
+        String response = "";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Would you like to exit the game: (y/n)\n");
+        do {
+            response = input.nextLine();
+            response = response.trim();
+            response = response.toLowerCase();
+            if ((!response.equals("y")) && (!response.equals("n"))) {
+                System.out.println("You have entered an invalid character, Please try again\n");
+            }
+        } while ((!response.equals("y")) && (!response.equals("n")));
+        if (response.equals("y")) {
+            System.out.println("Thank you for playing\n");
+            System.exit(0);
+        }
+        System.out.println("You have choosen to continue playing\n");
+        input.close();
+        return 0;
+    }
+
     public int playerMove(Board b, int[] diceRoll) throws FileNotFoundException, IOException {
         int retVal = 0;
         int movesCounter;
@@ -120,8 +137,9 @@ public class HumanPlayer {
                         int[][] moves = readMoves(b);
                         if (moves != null) {
                             for (int[] move : moves) {
-                               if( b.makeMove(move[0], move[1])!= -1 )
-                                movesCounter--;
+                                if (b.makeMove(move[0], move[1]) != -1) {
+                                    movesCounter--;
+                                }
                             }
                         }
 
@@ -151,16 +169,17 @@ public class HumanPlayer {
 
                     movesCounter = 2;
 
-                    while (movesCounter != 0) {
+                    while (movesCounter > 0) {
 
                         System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
 
                         int[][] moves = readMoves(b);
                         if (moves != null) {
                             for (int[] move : moves) {
-                                
-                                if ( b.makeMove(move[0], move[1])!=-1)
-                                movesCounter--;
+
+                                if (b.makeMove(move[0], move[1]) != -1) {
+                                    movesCounter--;
+                                }
                             }
                         }
 
