@@ -81,10 +81,26 @@ public class HumanPlayerTest {
                 //end of the readMoves() method test
                 
                 b.setBoard();
-                b.setTurn('W');
-                int dice[] = {1,3};
-                p.playerMove(b, dice);
-                b.printBoard();
+                b.firstPlay();
+                char player1 = b.getTurn();
+                char player2;
+                if (player1 == 'W') {
+                    player2 = 'B';
+                } else {
+                    player2 = 'W';
+                }
+                int j = 0;
+                while ((b.whiteOff !=  15) && (b.blackOff != 15)) {
+                    int dice[] = b.rollDice();
+                    p.playerMove(b, dice);
+                    b.printBoard();
+                    if (j%2 == 0) {
+                        b.setTurn(player1);
+                    } else {
+                        b.setTurn(player2);
+                    }
+                    j++;
+                }
     }
     
 }
