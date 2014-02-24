@@ -83,26 +83,25 @@ public class HumanPlayer {
 
     }
 
-    public int quitGame() {
-        String response = "";
-        Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to exit the game: (y/n)\n");
-        do {
-            response = input.nextLine();
-            response = response.trim();
-            response = response.toLowerCase();
-            if ((!response.equals("y")) && (!response.equals("n"))) {
-                System.out.println("You have entered an invalid character, Please try again\n");
-            }
-        } while ((!response.equals("y")) && (!response.equals("n")));
-        if (response.equals("y")) {
-            System.out.println("Thank you for playing\n");
-            System.exit(0);
-        }
-        System.out.println("You have choosen to continue playing\n");
-        input.close();
-        return 0;
-    }
+	public int quitGame(){
+		String response = "";
+		Scanner input = new Scanner(System.in);
+		System.out.println("Would you like to exit the game: (y/n)\n");
+		do{
+			response = input.nextLine();
+			response = response.trim();
+			response = response.toLowerCase();
+			if((!response.equals("y")) && (!response.equals("n"))){
+				System.out.println("You have entered an invalid character, Please try again\n");
+			}
+		}while((!response.equals("y")) && (!response.equals("n")));
+		if(response.equals("y")){
+			System.out.println("Thank you for playing\n");
+			System.exit(0);
+		}
+		System.out.println("You have choosen to continue playing\n");
+		return 0;
+	}
 
     public int playerMove(Board b, int[] diceRoll) throws FileNotFoundException, IOException {
         int retVal = 0;
