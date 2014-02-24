@@ -4,7 +4,6 @@
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 
-package backgammon;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -40,11 +39,11 @@ public class HumanPlayerTest {
                 int i;
                 
                 if (test){
-                    psOut = new PrintStream(".\\test\\outputTest.txt");
+                    psOut = new PrintStream("./test/outputTest.txt");
                     System.setOut(psOut);
                 } 
                 for (i=0; i<3; i++){
-                    sIn = new FileInputStream(".\\test\\inputTest"+i+".txt");
+                    sIn = new FileInputStream("./test/inputTest"+i+".txt");
                     System.out.println("test " + i);
                     System.setIn(sIn); 
                     int moves[][] = p.readMoves(b);
@@ -60,8 +59,8 @@ public class HumanPlayerTest {
                 System.setOut(stdOut);
                 System.setIn(stdIn);
                 
-                Scanner actualOut = new Scanner(new BufferedReader(new FileReader(".\\test\\outputTest.txt")));
-                Scanner correctOut = new Scanner(new BufferedReader(new FileReader(".\\test\\outputCheck.txt")));
+                Scanner actualOut = new Scanner(new BufferedReader(new FileReader("./test/outputTest.txt")));
+                Scanner correctOut = new Scanner(new BufferedReader(new FileReader("./test/outputCheck.txt")));
 
                 String s1, s2;
                 int k = 0;
@@ -82,6 +81,8 @@ public class HumanPlayerTest {
                 
                 b.setBoard();
                 b.firstPlay();
+                
+                b.printBoard();
                 char player1 = b.getTurn();
                 char player2;
                 if (player1 == 'W') {
@@ -90,8 +91,8 @@ public class HumanPlayerTest {
                     player2 = 'W';
                 }
                 int j = 0;
-                while ((b.whiteOff !=  15) && (b.blackOff != 15)) {
-                    int dice[] = b.rollDice();
+                int dice[] = b.rollDice();
+                while ((b.whiteOff != 15) && (b.blackOff != 15)) {
                     p.playerMove(b, dice);
                     b.printBoard();
                     if (j%2 == 0) {
@@ -100,7 +101,9 @@ public class HumanPlayerTest {
                         b.setTurn(player2);
                     }
                     j++;
+                    b.rollDice();
                 }
+            }
     }
     
-}
+
