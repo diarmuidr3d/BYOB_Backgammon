@@ -23,6 +23,8 @@ public class HumanPlayerTest {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.FileNotFoundException
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
            
@@ -45,7 +47,7 @@ public class HumanPlayerTest {
                     sIn = new FileInputStream(".\\test\\inputTest"+i+".txt");
                     System.out.println("test " + i);
                     System.setIn(sIn); 
-                    int moves[][] = p.readMoves();
+                    int moves[][] = p.readMoves(b);
                     if(moves!=null)
                     for (int move[] : moves){
                         System.out.println(move[0] + " " + move[1]);
@@ -81,7 +83,7 @@ public class HumanPlayerTest {
                 b.setBoard();
                 b.setTurn('W');
                 int dice[] = {1,3};
-                p.playerMove(b, b.getTurn(), dice);
+                p.playerMove(b, dice);
                 b.printBoard();
     }
     

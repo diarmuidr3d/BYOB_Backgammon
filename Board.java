@@ -4,9 +4,8 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-
+package backgammon;
 import java.util.Random;
-
 /**
  *
  * @author BYOB
@@ -45,11 +44,20 @@ public class Board {
             boardPins[j] = new Point();
         }
     }
-
+    /**
+     * Gets which player's turn it is.
+     * @return Returns a capital character B (Black) or W (White) depending which player's turn it is
+     */
     public char getTurn() {
         return playerTurn;
     }
-
+    /**
+     * Set's which player's turn it is
+     * <p>
+     * The method takes in a character 'B' (black) or 'W' (white) depending on which player's turn it is and assigns the current player turn to tat player.
+     * <p>
+     * @param playerChar
+     */
     public void setTurn(char playerChar) {
         playerTurn = playerChar;
     }
@@ -138,7 +146,7 @@ public class Board {
     }
 
     /**
-     * Prints the actual configuation of the board. It uses printTopOfBoard()
+     * Prints the actual configuration of the board. It uses printTopOfBoard()
      * and printBottomOfBoard() to create the strings for the top and bottom of
      * the board respectively.
      */
@@ -274,11 +282,23 @@ public class Board {
         return retVal;
     }
     
+    /**
+     * Gets the colour of the pieces on a point
+     * @param position
+     * @return Returns the colour ('B' or 'W') of the pieces on a Point
+     */
     public char getColour(int position){
         return boardPins[position].getColour();
     }
 
-
+    /**
+     * Decides which player goes first
+     * <p>
+     * This method decides which player goes first at the start of the game. 
+     * It rolls the dice for each player and set's the next turn for whichever player receives the higher score.
+     * <p>
+     * @return Returns the rolled dice
+     */
     public int[] firstPlay() {
         int[] diceRoll = rollDice();
         boolean endFirstPlay = false;
@@ -299,6 +319,13 @@ public class Board {
         return diceRoll;
     }
 
+    /**
+     * Checks if the white player is able to bear off
+     * <p>
+     * This method checks if the white player is allowed to bear off be checking if all the white pieces are in the home board.
+     * <p>
+     * @return Returns true if all the pieces are in the home board or false if not.
+     */
     public boolean whiteCheckForBearOff() {
         int count = 0;
         for (int j = 18; j <= 23; j++) {
@@ -309,7 +336,14 @@ public class Board {
         count = count + whiteOff;
         return count == 15;
     }
-
+    
+    /**
+     * Checks if the black player is able to bear off
+     * <p>
+     * This method checks if the black player is allowed to bear off be checking if all the black pieces are in the home board.
+     * <p>
+     * @return Returns true if all the pieces are in the home board or false if not.
+     */
     public boolean blackCheckForBearOff() {
         int count = 0;
         for (int j = 0; j <= 5; j++) {
@@ -321,11 +355,21 @@ public class Board {
         return count == 15;
     }
     
+    /**
+     * Decides whether to use whiteCheckForBearOff() or blackCheckForBearOff()
+     * @param player
+     * @return Returns the result of whiteCheckForBearOff() or blackCheckForBearOff()
+     */
     public boolean checkBearOff(char player){
         if (player == 'W') return whiteCheckForBearOff();
         else return blackCheckForBearOff();
     }
     
+    /**
+     * Checks if the player rolled a double
+     * @param diceRoll
+     * @return Returns true if a double was rolled, false if not
+     */
     public boolean isADoubleRoll(int[] diceRoll){
         return diceRoll[0] == diceRoll[1];
     }

@@ -16,6 +16,12 @@ import java.util.Scanner;
  */
 public class HumanPlayer {
 
+    /**
+     * Allows the player to quit the game
+     * <p>
+     * This function checks if the player wishes to exit the game. If the player wishes to exit, it quits the game.
+     * </p>
+     */
     public void quitGame() {
         String response = "";
         Scanner input = new Scanner(System.in);
@@ -35,7 +41,16 @@ public class HumanPlayer {
         System.out.println("You have choosen to continue playing\n");
 
     }
-
+    
+    /**
+     * This function allows the player to pass their turn if they have no moves available
+     * <p>
+     * If there is no move available to the player they can pass their move. 
+     * This function waits for a Y/N answer from the player on what they wish to do.
+     * </p>
+     * @param b is the board
+     * @return Returns 1 if the player chooses to pass and 0 if the player chooses to continue.
+     */
     public int passTurn(Board b) {
         String response = "";
         int retVal = 1;
@@ -62,15 +77,16 @@ public class HumanPlayer {
         }
         return retVal;
     }
-/**
- * It reads one, two, three or four moves from the input and returns them in an
- * array. The function tolerates some mistakes.
- *
- * @param b it is the actual board
- * @return It returns a int[][] moves where moves[i][0] is the source point and
- * moves[i][1] is the destination point. Those parameters are computed to be the
- * input of board.makeMove()
- */
+    /**
+     * It reads one, two, three or four moves from the input and returns them in an
+     * array. The function tolerates some mistakes.
+     *
+     * @param b it is the actual board
+     * @return It returns a int[][] moves where moves[i][0] is the source point and
+     * moves[i][1] is the destination point. Those parameters are computed to be the
+     * input of board.makeMove()
+     * @throws java.io.FileNotFoundException
+    */
     public int[][] readMoves(Board b) throws FileNotFoundException {
 
         Scanner input;
@@ -140,8 +156,21 @@ public class HumanPlayer {
         return movesArray;
     }
 
+    /**
+     * This function facilitates the player's move.
+     * <p>
+     * This function calls readMoves() to get the player's moves.
+     * It gets the diceroll and if it's a double it provides 4 moves, 2 moves if not.
+     * It provides moves for the different players ('B' and 'W')
+     * </p>
+     * @param b is the board
+     * @param diceRoll is the rolled dice
+     * @return Returns -1 if unsuccessful, 0 if successful
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public int playerMove(Board b, int[] diceRoll) throws FileNotFoundException, IOException {
-        int retVal = 0;
+        int retVal = -1;
         int movesCounter;
 
         switch (b.getTurn()) {
@@ -167,6 +196,7 @@ public class HumanPlayer {
                                     int tmp1 = move[0] + 1;
                                     int tmp2 = move[1] + 1;
                                     System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
+                                    retVal = 0;
                                 }
                             }
                         }
@@ -192,6 +222,7 @@ public class HumanPlayer {
                                     int tmp1 = move[0] + 1;
                                     int tmp2 = move[1] + 1;
                                     System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
+                                    retVal = 0;
                                     movesCounter--;
                                 }
                             }
@@ -220,6 +251,7 @@ public class HumanPlayer {
                                 int tmp1 = move[0] + 1;
                                 int tmp2 = move[1] + 1;
                                 System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
+                                retVal = 0;
                                 if (b.makeMove(move[0], move[1]) != -1) {
                                     movesCounter--;
                                 }
@@ -248,6 +280,7 @@ public class HumanPlayer {
                                     int tmp1 = move[0] + 1;
                                     int tmp2 = move[1] + 1;
                                     System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
+                                    retVal = 0;
                                     movesCounter--;
                                 }
                             }
@@ -262,9 +295,5 @@ public class HumanPlayer {
         }
 
         return retVal;
-    }
-
-    public boolean quitQuestion() {
-        return true;
     }
 }
