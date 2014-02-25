@@ -3,12 +3,10 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-
-
+package backgammon;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-
 /**
  *
  * @author BYOB
@@ -100,8 +98,13 @@ public class HumanPlayer {
         while (!validMoveFound && input.hasNextLine()) {
             inputMoves = input.nextLine();
             inputMoves = inputMoves.trim();
-
-            if (!inputMoves.matches("(([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){0,3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))")) {
+            if( (inputMoves.equals("p")) || (inputMoves.equals("P")) ) {
+                System.out.println("Turn Passed");
+                validMoveFound = true;
+            } else if ( (inputMoves.equals("q")) || (inputMoves.equals("Q")) ) {
+                System.out.println("Thanks for playing");
+                System.exit(0);
+            } else if (!inputMoves.matches("(([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){0,3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))")) {
                 System.out.println("Invalid: " + inputMoves);
             } else {
                 validMoveFound = true;
@@ -174,125 +177,47 @@ public class HumanPlayer {
 
         switch (b.getTurn()) {
             case 'W':
-                System.out.println("it's white's turn");
-                if (b.isADoubleRoll(diceRoll)) {
-                    movesCounter = 4;
-
-                    while (movesCounter > 0) {
-                        
-                        this.quitGame();
-                        System.out.println("Double " + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
-                         if (this.passTurn(b) == 1) {
-                            break;
-                        }
-                        int[][] moves = readMoves(b);
-                       
-                        if ((moves != null) && (moves.length <= movesCounter)) {
-                            for (int[] move : moves) {
-
-                                if (b.makeMove(move[0], move[1]) != -1) {
-                                    movesCounter--;
-                                    int tmp1 = move[0] + 1;
-                                    int tmp2 = move[1] + 1;
-                                    System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
-                                    retVal = 0;
-                                }
-                            }
-                        }
-                    }
-                } else {
-
-                    movesCounter = 2;
-
-                    while (movesCounter > 0) {
-
-                       
-                        this.quitGame();
-                        System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
-                        if (this.passTurn(b) == 1) {
-                            break;
-                        }
-                        int[][] moves = readMoves(b);
-                        
-
-                        if ((moves != null) && (moves.length <= movesCounter)) {
-                            for (int[] move : moves) {
-                                if (b.makeMove(move[0], move[1]) != -1) {
-                                    int tmp1 = move[0] + 1;
-                                    int tmp2 = move[1] + 1;
-                                    System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
-                                    retVal = 0;
-                                    movesCounter--;
-                                }
-                            }
-                        }
-
-                    }
-
-                }
-                b.setTurn('B');
+                System.out.println("It's White's turn");
                 break;
             case 'B':
-                System.out.println("it's blacks turn");
-                if (b.isADoubleRoll(diceRoll)) {
-                    movesCounter = 4;
-                    while (movesCounter > 0) {
-                        
-                        this.quitGame();
-                        System.out.println("Double " + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
-                        if (this.passTurn(b) == 1) {
-                            break;
-                        }
-                        int[][] moves = readMoves(b);
-                        
-                        if ((moves != null) && (moves.length <= movesCounter)) {
-                            for (int[] move : moves) {
-                                int tmp1 = move[0] + 1;
-                                int tmp2 = move[1] + 1;
-                                System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
-                                retVal = 0;
-                                if (b.makeMove(move[0], move[1]) != -1) {
-                                    movesCounter--;
-                                }
-                            }
-                        }
-                    }
-                } else {
-
-                    movesCounter = 2;
-
-                    while (movesCounter > 0) {
-
-                        this.quitGame();
-                        System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps: ");
-                        
-                        if (this.passTurn(b) == 1) {
-                            break;
-                        }
-                        
-                        int[][] moves = readMoves(b);
-
-                        if ((moves != null) && (moves.length <= movesCounter)) {
-                            for (int[] move : moves) {
-
-                                if (b.makeMove(move[0], move[1]) != -1) {
-                                    int tmp1 = move[0] + 1;
-                                    int tmp2 = move[1] + 1;
-                                    System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
-                                    retVal = 0;
-                                    movesCounter--;
-                                }
-                            }
-                        }
-
-                    }
-
-                }
-                b.setTurn('W');
+                System.out.println("It's Black's turn");
                 break;
-
         }
+        if (b.isADoubleRoll(diceRoll)) {
+            movesCounter = 4;
+            System.out.println("Double " + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
+            
+        } else {
 
+            movesCounter = 2;
+            System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");  
+        }
+        while (movesCounter > 0) {
+           /* this.quitGame();
+            if (this.passTurn(b) == 1) {
+                break;
+            }*/
+            int[][] moves = readMoves(b);
+            if (moves == null) {
+                movesCounter = 0;
+            }
+            if ((moves != null) && (moves.length <= movesCounter)) {
+                for (int[] move : moves) {
+                    int tmp1 = move[0] + 1;
+                    int tmp2 = move[1] + 1;
+                    System.out.println("Move Performed" + tmp1 + " -> " + tmp2);
+                    retVal = 0;
+                    if (b.makeMove(move[0], move[1]) != -1) {
+                        movesCounter--;
+                    }
+                }
+            }
+        }
+        if (b.getTurn() == 'B') {
+            b.setTurn('W');
+        } else {
+            b.setTurn('B');
+        }
         return retVal;
     }
 }

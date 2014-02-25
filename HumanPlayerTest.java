@@ -3,8 +3,7 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-
-
+packag backgammon;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -74,14 +73,12 @@ public class HumanPlayerTest {
                         System.out.println("line OK " + k + " output: " + s1);
                     }
                 }
-                
                 if (k == 14) System.out.println("readMoves(): Test Passed!");
-                
                 //end of the readMoves() method test
                 
+                //begin playerMove() test
                 b.setBoard();
-                b.firstPlay();
-                
+                int dice[] = b.firstPlay();
                 b.printBoard();
                 char player1 = b.getTurn();
                 char player2;
@@ -91,17 +88,16 @@ public class HumanPlayerTest {
                     player2 = 'W';
                 }
                 int j = 0;
-                int dice[] = b.rollDice();
                 while ((b.whiteOff != 15) && (b.blackOff != 15)) {
                     p.playerMove(b, dice);
                     b.printBoard();
                     if (j%2 == 0) {
-                        b.setTurn(player1);
-                    } else {
                         b.setTurn(player2);
+                    } else {
+                        b.setTurn(player1);
                     }
                     j++;
-                    b.rollDice();
+                    dice = b.rollDice();
                 }
             }
     }

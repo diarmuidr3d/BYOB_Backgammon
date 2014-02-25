@@ -4,6 +4,7 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
+package backgammon;
 import java.util.Random;
 /**
  *
@@ -150,12 +151,11 @@ public class Board {
      * the board respectively.
      */
     public void printBoard() {
-        System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+        System.out.println("\n\n13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
         System.out.println(printTopOfBoard());
         System.out.println("\n");
         System.out.println(printBottomOfBoard());
-        System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
-        System.out.println("\n\n");
+        System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF\n\n");
     }
 
     /**
