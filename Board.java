@@ -235,12 +235,10 @@ public class Board {
      * @return It returns 0 if everything went well, -1 otherwise.
      */
     public int makeMove(int source, int destination) {
-
-        int retVal = 0;
+        int retVal;
         //from black bar
         if (source == BLACK_BAR) {
             retVal = moveFromBlackBar(destination);
-
         } //from white bar
         else if (source == WHITE_BAR) {
             retVal = moveFromWhiteBar(destination);
