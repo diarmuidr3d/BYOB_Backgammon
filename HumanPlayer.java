@@ -14,67 +14,6 @@ import java.util.Scanner;
 public class HumanPlayer {
 
     /**
-     * Allows the player to quit the game
-     * <p>
-     * This function checks if the player wishes to exit the game. If the player wishes to exit, it quits the game.
-     * </p>
-     */
-    public void quitGame() {
-        String response = "";
-        Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to exit the game: (y/n)");
-        do {
-            response = input.nextLine();
-            response = response.trim();
-            response = response.toLowerCase();
-            if ((!response.equals("y")) && (!response.equals("n"))) {
-                System.out.println("You have entered an invalid character, Please try again");
-            }
-        } while ((!response.equals("y")) && (!response.equals("n")));
-        if (response.equals("y")) {
-            System.out.println("Thank you for playing\n");
-            System.exit(0);
-        }
-        System.out.println("You have choosen to continue playing\n");
-
-    }
-    
-    /**
-     * This function allows the player to pass their turn if they have no moves available
-     * <p>
-     * If there is no move available to the player they can pass their move. 
-     * This function waits for a Y/N answer from the player on what they wish to do.
-     * </p>
-     * @param b is the board
-     * @return Returns 1 if the player chooses to pass and 0 if the player chooses to continue.
-     */
-    public int passTurn(Board b) {
-        String response = "";
-        int retVal = 1;
-        Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to pass your turn: (y/n)");
-        do {
-            response = input.nextLine();
-            response = response.trim();
-            response = response.toLowerCase();
-            if ((!response.equals("y")) && (!response.equals("n"))) {
-                System.out.println("You have entered an invalid character, Please try again");
-            }
-        } while ((!response.equals("y")) && (!response.equals("n")));
-        if (response.equals("y")) {
-            System.out.println("You have choosen to pass your turn\n");
-            if (b.getTurn() == 'W') {
-                b.setTurn('B');
-            } else {
-                b.setTurn('W');
-            }
-        } else {
-            System.out.println("You have choosen to not pass your turn\n");
-            retVal = 0;
-        }
-        return retVal;
-    }
-    /**
      * It reads one, two, three or four moves from the input and returns them in an
      * array. The function tolerates some mistakes.
      *

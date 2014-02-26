@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-
 /**
  *
  * @author Stefano
@@ -24,7 +23,7 @@ public class HumanPlayerTest {
      * @throws java.io.FileNotFoundException
      * @throws java.io.IOException
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+/*    public static void main(String[] args) throws FileNotFoundException, IOException {
            
             //Testing the readMoves() method
                 PrintStream psOut = null;
@@ -99,7 +98,7 @@ public class HumanPlayerTest {
                     j++;
                     dice = b.rollDice();
                 }
-            }
+            }*/
     }
     
 

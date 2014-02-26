@@ -80,7 +80,7 @@ public class Board {
         boardPins[16].setPin('W', 3);
         boardPins[11].setPin('W', 5);
         boardPins[12].setPin('B', 5);
-
+        
         whiteBar = 0;
         blackBar = 0;
         whiteOff = 0;
@@ -235,7 +235,7 @@ public class Board {
      * @return It returns 0 if everything went well, -1 otherwise.
      */
     public int makeMove(int source, int destination) {
-        int retVal;
+        int retVal = -1;
         //from black bar
         if (source == BLACK_BAR) {
             retVal = moveFromBlackBar(destination);
@@ -248,14 +248,22 @@ public class Board {
             retVal = -1;
         } //to white off
         else if (destination == WHITE_OFF) {
-            whiteOff++;
-            boardPins[source].setPin('W', (boardPins[source].countCheckers() - 1));
-            retVal = 0;
+            if (checkBearOff('W')) {
+                whiteOff++;
+                boardPins[source].setPin('W', (boardPins[source].countCheckers() - 1));
+                retVal = 0;
+            } else {
+                System.out.println("You cannot bear off yet!");
+            }
         } //to black off
         else if (destination == BLACK_OFF) {
-            blackOff++;
-            boardPins[source].setPin('B', (boardPins[source].countCheckers() - 1));
-            retVal = 0;
+            if (checkBearOff('B')) {
+                blackOff++;
+                boardPins[source].setPin('B', (boardPins[source].countCheckers() - 1));
+                retVal = 0;
+            } else {
+                System.out.println("You cannot bear off yet!");
+            }
         } //same colour move or empty destination
         else if ((boardPins[source].getColour() == boardPins[destination].getColour()) || (boardPins[destination].isEmpty())) {
             boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].countCheckers() + 1));
@@ -276,7 +284,30 @@ public class Board {
         	System.out.println("Invalid Move");
         	retVal = -1;
         }
+        if ((whiteOff == 15) || (blackOff == 15)) {
+            String result = null;
+            char opposingPlayer;
+            if (getTurn() == 'W') opposingPlayer = 'B';
+            else opposingPlayer = 'W';
+            result = getResult(opposingPlayer);
+            System.out.println("You have won. Result: "+result);
+        }
         return retVal;
+    }
+    
+    private String getResult (char opposingPlayer) {
+        int lastCheckerLocation = lastChecker(opposingPlayer);
+        String result;
+        if (opposingPlayer == 'W') {
+            if (lastCheckerLocation >= 17) result = "Single";
+            else if (lastCheckerLocation >= 6) result = "Gammon";
+            else result = "Backgammon";
+        } else {
+            if ((lastCheckerLocation <= 5) || (lastCheckerLocation == BLACK_BAR)) result = "Single";
+            else if (lastCheckerLocation <= 16) result = "Gammon";
+            else result = "Backgammon";
+        }
+        return result;
     }
     
     /**
@@ -315,51 +346,57 @@ public class Board {
         }
         return diceRoll;
     }
-
+   
     /**
-     * Checks if the white player is able to bear off
-     * <p>
-     * This method checks if the white player is allowed to bear off be checking if all the white pieces are in the home board.
-     * <p>
-     * @return Returns true if all the pieces are in the home board or false if not.
-     */
-    public boolean whiteCheckForBearOff() {
-        int count = 0;
-        for (int j = 18; j <= 23; j++) {
-            if (boardPins[j].getColour() == 'W') {
-                count = count + boardPins[j].countCheckers();
-            }
-        }
-        count = count + whiteOff;
-        return count == 15;
-    }
-    
-    /**
-     * Checks if the black player is able to bear off
-     * <p>
-     * This method checks if the black player is allowed to bear off be checking if all the black pieces are in the home board.
-     * <p>
-     * @return Returns true if all the pieces are in the home board or false if not.
-     */
-    public boolean blackCheckForBearOff() {
-        int count = 0;
-        for (int j = 0; j <= 5; j++) {
-            if (boardPins[j].getColour() == 'B') {
-                count = count + boardPins[j].countCheckers();
-            }
-        }
-        count = count + blackOff;
-        return count == 15;
-    }
-    
-    /**
-     * Decides whether to use whiteCheckForBearOff() or blackCheckForBearOff()
+     * Checks if a player can bear off or not
      * @param player
-     * @return Returns the result of whiteCheckForBearOff() or blackCheckForBearOff()
+     * @return Returns true if a player can bear off, false if not
      */
     public boolean checkBearOff(char player){
-        if (player == 'W') return whiteCheckForBearOff();
-        else return blackCheckForBearOff();
+        /*if (player == 'W') return whiteCheckForBearOff();
+        else return blackCheckForBearOff();*/
+        boolean ableToBearOff = false;
+        int lastCheckerLocation = lastChecker(player);
+        if ((player == 'W') && (lastCheckerLocation >= 17) && (lastCheckerLocation <= 23)) {
+            ableToBearOff = true;
+        } else if ((player == 'B') && (lastCheckerLocation <= 5) && (lastCheckerLocation >= 0)) {
+            ableToBearOff = true;
+        }
+        return ableToBearOff;
+    }
+    
+    /**
+     * Figures out where a player's last (furthest from home) checker is
+     * @param player
+     * @return Returns the location of the player's last checker
+     */
+    private int lastChecker (char player) {
+        int locationOfLastChecker = -1;
+        if (player == 'W') {
+            if (whiteBar > 0) {
+                locationOfLastChecker = WHITE_BAR;
+            } else {
+                int i=0;
+                while ((i <= 23) && (boardPins[i].getColour() != 'W')) {
+                    i++;
+                }
+                locationOfLastChecker = i;
+            }
+        } else if (player == 'B') {
+            if (blackBar > 0) {
+                locationOfLastChecker = BLACK_BAR;
+            } else {
+                int i=23;
+                while ((i >= 0) && (boardPins[i].getColour() != 'W')) {
+                    i--;
+                }
+                locationOfLastChecker = i;
+            }
+            
+        } else {
+            System.out.println("Error, this is not a player");
+        }
+        return locationOfLastChecker;
     }
     
     /**
