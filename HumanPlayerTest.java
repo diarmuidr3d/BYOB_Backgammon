@@ -3,7 +3,7 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-packag backgammon;
+package backgammon;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

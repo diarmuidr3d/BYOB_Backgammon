@@ -3,9 +3,7 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-
-
-
+package backgammon;
 /**
  *
  * @author BYOB
