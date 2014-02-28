@@ -150,12 +150,23 @@ public class Board {
      * and printBottomOfBoard() to create the strings for the top and bottom of
      * the board respectively.
      */
-    public void printBoard() {
-        System.out.println("\n\n13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
-        System.out.println(printTopOfBoard());
-        System.out.println("\n");
-        System.out.println(printBottomOfBoard());
-        System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF\n\n");
+     public void printBoard() {
+    	    if(this.getTurn()=='W'){
+       		    System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+       	     System.out.println(printTopOfBoard());
+       	     System.out.println("\n");
+       	     System.out.println(printBottomOfBoard());
+       	     System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
+       	     System.out.println("\n\n");
+    	    }
+    	    else{
+           		System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
+           		System.out.println(printBottomOfBoard());
+           		System.out.println("\n");
+           		System.out.println(printTopOfBoard());
+           		System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+           		System.out.println("\n\n");
+        }
     }
 
     /**
