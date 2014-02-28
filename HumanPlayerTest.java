@@ -20,12 +20,7 @@ import java.util.Scanner;
  */
 public class HumanPlayerTest {
 
-    /**
-     * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-
+    public static void readMovesTest() throws FileNotFoundException, IOException {
         //Testing the readMoves() method
         PrintStream psOut = null;
         PrintStream stdOut = System.out;
@@ -85,13 +80,20 @@ public class HumanPlayerTest {
             System.out.println("readMoves(): Test Passed!");
         }
 
-        //end of the readMoves() method test
+        //end of the readMoves() method test        
+    }
+    
+    public static void playerMovesTest() throws IOException {
         /*allows you to continuely loop and make moves*/
+        Board b = new Board();
+        HumanPlayer p = new HumanPlayer();
+        Dice d = new Dice();
+        b.setBoard();
         b.setTurn('W');
 
-        int[] diceRoll = b.rollDice();
-        for ( i = 0; i < 2; i++) {
-            System.out.println("The " + i + " Di gave: " + diceRoll[i]);
+        d.rollDice();
+        for (int j = 0; j < 2; j++) {
+            System.out.println("The " + j + " Di gave: " + d.valueAt(j));
         }
         System.out.println("\nFor Testing purposes it is easiest to test in this order:");
         System.out.println("(1)enter to many moves");
@@ -101,68 +103,76 @@ public class HumanPlayerTest {
         System.out.println("(5)enter one valid and one invalid move (do 1-5 1-1)\n");
         System.out.println("(6)move 19-1");
         b.printBoard();
-        p.playerMove(b, diceRoll);
+        p.playerMove(b, d);
         b.printBoard();
         System.out.println("(7)Don't pass turn");
         /*checks the passTurn method*/
 
-        diceRoll = b.rollDice();
-        for (i = 0; i < 2; i++) {
-            System.out.println("The " + i + " Di gave: " + diceRoll[i]);
+        d.rollDice();
+        for (int j = 0; j < 2; j++) {
+            System.out.println("The " + j + " Di gave: " + d.valueAt(j));
         }
         System.out.println("\nIf you have followed the steps up to now please continue with steps:");
         System.out.println("checkers will move in opposite direction if it's blacks turn");
         System.out.println("(8)move 24-4 to take a white onto the bar");
         System.out.println("(9)move 6-6 to bear off with black\n");
-        p.playerMove(b, diceRoll);
+        p.playerMove(b, d);
         b.printBoard();
 
         System.out.println("(10)Don't pass turn");
         
-        diceRoll = b.rollDice();
-        for (i = 0; i < 2; i++) {
-            System.out.println("The " + i + " Di gave: " + diceRoll[i]);
+        d.rollDice();
+        for (int j = 0; j < 2; j++) {
+            System.out.println("The " + j + " Di gave: " + d.valueAt(j));
         }
         System.out.println("\n(11)to move from the white bar enter 25-3");
         System.out.println("(12)move 17-3 to take a black onto the bar\n");
-        p.playerMove(b, diceRoll);
+        p.playerMove(b, d);
         b.printBoard();
 
         System.out.println("(13)Don't pass turn");
         
-        diceRoll = b.rollDice();
-        for (i = 0; i < 2; i++) {
-            System.out.println("The " + i + " Di gave: " + diceRoll[i]);
+        d.rollDice();
+        for (int j = 0; j < 2; j++) {
+            System.out.println("The " + j + " Di gave: " + d.valueAt(j));
         }
         System.out.println("\n(14)to move from the black bar enter 25-3");
         System.out.println("(15) enter 13-2\n");
-        p.playerMove(b, diceRoll);
+        p.playerMove(b, d);
         b.printBoard();
 
         System.out.println("(16)Don't pass turn");
         
-        diceRoll = b.rollDice();
-        for (i = 0; i < 2; i++) {
-            System.out.println("The " + i + " Di gave: " + diceRoll[i]);
+        d.rollDice();
+        for (int j = 0; j < 2; j++) {
+            System.out.println("The " + j + " Di gave: " + d.valueAt(j));
         }
         System.out.println("\n(17)Finally move 19-6 to bear off with white and enter some other move\n");
-        p.playerMove(b, diceRoll);
+        p.playerMove(b, d);
         b.printBoard();
 
         System.out.println("\nProgram now enters a loop where it keeps going turn by turn until you choose to quit");
         System.out.println("You can test out the quitGame() methos and passTurn() methods effectively here\n");
-        int j = 0;
-        while (j == 0) {
+        int k = 0;
+        while (k == 0) {
             
-            diceRoll = b.rollDice();
-            for (i = 0; i < 2; i++) {
-                System.out.println("The " + i + " Di gave: " + diceRoll[i]);
+            d.rollDice();
+            for (int j = 0; j < 2; j++) {
+                System.out.println("The " + j + " Di gave: " + d.valueAt(j));
             }
-            p.playerMove(b, diceRoll);
+            p.playerMove(b, d);
             b.printBoard();
             /*checks the quit game method*/
             
         }
+    }
+    /**
+     * @param args the command line arguments
+     * @throws java.io.FileNotFoundException
+     */
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        //readMovesTest();
+        playerMovesTest();
     }
 }
 

@@ -33,57 +33,54 @@ public class BgTwoPlayers {
      * rolls the dice for each player and set's the next turn for whichever
      * player receives the higher score.
      * <p>
-     * @return Returns the rolled dice
+     * @param d is the dice
      */
-    public int[] firstPlay() {
-        int[] diceRoll = board.rollDice();
+    public void firstPlay(Dice d) {
+        d.rollDice();
         boolean endFirstPlay = false;
 
         while (!endFirstPlay) {
-            if (diceRoll[0] > diceRoll[1]) {
+            if (d.getFirstDice() > d.getSecondDice()) {
                 board.setTurn('W');
                 endFirstPlay = true;
-            } else if (diceRoll[0] < diceRoll[1]) {
+            } else if (d.getFirstDice() < d.getSecondDice()) {
                 board.setTurn('B');
                 endFirstPlay = true;
             } else {
-                diceRoll = board.rollDice();
+                d.rollDice();
             }
         }
-        return diceRoll;
     }
 
     public char game() throws IOException {
-        int[] diceRoll;
+        Dice d = new Dice();
         boolean finishedGame = false;
         boolean endTurn;
         char winner = 'N';
 
         while (playCount == 0) {
-            diceRoll = firstPlay();
+            firstPlay(d);
             board.printBoard();
             if (board.getTurn() == 'W') {
-                if (whitePlayer.playerMove(board, diceRoll) != -1) {
+                if (whitePlayer.playerMove(board, d) != -1) {
                     playCount++;
                 }
             } else {
 
-                if (blackPlayer.playerMove(board, diceRoll) != -1) {
+                if (blackPlayer.playerMove(board, d) != -1) {
                     playCount++;
                 }
             }
         }
 
         while (!finishedGame) {
-
             switch (board.getTurn()) {
-
                 case ('W'):
                     endTurn = false;
-                    diceRoll = board.rollDice();
+                    d.rollDice();
                     do {
                         board.printBoard();
-                        if (whitePlayer.playerMove(board, diceRoll) != -1) {
+                        if (whitePlayer.playerMove(board, d) != -1) {
                             endTurn = true;
                             playCount++;
                         }
@@ -96,10 +93,10 @@ public class BgTwoPlayers {
 
                 case ('B'):
                     endTurn = false;
-                    diceRoll = board.rollDice();
+                    d.rollDice();
                     do {
                         board.printBoard();
-                        if (blackPlayer.playerMove(board, diceRoll) != -1) {
+                        if (blackPlayer.playerMove(board, d) != -1) {
                             endTurn = true;
                             playCount++;
                         }

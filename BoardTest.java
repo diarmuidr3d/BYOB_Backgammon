@@ -67,12 +67,5 @@ public class BoardTest {
 		System.out.println("checks if resets Board");
 		b.setBoard();
 		b.printBoard();
-
-		int a[];
-		System.out.println("checks rollDice method");
-		a = b.rollDice();
-		for(int i=0;i<2;i++) {
-		System.out.println("Dice"+(i+1)+" "+a[i]);
-		}
 	}
 }

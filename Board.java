@@ -5,13 +5,11 @@
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 package backgammon;
-import java.util.Random;
 /**
  *
  * @author BYOB
  */
 public class Board {
-
     Point[] boardPins = new Point[24]; // 0-23 pins are the actual pins. Setting refers to: http://en.wikipedia.org/wiki/File:Bg-movement.svg
     /* Counters for the bar and the off */
     int whiteBar;
@@ -175,13 +173,13 @@ public class Board {
      * <p>
      * @return Returns an int array a[2] containing the two random numbers.
      */
-    public int[] rollDice() {
+ /*   public int[] rollDice() {
         int[] a = new int[2];
         Random randomGenerator = new Random();
         a[0] = randomGenerator.nextInt(6) + 1;
         a[1] = randomGenerator.nextInt(6) + 1;
         return a;
-    }
+    }*/
 
     /**
      * Makes the specified move from the black bar to a destination.
@@ -295,7 +293,7 @@ public class Board {
         	retVal = -1;
         }
         if ((whiteOff == 15) || (blackOff == 15)) {
-            String result = null;
+            String result;
             char opposingPlayer;
             if (getTurn() == 'W') opposingPlayer = 'B';
             else opposingPlayer = 'W';
@@ -392,7 +390,7 @@ public class Board {
      * @param diceRoll
      * @return Returns true if a double was rolled, false if not
      */
-    public boolean isADoubleRoll(int[] diceRoll){
+   /* public boolean isADoubleRoll(int[] diceRoll){
         return diceRoll[0] == diceRoll[1];
-    }
+    }*/
 }

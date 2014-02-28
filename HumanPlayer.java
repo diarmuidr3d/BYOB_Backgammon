@@ -111,16 +111,16 @@ public class HumanPlayer {
      * This function facilitates the player's move.
      * <p>
      * This function calls readMoves() to get the player's moves.
-     * It gets the diceroll and if it's a double it provides 4 moves, 2 moves if not.
+     * It gets the dice roll and if it's a double it provides 4 moves, 2 moves if not.
      * It provides moves for the different players ('B' and 'W')
      * </p>
      * @param b is the board
-     * @param diceRoll is the rolled dice
+     * @param d is the dice
      * @return Returns -1 if unsuccessful, 0 if successful
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public int playerMove(Board b, int[] diceRoll) throws FileNotFoundException, IOException {
+    public int playerMove(Board b, Dice d) throws FileNotFoundException, IOException {
         int retVal = -1;
         int movesCounter;
 
@@ -132,14 +132,14 @@ public class HumanPlayer {
                 System.out.println("It's Black's turn");
                 break;
         }
-        if (b.isADoubleRoll(diceRoll)) {
+        if (d.isDoubleRoll()) {
             movesCounter = 4;
-            System.out.println("Double " + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
+            System.out.println("Double " + d.getFirstDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
             
         } else {
 
             movesCounter = 2;
-            System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");  
+            System.out.println("You got " + d.getFirstDice() + "," + d.getSecondDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");  
         }
         while (movesCounter > 0) {
  
