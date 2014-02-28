@@ -12,7 +12,17 @@ import java.util.Scanner;
  * @author BYOB
  */
 public class HumanPlayer {
+    
+    private char playerColour;
 
+    public HumanPlayer(){
+        
+    }
+    
+    public void setPlayerColour(char c){
+        playerColour = c;
+    }
+    
     /**
      * It reads one, two, three or four moves from the input and returns them in an
      * array. The function tolerates some mistakes.
@@ -43,7 +53,7 @@ public class HumanPlayer {
             } else if ( (inputMoves.equals("q")) || (inputMoves.equals("Q")) ) {
                 System.out.println("Thanks for playing");
                 System.exit(0);
-            } else if (!inputMoves.matches("(([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1})\\s+){0,3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-9]([0-9]{0,1}))")) {
+            } else if (!inputMoves.matches("(([1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-6]\\s+){0,3}[1-9]([0-9]{0,1})(\\s)*-(\\s)*[1-6])")) {
                 System.out.println("Invalid: " + inputMoves);
             } else {
                 validMoveFound = true;
@@ -132,10 +142,7 @@ public class HumanPlayer {
             System.out.println("You got " + diceRoll[0] + "," + diceRoll[1] + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");  
         }
         while (movesCounter > 0) {
-           /* this.quitGame();
-            if (this.passTurn(b) == 1) {
-                break;
-            }*/
+ 
             int[][] moves = readMoves(b);
             if (moves == null) {
                 movesCounter = 0;

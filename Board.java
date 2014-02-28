@@ -150,23 +150,12 @@ public class Board {
      * and printBottomOfBoard() to create the strings for the top and bottom of
      * the board respectively.
      */
-     public void printBoard() {
-    	    if(this.getTurn()=='W'){
-       		    System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
-       	     System.out.println(printTopOfBoard());
-       	     System.out.println("\n");
-       	     System.out.println(printBottomOfBoard());
-       	     System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
-       	     System.out.println("\n\n");
-    	    }
-    	    else{
-           		System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
-           		System.out.println(printBottomOfBoard());
-           		System.out.println("\n");
-           		System.out.println(printTopOfBoard());
-           		System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
-           		System.out.println("\n\n");
-        }
+    public void printBoard() {
+        System.out.println("\n\n13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+        System.out.println(printTopOfBoard());
+        System.out.println("\n");
+        System.out.println(printBottomOfBoard());
+        System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF\n\n");
     }
 
     /**
@@ -327,35 +316,13 @@ public class Board {
      * @return Returns the colour ('B' or 'W') of the pieces on a Point
      */
     public char getColour(int position){
-        return boardPins[position].getColour();
-    }
-
-    /**
-     * Decides which player goes first
-     * <p>
-     * This method decides which player goes first at the start of the game. 
-     * It rolls the dice for each player and set's the next turn for whichever player receives the higher score.
-     * <p>
-     * @return Returns the rolled dice
-     */
-    public int[] firstPlay() {
-        int[] diceRoll = rollDice();
-        boolean endFirstPlay = false;
-
-        while(!endFirstPlay){
-            if(diceRoll[0] > diceRoll[1]){
-                this.setTurn('W');
-                endFirstPlay = true;
-            } 
-            else if(diceRoll[0] < diceRoll[1]){
-                this.setTurn('B');
-                endFirstPlay = true;
-            }
-            else{
-            	diceRoll = rollDice();
-            }
-        }
-        return diceRoll;
+        char c;
+        
+        if (position == WHITE_BAR || position == WHITE_OFF ) c = 'W';
+        else if (position == BLACK_BAR || position == BLACK_OFF ) c = 'B';
+        else c = boardPins[position].getColour();
+        
+        return c;
     }
    
     /**
