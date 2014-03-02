@@ -19,14 +19,25 @@ public class Dice {
     private boolean checkedDice1, checkedDice2, checkedDice3, checkedDice4;
     private Random randomGenerator = new Random();
     
+    /**
+     * Gives the value of the first dice
+     * @return dice1 The integer value of one of two dice rolled
+     */
     public int getFirstDice() {
         return dice1;
     }
     
+    /**
+     * Gives the value of the second dice.
+     * @return dice1 The integer value of one of two dice rolled.
+     */
     public int getSecondDice() {
         return dice2;
     }
     
+    /**
+     * Rolls the dice and sets the checks for isMatchFor() to false.
+     */
     public void rollDice() {
         dice1 = randomGenerator.nextInt(6) +1;
         dice2 = randomGenerator.nextInt(6) +1;
@@ -34,19 +45,36 @@ public class Dice {
         checkedDice2 = false;
     }
     
+    /**
+     * Checks if the dice was a double roll.
+     * @return true if the dice are equal, false if not
+     */
     public boolean isDoubleRoll() {
         return dice1 == dice2;
     }
     
+    /**
+     * Returns the value of a particular dice
+     * <p> This is simply for ease of use in loops. </p>
+     * @param index is which dice is wanted.
+     * @return retVal: the value of the dice
+     */
     public int valueAt(int index) {
         int retVal = -1;
         if (index > 4) throw new OutOfBoundsException();
         if (index == 1) retVal = dice1;
         else if (index == 2) retVal = dice2;
-        else if (index > 2) retVal = dice1;
+        else if ((index > 2) && (isDoubleRoll())) retVal = dice1;
         return retVal;
     }
     
+    /**
+     * Checks if the move has a matching dice
+     * <p> If the move has a matching dice it is marked as checked.
+     * If a dice has been checked already it is not used.</p>
+     * @param move an array in which move[0] is the source and move[1] is the destination
+     * @return retVal: true if there is an unchecked dice for that move, false if not
+     */
     public boolean isMatchFor(int[] move) {
         boolean retVal = false;
         if (!isDoubleRoll()) {

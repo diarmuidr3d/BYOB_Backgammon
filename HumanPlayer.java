@@ -149,12 +149,12 @@ public class HumanPlayer {
             }
             if ((moves != null) && (moves.length <= movesCounter)) {
                 for (int[] move : moves) {
-                    if (b.getColour(move[0]) == b.getTurn()) {
-                        int tmp1 = move[0] + 1;
-                        int tmp2 = move[1] + 1;
-                        System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
-                        retVal = 0;
+                    if ((b.getColour(move[0]) == b.getTurn()) && d.isMatchFor(move)) {
                         if (b.makeMove(move[0], move[1]) != -1) {
+                            int tmp1 = move[0] + 1;
+                            int tmp2 = move[1] + 1;
+                            retVal = 0;
+                            System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
                             movesCounter--;
                         }
                     }
