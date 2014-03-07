@@ -19,7 +19,7 @@ public class BgTwoPlayers {
 
     public BgTwoPlayers() {
         board = new Board();
-        board.setBoard();
+        board.setBoardTestBO();
         blackPlayer = new HumanPlayer();
         blackPlayer.setPlayerColour('B');
         whitePlayer = new HumanPlayer();

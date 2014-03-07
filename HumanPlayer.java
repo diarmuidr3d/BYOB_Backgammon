@@ -123,7 +123,7 @@ public class HumanPlayer {
     public int playerMove(Board b, Dice d) throws FileNotFoundException, IOException {
         int retVal = -1;
         int movesCounter;
-
+        int dieUsed = -1;
         switch (b.getTurn()) {
             case 'W':
                 System.out.println("It's White's turn");
@@ -135,33 +135,41 @@ public class HumanPlayer {
         if (d.isDoubleRoll()) {
             movesCounter = 4;
             System.out.println("Double " + d.getFirstDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
-            
         } else {
-
             movesCounter = 2;
             System.out.println("You got " + d.getFirstDice() + "," + d.getSecondDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");  
         }
         while (movesCounter > 0) {
- 
             int[][] moves = readMoves(b);
             if (moves == null) {
                 movesCounter = 0;
             }
             if ((moves != null) && (moves.length <= movesCounter)) {
                 for (int[] move : moves) {
-                    if ((b.getColour(move[0]) == b.getTurn()) && d.isMatchFor(move)) {
-                        if (b.makeMove(move[0], move[1]) != -1) {
-                            int tmp1 = move[0] + 1;
-                            int tmp2 = move[1] + 1;
-                            retVal = 0;
-                            System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
-                            movesCounter--;
+                    if ((b.getColour(move[0]) == b.getTurn()) && ((dieUsed = d.isMatchFor(move)) > 0)) {
+                        if ((b.getBar(b.getTurn()) == 0) || (b.getBar(b.getTurn()) > 0 && (move[0] == Board.WHITE_BAR || move[0] == Board.BLACK_BAR))) {
+                            if (b.makeMove(move[0], move[1]) != -1) {
+                                int tmp1 = move[0] + 1;
+                                int tmp2 = move[1] + 1;
+                                retVal = 0;
+                                System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
+                                movesCounter--;
+                            } else {
+                                System.out.println("Move unsuccessful");
+                                d.resetDieCheck(dieUsed);
+                            }
+                        } else {
+                            System.out.println("Empty the bar first!");
+                            d.resetDieCheck(dieUsed);
                         }
-                    }
-                    else {
-                        System.out.println("Oops, wrong colour!");
+                    } else {
+                        System.out.println("Oops, wrong colour or dice!");
+                        d.resetDieCheck(dieUsed);
                     }
                 }
+            } else {
+                System.out.println("No moves or too many moves!");
+                d.resetDieCheck(dieUsed);
             }
         }
         if (b.getTurn() == 'B') {

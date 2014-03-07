@@ -84,6 +84,24 @@ public class Board {
         whiteOff = 0;
         blackOff = 0;
     }
+    
+        public void setBoardTestBO() {
+        for (int j = 0; j < 24; j++) {
+            boardPins[j].setPin(' ', 0);
+        }
+        boardPins[23].setPin('W', 2);
+        boardPins[5].setPin('B', 5);
+        boardPins[19].setPin('W', 5);
+        boardPins[7].setPin('B', 3);
+        boardPins[20].setPin('W', 3);
+        boardPins[22].setPin('W', 5);
+        boardPins[12].setPin('B', 5);
+        
+        whiteBar = 0;
+        blackBar = 0;
+        whiteOff = 0;
+        blackOff = 0;
+    }
 
     private String printTopOfBoard() {
         String topofboard = "";
@@ -339,8 +357,6 @@ public class Board {
      * @return Returns true if a player can bear off, false if not
      */
     public boolean checkBearOff(char player){
-        /*if (player == 'W') return whiteCheckForBearOff();
-        else return blackCheckForBearOff();*/
         boolean ableToBearOff = false;
         int lastCheckerLocation = lastChecker(player);
         if ((player == 'W') && (lastCheckerLocation >= 17) && (lastCheckerLocation <= 23)) {
@@ -356,7 +372,7 @@ public class Board {
      * @param player
      * @return Returns the location of the player's last checker
      */
-    private int lastChecker (char player) {
+    public int lastChecker (char player) {
         int locationOfLastChecker = -1;
         if (player == 'W') {
             if (whiteBar > 0) {
@@ -386,11 +402,14 @@ public class Board {
     }
     
     /**
-     * Checks if the player rolled a double
-     * @param diceRoll
-     * @return Returns true if a double was rolled, false if not
+     * Returns the number of checkers on the specified bar
+     * @param p is the player
+     * @return retVal: the number of checkers on the p bar or -1 if wrong player input
      */
-   /* public boolean isADoubleRoll(int[] diceRoll){
-        return diceRoll[0] == diceRoll[1];
-    }*/
+    public int getBar (char p) {
+        int retVal = -1;
+        if (p == 'W') retVal = whiteBar;
+        else if (p == 'B') retVal = blackBar;
+        return retVal;
+    }
 }
