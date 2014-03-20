@@ -19,7 +19,7 @@ public class BgTwoPlayers {
 
     public BgTwoPlayers() {
         board = new Board();
-        board.setBoard();
+        board.setBoardTestBO();
         blackPlayer = new HumanPlayer();
         blackPlayer.setPlayerColour('B');
         whitePlayer = new HumanPlayer();
@@ -51,7 +51,14 @@ public class BgTwoPlayers {
             }
         }
     }
-
+/**
+     * It starts a new game between two human players and manage it.
+     * <p>
+     * Manage the first turn and the following ones. Count the number of turns.
+     * <p>
+     * @return It the returns the winner of the game.
+     * @throws java.io.IOException
+     */
     public char game() throws IOException {
         Dice d = new Dice();
         boolean finishedGame = false;
