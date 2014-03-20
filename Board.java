@@ -394,7 +394,7 @@ public class Board {
                 locationOfLastChecker = BLACK_BAR;
             } else {
                 int i=23;
-                while ((i >= 0) && (boardPins[i].getColour() != 'W')) {
+                while ((i >= 0) && (boardPins[i].getColour() != 'B')) {
                     i--;
                 }
                 locationOfLastChecker = i;
