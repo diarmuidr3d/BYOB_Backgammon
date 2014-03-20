@@ -186,20 +186,6 @@ public class Board {
            		System.out.println("\n\n");
         }
     }
-    /**
-     * Rolls the dice. (1)
-     * <p>
-     * The method generates two random numbers when called.
-     * <p>
-     * @return Returns an int array a[2] containing the two random numbers.
-     */
- /*   public int[] rollDice() {
-        int[] a = new int[2];
-        Random randomGenerator = new Random();
-        a[0] = randomGenerator.nextInt(6) + 1;
-        a[1] = randomGenerator.nextInt(6) + 1;
-        return a;
-    }*/
 
     /**
      * Makes the specified move from the black bar to a destination.
@@ -323,6 +309,11 @@ public class Board {
         return retVal;
     }
     
+    /**
+     * Gives the score of the game
+     * @param opposingPlayer is the loser of the game
+     * @return a string with the result (Single, Gammon or Backgammon)
+     */
     private String getResult (char opposingPlayer) {
         int lastCheckerLocation = lastChecker(opposingPlayer);
         String result;
