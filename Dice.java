@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * COMP20050 - Software Engineering Project 2 - 2014
+ * Team: BYOB
+ * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 
 package backgammon;
@@ -75,9 +75,10 @@ public class Dice {
      * <p> If the move has a matching dice it is marked as checked.
      * If a dice has been checked already it is not used.</p>
      * @param move an array in which move[0] is the source and move[1] is the destination
+     * @param b is the board
      * @return retVal: true if there is an unchecked dice for that move, false if not
      */
-    public int isMatchFor(int[] move) {
+    public int isMatchFor(int[] move, Board b) {
         int retVal = -1;
         if (move[0] == Board.BLACK_BAR) {
             move[0] = 24;
@@ -86,19 +87,30 @@ public class Dice {
         }
         if (move[1] == Board.BLACK_OFF) {
             move[1] = -1;
-            
         } else if (move[1] == Board.WHITE_OFF) {
             move[1] = 24;
-        } else if (!isDoubleRoll()) {
-            if ((abs(move[0] - move[1]) == dice1) && (!checkedDice1)) {
-                checkedDice1 = true;
-                retVal = 1;
+        } 
+        if (!isDoubleRoll()) {
+            if ((b.lastChecker(b.getTurn()) == move[0]) && (move[1] == -1 || move[1] == 24)) {
+                if ((abs(move[0] - move[1]) <= dice1) && (!checkedDice1)) {
+                    checkedDice1 = true;
+                    retVal = 1;
+                }
+                else if ((abs(move[0] - move[1]) <= dice2) && (!checkedDice2)) {
+                    checkedDice2 = true;
+                    retVal = 2;
+                }
+            } else {
+                if (((abs(move[0] - move[1]) == dice1) && (!checkedDice1))) {
+                    checkedDice1 = true;
+                    retVal = 1;
+                }
+                else if ((abs(move[0] - move[1]) == dice2) && (!checkedDice2)) {
+                    checkedDice2 = true;
+                    retVal = 2;
+                }
             }
-            else if ((abs(move[0] - move[1]) == dice2) && (!checkedDice2)) {
-                checkedDice2 = true;
-                retVal = 2;
-            }
-        } else if (abs(move[0] - move[1]) == dice1){
+        } else if (((abs(move[0] - move[1]) <= dice1) && (b.lastChecker(b.getTurn()) == move[0]) && (move[1] == -1 || move[1] == 24)) || (abs(move[0] - move[1]) == dice1)){
             if (!checkedDice1) {
                 retVal = 1;
                 checkedDice1 = true;

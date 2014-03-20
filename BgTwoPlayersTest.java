@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Stefano
+ * @author BYOB
  */
 public class BgTwoPlayersTest {
 

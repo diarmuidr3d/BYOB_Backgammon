@@ -78,14 +78,16 @@ public class Board {
         boardPins[16].setPin('W', 3);
         boardPins[11].setPin('W', 5);
         boardPins[12].setPin('B', 5);
-        
         whiteBar = 0;
         blackBar = 0;
         whiteOff = 0;
         blackOff = 0;
     }
     
-        public void setBoardTestBO() {
+    /**
+     * Useful for jumping to bear off stages / other stages of a game for testing!
+     */
+    public void setBoardTestBO() {
         for (int j = 0; j < 24; j++) {
             boardPins[j].setPin(' ', 0);
         }

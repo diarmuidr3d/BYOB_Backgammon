@@ -19,6 +19,10 @@ public class HumanPlayer {
         
     }
     
+    /**
+     * Sets the player colour
+     * @param c  is the colour to be set
+     */
     public void setPlayerColour(char c){
         playerColour = c;
     }
@@ -146,25 +150,29 @@ public class HumanPlayer {
             }
             if ((moves != null) && (moves.length <= movesCounter)) {
                 for (int[] move : moves) {
-                    if ((b.getColour(move[0]) == b.getTurn()) && ((dieUsed = d.isMatchFor(move)) > 0)) {
-                        if ((b.getBar(b.getTurn()) == 0) || (b.getBar(b.getTurn()) > 0 && (move[0] == Board.WHITE_BAR || move[0] == Board.BLACK_BAR))) {
-                            if (b.makeMove(move[0], move[1]) != -1) {
-                                int tmp1 = move[0] + 1;
-                                int tmp2 = move[1] + 1;
-                                retVal = 0;
-                                System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
-                                movesCounter--;
+                    if (b.getColour(move[0]) == b.getTurn()) {
+                        if ((dieUsed = d.isMatchFor(move, b)) > 0) {
+                            if ((b.getBar(b.getTurn()) == 0) || (b.getBar(b.getTurn()) > 0 && (move[0] == Board.WHITE_BAR || move[0] == Board.BLACK_BAR))) {
+                                if (b.makeMove(move[0], move[1]) != -1) {
+                                    int tmp1 = move[0] + 1;
+                                    int tmp2 = move[1] + 1;
+                                    retVal = 0;
+                                    System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
+                                    movesCounter--;
+                                } else {
+                                    System.out.println("Move unsuccessful");
+                                    d.resetDieCheck(dieUsed);
+                                }
                             } else {
-                                System.out.println("Move unsuccessful");
+                                System.out.println("Empty the bar first!");
                                 d.resetDieCheck(dieUsed);
                             }
                         } else {
-                            System.out.println("Empty the bar first!");
+                            System.out.println("Oops, wrong dice!");
                             d.resetDieCheck(dieUsed);
                         }
                     } else {
-                        System.out.println("Oops, wrong colour or dice!");
-                        d.resetDieCheck(dieUsed);
+                        System.out.println("Oops, wrong colour!");
                     }
                 }
             } else {
