@@ -251,11 +251,23 @@ public class Board {
     public int makeMove(int source, int destination) {
         int retVal = -1;
         //from black bar
-        if (source == BLACK_BAR) {
-            retVal = moveFromBlackBar(destination);
+        if(source == BLACK_BAR){
+        	if(blackBar>0){
+            	retVal = moveFromBlackBar(destination);
+        	}
+    		else{
+    			System.out.println("Nothing on the source pin");
+    			retVal = -1;
+    		}
         } //from white bar
-        else if (source == WHITE_BAR) {
-            retVal = moveFromWhiteBar(destination);
+        else if(source == WHITE_BAR){
+        	if(whiteBar>0){
+        		retVal = moveFromWhiteBar(destination);
+        	}
+        	else{
+        		System.out.println("Nothing on the source pin");
+        		retVal = -1;
+        	}
         } //empty source!
         else if (boardPins[source].countCheckers() == 0) {
             System.out.println("Nothing on the source pin");
