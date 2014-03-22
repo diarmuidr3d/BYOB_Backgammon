@@ -316,7 +316,15 @@ public class Board {
             if (getTurn() == 'W') opposingPlayer = 'B';
             else opposingPlayer = 'W';
             result = getResult(opposingPlayer);
-            System.out.println("You have won. Result: "+result);
+            if(getTurn() == 'W'){
+            	System.out.println("\nWhite has won");
+            }
+            else{
+            	System.out.println("\nBlack has won");
+            }
+            System.out.println("Result: "+result+"\n");
+            System.out.println("Thanks for playing\n");
+            System.exit(0);
         }
         return retVal;
     }
