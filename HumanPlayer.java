@@ -42,6 +42,7 @@ public class HumanPlayer {
         Scanner input;
         int[][] movesArray = null;
         int i, j;
+        int count = 0;
         boolean validMoveFound = false;
 
         String inputMoves;
@@ -76,6 +77,17 @@ public class HumanPlayer {
                         j++;
                     }
                     i++;
+                }
+                
+                count = 0;
+                for(i=0;i< movesArray.length; i++){
+                	if(movesArray[i][0]>25){
+                		count++;
+                    	validMoveFound = false;
+                    	if(count==1){
+                    		System.out.println("Invalid: " + inputMoves);
+                    	}
+                    }
                 }
             }
         }
