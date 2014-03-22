@@ -171,7 +171,17 @@ public class HumanPlayer {
                             System.out.println("Oops, wrong dice!");
                             d.resetDieCheck(dieUsed);
                         }
-                    } else {
+                    } 
+                    else if((b.whiteBar==0)&&(b.getTurn()=='W')&&(move[0]==25)){
+                    	System.out.println("Nothing on the source pin");
+                    }
+                    else if((b.blackBar==0)&&(b.getTurn()=='B')&&(move[0]==25)){
+                    	System.out.println("Nothing on the source pin");
+                    }
+                    else if(b.getColour(move[0])==' '){
+                    	System.out.println("Nothing on the source pin");
+                    }
+                    else {
                         System.out.println("Oops, wrong colour!");
                     }
                 }
