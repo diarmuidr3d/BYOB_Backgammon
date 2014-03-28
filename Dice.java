@@ -79,7 +79,7 @@ public class Dice {
      * @return retVal: true if there is an unchecked dice for that move, false if not
      */
     public int isMatchFor(int[] move, Board b) {
-        int retVal = -1;
+        int retVal = Board.WRONG_DIE;
         if (move[0] == Board.BLACK_BAR) {
             move[0] = 24;
         } else if (move [0] == Board.WHITE_BAR) {
