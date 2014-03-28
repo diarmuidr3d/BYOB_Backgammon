@@ -17,9 +17,11 @@ public class BgTwoPlayers {
     HumanPlayer blackPlayer, whitePlayer;
     int playCount = 0;
 
-    public BgTwoPlayers() {
+    public BgTwoPlayers(int test) {
         board = new Board();
-        board.setBoard();
+        if (test==0)
+            board.setBoard();
+        else board.setBoardTestBO();
         blackPlayer = new HumanPlayer();
         blackPlayer.setPlayerColour('B');
         whitePlayer = new HumanPlayer();
@@ -42,12 +44,16 @@ public class BgTwoPlayers {
         while (!endFirstPlay) {
             if (d.getFirstDice() > d.getSecondDice()) {
                 board.setTurn('W');
+                System.out.println("W: " + d.getFirstDice() + " B: " + d.getSecondDice() +" White starts!\n");
                 endFirstPlay = true;
             } else if (d.getFirstDice() < d.getSecondDice()) {
                 board.setTurn('B');
+                System.out.println("W: " + d.getFirstDice() + " B: " + d.getSecondDice() +" Black starts!\n");
                 endFirstPlay = true;
             } else {
+                System.out.println("W: " + d.getFirstDice() + " B: " + d.getSecondDice() +" Draw. Roll again!\n");
                 d.rollDice();
+               
             }
         }
     }
