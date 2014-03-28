@@ -140,6 +140,7 @@ public class HumanPlayer {
         int retVal = -1;
         int movesCounter;
         int dieUsed = -1;
+        int errCode;
         switch (b.getTurn()) {
             case 'W':
                 System.out.println("It's White's turn");
@@ -165,7 +166,7 @@ public class HumanPlayer {
                     if (b.getColour(move[0]) == b.getTurn()) {
                         if ((dieUsed = d.isMatchFor(move, b)) > 0) {
                             if ((b.getBar(b.getTurn()) == 0) || (b.getBar(b.getTurn()) > 0 && (move[0] == Board.WHITE_BAR || move[0] == Board.BLACK_BAR))) {
-                                if (b.makeMove(move[0], move[1]) != -1) {
+                                if ((errCode = b.makeMove(move[0], move[1])) >= 0) {
                                     int tmp1 = move[0] + 1;
                                     int tmp2 = move[1] + 1;
                                     retVal = 0;
@@ -174,31 +175,39 @@ public class HumanPlayer {
                                 } else {
                                     System.out.println("Move unsuccessful");
                                     d.resetDieCheck(dieUsed);
+                                    retVal = errCode;
                                 }
                             } else {
                                 System.out.println("Empty the bar first!");
                                 d.resetDieCheck(dieUsed);
+                                retVal = Board.EMPTY_BAR;
                             }
                         } else {
                             System.out.println("Oops, wrong dice!");
                             d.resetDieCheck(dieUsed);
+                            retVal = dieUsed;
                         }
                     } 
                     else if((b.whiteBar==0)&&(b.getTurn()=='W')&&(move[0]==25)){
                     	System.out.println("Nothing on the source pin");
+                        retVal = Board.EMPTY_POINT;
                     }
                     else if((b.blackBar==0)&&(b.getTurn()=='B')&&(move[0]==25)){
                     	System.out.println("Nothing on the source pin");
+                        retVal = Board.EMPTY_POINT;
                     }
                     else if(b.getColour(move[0])==' '){
                     	System.out.println("Nothing on the source pin");
+                        retVal = Board.EMPTY_POINT;
                     }
                     else {
                         System.out.println("Oops, wrong colour!");
+                        retVal = Board.INVALID_POINT;
                     }
                 }
             } else {
                 System.out.println("No moves or too many moves!");
+                retVal = Board.WRONG_DIE;
                 d.resetDieCheck(dieUsed);
             }
         }
