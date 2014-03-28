@@ -23,7 +23,7 @@ public class Point {
     * It returns the number of the checkers on a point.
     * @return the number of the checkers on a point.
     */   
-    public int countCheckers(){
+    public int getCheckers(){
         return checkersCounter;
     }
     /**
