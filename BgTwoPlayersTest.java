@@ -18,7 +18,7 @@ public class BgTwoPlayersTest {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        BgTwoPlayers table = new BgTwoPlayers();
+        BgTwoPlayers table = new BgTwoPlayers(1);
         
         table.game();
         
