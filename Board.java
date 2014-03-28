@@ -1,4 +1,3 @@
-/*
  /*
  * COMP20050 - Software Engineering Project 2 - 2014
  * Team: BYOB
@@ -33,6 +32,47 @@ public class Board {
      * This constant represents the Black Bar.
      */
     public static final int BLACK_BAR = 27;
+    
+     /**
+     * This constant represents the Invalid Point error code.
+     */
+    public static final int INVALID_POINT = -101;
+        
+     /**
+     * This constant represents the Empty Point error code.
+     */
+    public static final int EMPTY_POINT = -102;
+        
+     /**
+     * This constant represents the Wrong Die error code.
+     */
+    public static final int WRONG_DIE = -103;
+    
+        
+     /**
+     * This constant represents the Blocked Point error code.
+     */
+    public static final int BLOCKED_POINT = -104;
+    
+        
+     /**
+     * This constant represents the can't bear off error code.
+     */
+    public static final int NO_BEAROFF = -105;
+    
+        
+     /**
+     * This constant represents the bear off with higher roll error code.
+     */
+    public static final int HIGHER_ROLL = -106;
+    
+        
+     /**
+     * This constant represents the empty the bar first error code.
+     */
+    public static final int EMPTY_BAR = -107;
+    
+    
 
     /**
      * Sets an empty board.
@@ -42,6 +82,22 @@ public class Board {
             boardPins[j] = new Point();
         }
     }
+    
+    @Override
+    public Board clone(){
+        
+        Board newBoard = new Board();
+        for (int j = 0; j < 24; j++) {
+            newBoard.boardPins[j].setPin(boardPins[j].getColour(), boardPins[j].getCheckers());
+        }
+       
+        newBoard.whiteBar = whiteBar;
+        newBoard.blackBar = blackBar;
+        newBoard.whiteOff = whiteOff;
+        newBoard.blackOff = blackOff;
+        return newBoard;
+        
+    }
     /**
      * Gets which player's turn it is.
      * @return Returns a capital character B (Black) or W (White) depending which player's turn it is
@@ -49,6 +105,7 @@ public class Board {
     public char getTurn() {
         return playerTurn;
     }
+    
     /**
      * Set's which player's turn it is
      * <p>
@@ -108,8 +165,8 @@ public class Board {
     private String printTopOfBoard() {
         String topofboard = "";
         for (int i = 12; i <= 17; i++) {
-            if (boardPins[i].countCheckers() > 0) {
-                topofboard = topofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+            if (boardPins[i].getCheckers() > 0) {
+                topofboard = topofboard + boardPins[i].getCheckers() + boardPins[i].getColour() + "  ";
             } else {
                 topofboard = topofboard + "|   ";
             }
@@ -120,8 +177,8 @@ public class Board {
             topofboard = topofboard + blackBar + "B  ";
         }
         for (int i = 18; i <= 23; i++) {
-            if (boardPins[i].countCheckers() > 0) {
-                topofboard = topofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+            if (boardPins[i].getCheckers() > 0) {
+                topofboard = topofboard + boardPins[i].getCheckers() + boardPins[i].getColour() + "  ";
             } else {
                 topofboard = topofboard + "|   ";
             }
@@ -137,8 +194,8 @@ public class Board {
     private String printBottomOfBoard() {
         String bottomofboard = "";
         for (int i = 11; i >= 6; i--) {
-            if (boardPins[i].countCheckers() > 0) {
-                bottomofboard = bottomofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+            if (boardPins[i].getCheckers() > 0) {
+                bottomofboard = bottomofboard + boardPins[i].getCheckers() + boardPins[i].getColour() + "  ";
             } else {
                 bottomofboard = bottomofboard + "|   ";
             }
@@ -149,8 +206,8 @@ public class Board {
             bottomofboard = bottomofboard + whiteBar + "W  ";
         }
         for (int i = 5; i >= 0; i--) {
-            if (boardPins[i].countCheckers() > 0) {
-                bottomofboard = bottomofboard + boardPins[i].countCheckers() + boardPins[i].getColour() + "  ";
+            if (boardPins[i].getCheckers() > 0) {
+                bottomofboard = bottomofboard + boardPins[i].getCheckers() + boardPins[i].getColour() + "  ";
             } else {
                 bottomofboard = bottomofboard + "|   ";
             }
@@ -197,16 +254,16 @@ public class Board {
         int retVal = 0;
         char b = 'B';
         char w = 'W';
-        if ((boardPins[destination].countCheckers() < 2) && (boardPins[destination].getColour() == w)) {
+        if ((boardPins[destination].getCheckers() < 2) && (boardPins[destination].getColour() == w)) {
             blackBar--;
             whiteBar++;
-            boardPins[destination].setPin(b, (boardPins[destination].countCheckers()));
+            boardPins[destination].setPin(b, (boardPins[destination].getCheckers()));
             retVal = 0;
         } else if ((boardPins[destination].getColour() == b) || (boardPins[destination].getColour() == ' ')) {
             blackBar--;
-            boardPins[destination].setPin(b, (boardPins[destination].countCheckers() + 1));
+            boardPins[destination].setPin(b, (boardPins[destination].getCheckers() + 1));
             retVal = 0;
-        } else if ((boardPins[destination].countCheckers() >= 2) && (boardPins[destination].getColour() == w)) {
+        } else if ((boardPins[destination].getCheckers() >= 2) && (boardPins[destination].getColour() == w)) {
             System.out.println("invalid Move");
             retVal = -1;
         }
@@ -224,16 +281,16 @@ public class Board {
         int retVal = 0;
         char b = 'B';
         char w = 'W';
-        if ((boardPins[destination].countCheckers() < 2) && (boardPins[destination].getColour() == b)) {
+        if ((boardPins[destination].getCheckers() < 2) && (boardPins[destination].getColour() == b)) {
             whiteBar--;
             blackBar++;
-            boardPins[destination].setPin(w, (boardPins[destination].countCheckers()));
+            boardPins[destination].setPin(w, (boardPins[destination].getCheckers()));
             retVal = 0;
         } else if ((boardPins[destination].getColour() == w) || (boardPins[destination].getColour() == ' ')) {
             whiteBar--;
-            boardPins[destination].setPin(w, (boardPins[destination].countCheckers() + 1));
+            boardPins[destination].setPin(w, (boardPins[destination].getCheckers() + 1));
             retVal = 0;
-        } else if ((boardPins[destination].countCheckers() >= 2) && (boardPins[destination].getColour() == b)) {
+        } else if ((boardPins[destination].getCheckers() >= 2) && (boardPins[destination].getColour() == b)) {
             System.out.println("invalid Move");
             retVal = -1;
         }
@@ -246,83 +303,86 @@ public class Board {
      * @param source It specifies the number of the source point in boardPins[]
      * @param destination It specifies the number of the destination in
      * boardPins[]
-     * @return It returns 0 if everything went well, -1 otherwise.
+     * @return It returns 0 if everything went well, an error code otherwise.
      */
     public int makeMove(int source, int destination) {
         int retVal = -1;
         //from black bar
-        if(source == BLACK_BAR){
-        	if(blackBar>0){
-            	retVal = moveFromBlackBar(destination);
-        	}
-    		else{
-    			System.out.println("Nothing on the source pin");
-    			retVal = -1;
-    		}
+        if (source == BLACK_BAR) {
+            if (blackBar > 0) {
+                retVal = moveFromBlackBar(destination);
+            } else {
+                System.out.println("Nothing on the source pin");
+                retVal = EMPTY_POINT;
+            }
         } //from white bar
-        else if(source == WHITE_BAR){
-        	if(whiteBar>0){
-        		retVal = moveFromWhiteBar(destination);
-        	}
-        	else{
-        		System.out.println("Nothing on the source pin");
-        		retVal = -1;
-        	}
+        else if (source == WHITE_BAR) {
+            if (whiteBar > 0) {
+                retVal = moveFromWhiteBar(destination);
+            } else {
+                System.out.println("Nothing on the source pin");
+                retVal = EMPTY_POINT;
+            }
         } //empty source!
-        else if (boardPins[source].countCheckers() == 0) {
+        else if (boardPins[source].getCheckers() == 0) {
             System.out.println("Nothing on the source pin");
-            retVal = -1;
+            retVal = EMPTY_POINT;
         } //to white off
         else if (destination == WHITE_OFF) {
             if (checkBearOff('W')) {
                 whiteOff++;
-                boardPins[source].setPin('W', (boardPins[source].countCheckers() - 1));
+                boardPins[source].setPin('W', (boardPins[source].getCheckers() - 1));
                 retVal = 0;
             } else {
                 System.out.println("You cannot bear off yet!");
+                retVal = NO_BEAROFF;
             }
         } //to black off
         else if (destination == BLACK_OFF) {
             if (checkBearOff('B')) {
                 blackOff++;
-                boardPins[source].setPin('B', (boardPins[source].countCheckers() - 1));
+                boardPins[source].setPin('B', (boardPins[source].getCheckers() - 1));
                 retVal = 0;
             } else {
                 System.out.println("You cannot bear off yet!");
+                retVal = NO_BEAROFF;
             }
         } //same colour move or empty destination
         else if ((boardPins[source].getColour() == boardPins[destination].getColour()) || (boardPins[destination].isEmpty())) {
-            boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].countCheckers() + 1));
-            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
+            boardPins[destination].setPin(boardPins[source].getColour(), (boardPins[destination].getCheckers() + 1));
+            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].getCheckers() - 1));
             retVal = 0;
         } //eating move
-        else if (boardPins[destination].countCheckers() == 1) {
+        else if (boardPins[destination].getCheckers() == 1) {
             if (boardPins[destination].getColour() == 'W') {
                 whiteBar++;
             } else if (boardPins[destination].getColour() == 'B') {
                 blackBar++;
             }
             boardPins[destination].setPin(boardPins[source].getColour(), 1);
-            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].countCheckers() - 1));
+            boardPins[source].setPin(boardPins[source].getColour(), (boardPins[source].getCheckers() - 1));
             retVal = 0;
+        } else {
+            System.out.println("Invalid Move");
+            if( boardPins[destination].getCheckers() > 1) retVal = BLOCKED_POINT; 
+            else retVal = INVALID_POINT;
         }
-        else{
-        	System.out.println("Invalid Move");
-        	retVal = -1;
-        }
+        /*end of the game*/
         if ((whiteOff == 15) || (blackOff == 15)) {
             String result;
             char opposingPlayer;
-            if (getTurn() == 'W') opposingPlayer = 'B';
-            else opposingPlayer = 'W';
+            if (getTurn() == 'W') {
+                opposingPlayer = 'B';
+            } else {
+                opposingPlayer = 'W';
+            }
             result = getResult(opposingPlayer);
-            if(getTurn() == 'W'){
-            	System.out.println("\nWhite has won");
+            if (getTurn() == 'W') {
+                System.out.println("\nWhite has won");
+            } else {
+                System.out.println("\nBlack has won");
             }
-            else{
-            	System.out.println("\nBlack has won");
-            }
-            System.out.println("Result: "+result+"\n");
+            System.out.println("Result: " + result + "\n");
             System.out.println("Thanks for playing\n");
             System.exit(0);
         }
@@ -423,6 +483,15 @@ public class Board {
         int retVal = -1;
         if (p == 'W') retVal = whiteBar;
         else if (p == 'B') retVal = blackBar;
+        return retVal;
+    }
+    
+    public int isValidMove(int move[], Dice d){
+        int retVal = -1;
+        Board tmpBoard = this.clone();
+        
+        
+        
         return retVal;
     }
 }
