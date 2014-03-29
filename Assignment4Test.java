@@ -3,28 +3,28 @@
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
-
 package backgammon;
-
-import java.io.IOException;
 
 /**
  *
  * @author BYOB
  */
-public class BgTwoPlayersTest {
+public class Assignment4Test {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-        BgTwoPlayers table = new BgTwoPlayers(1);
+    public static void main(String[] args) {
+        Board b = new Board();
+        b.setBoard();
         
-        table.game();
+        Board newBoard = b.clone();
         
+        b.makeMove(0, 4);
+        newBoard.makeMove(23, 3);
         
-        
-        
+        b.printBoard();
+        newBoard.printBoard();
     }
     
 }

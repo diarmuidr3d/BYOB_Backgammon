@@ -19,6 +19,10 @@ public class HumanPlayer {
         
     }
     
+    /**
+     * Sets the player colour
+     * @param c  is the colour to be set
+     */
     public void setPlayerColour(char c){
         playerColour = c;
     }
@@ -38,6 +42,7 @@ public class HumanPlayer {
         Scanner input;
         int[][] movesArray = null;
         int i, j;
+        int count = 0;
         boolean validMoveFound = false;
 
         String inputMoves;
@@ -72,6 +77,17 @@ public class HumanPlayer {
                         j++;
                     }
                     i++;
+                }
+                
+                count = 0;
+                for(i=0;i< movesArray.length; i++){
+                	if(movesArray[i][0]>25){
+                		count++;
+                    	validMoveFound = false;
+                    	if(count==1){
+                    		System.out.println("Invalid: " + inputMoves);
+                    	}
+                    }
                 }
             }
         }
@@ -123,7 +139,8 @@ public class HumanPlayer {
     public int playerMove(Board b, Dice d) throws FileNotFoundException, IOException {
         int retVal = -1;
         int movesCounter;
-
+        int dieUsed = -1;
+        int errCode;
         switch (b.getTurn()) {
             case 'W':
                 System.out.println("It's White's turn");
@@ -135,33 +152,63 @@ public class HumanPlayer {
         if (d.isDoubleRoll()) {
             movesCounter = 4;
             System.out.println("Double " + d.getFirstDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
-            
         } else {
-
             movesCounter = 2;
             System.out.println("You got " + d.getFirstDice() + "," + d.getSecondDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");  
         }
         while (movesCounter > 0) {
- 
             int[][] moves = readMoves(b);
             if (moves == null) {
                 movesCounter = 0;
             }
             if ((moves != null) && (moves.length <= movesCounter)) {
                 for (int[] move : moves) {
-                    if ((b.getColour(move[0]) == b.getTurn()) && d.isMatchFor(move)) {
-                        if (b.makeMove(move[0], move[1]) != -1) {
-                            int tmp1 = move[0] + 1;
-                            int tmp2 = move[1] + 1;
-                            retVal = 0;
-                            System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
-                            movesCounter--;
+                    if (b.getColour(move[0]) == b.getTurn()) {
+                        if ((dieUsed = d.isMatchFor(move, b)) > 0) {
+                            if ((b.getBar(b.getTurn()) == 0) || (b.getBar(b.getTurn()) > 0 && (move[0] == Board.WHITE_BAR || move[0] == Board.BLACK_BAR))) {
+                                if ((errCode = b.makeMove(move[0], move[1])) >= 0) {
+                                    int tmp1 = move[0] + 1;
+                                    int tmp2 = move[1] + 1;
+                                    retVal = 0;
+                                    System.out.println("Move Performed " + tmp1 + " -> " + tmp2);
+                                    movesCounter--;
+                                } else {
+                                    System.out.println("Move unsuccessful");
+                                    d.resetDieCheck(dieUsed);
+                                    retVal = errCode;
+                                }
+                            } else {
+                                System.out.println("Empty the bar first!");
+                                d.resetDieCheck(dieUsed);
+                                retVal = Board.EMPTY_BAR;
+                            }
+                        } else {
+                            System.out.println("Oops, wrong dice!");
+                            d.resetDieCheck(dieUsed);
+                            retVal = dieUsed;
                         }
+                    } 
+                    else if((b.whiteBar==0)&&(b.getTurn()=='W')&&(move[0]==25)){
+                    	System.out.println("Nothing on the source pin");
+                        retVal = Board.EMPTY_POINT;
+                    }
+                    else if((b.blackBar==0)&&(b.getTurn()=='B')&&(move[0]==25)){
+                    	System.out.println("Nothing on the source pin");
+                        retVal = Board.EMPTY_POINT;
+                    }
+                    else if(b.getColour(move[0])==' '){
+                    	System.out.println("Nothing on the source pin");
+                        retVal = Board.EMPTY_POINT;
                     }
                     else {
                         System.out.println("Oops, wrong colour!");
+                        retVal = Board.INVALID_POINT;
                     }
                 }
+            } else {
+                System.out.println("No moves or too many moves!");
+                retVal = Board.WRONG_DIE;
+                d.resetDieCheck(dieUsed);
             }
         }
         if (b.getTurn() == 'B') {
