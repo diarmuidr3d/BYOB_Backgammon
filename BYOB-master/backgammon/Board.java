@@ -595,7 +595,7 @@ public class Board {
         for (int[] move : movesArray) {
             switch (p) {
                 case ('W'):
-                    if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.boardPins[move[0]].getColour() != 'W')) {
+                    if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.boardPins[move[0]].getColour() == 'B')) {
                         moveIsValid = false;
                         printErrorCode(INVALID_POINT, "Move " + i + ":");
                     } else if (tmpBoard.boardPins[move[0]].isEmpty()) {
@@ -627,7 +627,7 @@ public class Board {
                break;
                 
                 case ('B'):
-                     if ((move[0] < 0 || (move[0] > 23 && move[0] != BLACK_BAR)) || (move[1] > 23 && move[1] != BLACK_OFF)||(tmpBoard.boardPins[move[0]].getColour() != 'B')) {
+                     if ((move[0] < 0 || (move[0] > 23 && move[0] != BLACK_BAR)) || (move[1] > 23 && move[1] != BLACK_OFF)||(tmpBoard.boardPins[move[0]].getColour() == 'W')) {
                         moveIsValid = false;
                         printErrorCode(INVALID_POINT, "Move " + i + ":");
                     } else if (tmpBoard.boardPins[move[0]].isEmpty()) {

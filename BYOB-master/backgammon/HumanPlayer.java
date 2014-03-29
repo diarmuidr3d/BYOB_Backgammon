@@ -175,7 +175,9 @@ public class HumanPlayer {
 
                     for (int[] move : moves) {
                         b.makeMove(move[0], move[1]);
-                        System.out.println("Moving from " + move[0] + " to " + move[1]);
+                        b.printBoard();
+                        System.out.println("Moving from " + (1+move[0]) + " to " +(1+move[1]));
+                        System.out.println();
                         movesCounter--;
                     }
                 }
