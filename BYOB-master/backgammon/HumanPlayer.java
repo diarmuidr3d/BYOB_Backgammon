@@ -137,10 +137,8 @@ public class HumanPlayer {
      * @throws IOException
      */
     public int playerMove(Board b, Dice d) throws FileNotFoundException, IOException {
-        int retVal = -1;
+        int retVal = 1;
         int movesCounter;
-        int dieUsed = -1;
-        int errCode;
 
         switch (b.getTurn()) {
             case 'W':
@@ -182,9 +180,9 @@ public class HumanPlayer {
                     }
                 }
             }
+            else break;
         }
         
-        retVal = 1;
 
         if ( playerColour == 'B') {
             b.setTurn('W');
