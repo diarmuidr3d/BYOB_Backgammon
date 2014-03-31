@@ -511,6 +511,11 @@ public class Board {
         return retVal;
     }
 
+    /**
+     * Prints the error message associated with an error code
+     * @param errCode the error code
+     * @param msg a message to be added on to the start of the printed error message
+     */
     public void printErrorCode(int errCode, String msg) {
         String s;
 
@@ -546,6 +551,13 @@ public class Board {
 
     }
 
+    /**
+     * Checks if a move is valid
+     * @param moves the moves being made
+     * @param d is the dice
+     * @param p is the player
+     * @return true if it is a valid move, false if not
+     */
     public boolean isValidMove(int moves[][], Dice d, char p) {
         
         Board tmpBoard = this.copy();
