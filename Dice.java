@@ -6,7 +6,6 @@
 
 package backgammon;
 
-import static java.lang.Math.abs;
 import java.util.Random;
 
 /**
@@ -17,7 +16,31 @@ public class Dice {
     private int dice1;
     private int dice2;
     private boolean checkedDice1, checkedDice2, checkedDice3, checkedDice4;
-    private Random randomGenerator = new Random();
+    private Random randomGenerator;
+    
+    public Dice(){
+        randomGenerator = new Random();
+        checkedDice1 = false;
+        checkedDice2 = false;
+        checkedDice3 = false;
+        checkedDice4 = false;
+         
+    }
+    
+    public void printDice(){
+        System.out.println("Dice1: " + dice1 + " Dice2: " + dice2);
+    }
+    
+    public Dice copy(){
+        Dice newDice = new Dice();
+        newDice.dice1 = this.dice1;
+        newDice.dice2 = this.dice2;
+        newDice.checkedDice1 = this.checkedDice1;
+        newDice.checkedDice2 = this.checkedDice2;
+        newDice.checkedDice3 = this.checkedDice3;
+        newDice.checkedDice4 = this.checkedDice4;
+        return newDice;
+    }
     
     /**
      * Gives the value of the first dice
@@ -39,8 +62,8 @@ public class Dice {
      * Rolls the dice and sets the checks for isMatchFor() to false.
      */
     public void rollDice() {
-        dice1 = randomGenerator.nextInt(6) +1;
-        dice2 = randomGenerator.nextInt(6) +1;
+        dice1 = randomGenerator.nextInt(6) + 1;
+        dice2 = randomGenerator.nextInt(6) + 1;
         checkedDice1 = false;
         checkedDice2 = false;
         checkedDice3 = false;
@@ -78,39 +101,19 @@ public class Dice {
      * @param b is the board
      * @return retVal: true if there is an unchecked dice for that move, false if not
      */
-    public int isMatchFor(int[] move, Board b) {
+    public int isMatchFor(int move, Board b) {
         int retVal = Board.WRONG_DIE;
-        if (move[0] == Board.BLACK_BAR) {
-            move[0] = 24;
-        } else if (move [0] == Board.WHITE_BAR) {
-            move[0] = -1;
-        }
-        if (move[1] == Board.BLACK_OFF) {
-            move[1] = -1;
-        } else if (move[1] == Board.WHITE_OFF) {
-            move[1] = 24;
-        } 
+        
         if (!isDoubleRoll()) {
-            if ((b.lastChecker(b.getTurn()) == move[0]) && (move[1] == -1 || move[1] == 24)) {
-                if ((abs(move[0] - move[1]) <= dice1) && (!checkedDice1)) {
+           if (move == dice1 && !checkedDice1) {
                     checkedDice1 = true;
                     retVal = 1;
                 }
-                else if ((abs(move[0] - move[1]) <= dice2) && (!checkedDice2)) {
+                else if ( move == dice2 && !checkedDice2) {
                     checkedDice2 = true;
                     retVal = 2;
                 }
-            } else {
-                if (((abs(move[0] - move[1]) == dice1) && (!checkedDice1))) {
-                    checkedDice1 = true;
-                    retVal = 1;
-                }
-                else if ((abs(move[0] - move[1]) == dice2) && (!checkedDice2)) {
-                    checkedDice2 = true;
-                    retVal = 2;
-                }
-            }
-        } else if (((abs(move[0] - move[1]) <= dice1) && (b.lastChecker(b.getTurn()) == move[0]) && (move[1] == -1 || move[1] == 24)) || (abs(move[0] - move[1]) == dice1)){
+        } else if (move == dice1){
             if (!checkedDice1) {
                 retVal = 1;
                 checkedDice1 = true;
@@ -125,16 +128,7 @@ public class Dice {
                 checkedDice4 = true;
             }
         }
-        if (move[0] == 24) {
-            move[0] = Board.BLACK_BAR;
-        } else if (move [0] == -1) {
-            move[0] = Board.WHITE_BAR;
-        }
-        if (move[1] == -1) {
-            move[1] = Board.BLACK_OFF;
-        } else if (move[1] == 24) {
-            move[1] = Board.WHITE_OFF;
-        }
+      
         return retVal;
     }
     

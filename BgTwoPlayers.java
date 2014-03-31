@@ -15,7 +15,7 @@ public class BgTwoPlayers {
 
     Board board;
     HumanPlayer blackPlayer, whitePlayer;
-    int playCount = 0;
+    int playCount;
 
     public BgTwoPlayers(int test) {
         board = new Board();
@@ -26,6 +26,7 @@ public class BgTwoPlayers {
         blackPlayer.setPlayerColour('B');
         whitePlayer = new HumanPlayer();
         whitePlayer.setPlayerColour('W');
+        playCount = 0;
     }
 
     /**
@@ -53,7 +54,6 @@ public class BgTwoPlayers {
             } else {
                 System.out.println("W: " + d.getFirstDice() + " B: " + d.getSecondDice() +" Draw. Roll again!\n");
                 d.rollDice();
-               
             }
         }
     }
@@ -70,22 +70,23 @@ public class BgTwoPlayers {
         boolean finishedGame = false;
         boolean endTurn;
         char winner = 'N';
-
+        
+        firstPlay(d);
+        
         while (playCount == 0) {
-            firstPlay(d);
             board.printBoard();
             if (board.getTurn() == 'W') {
-                if (whitePlayer.playerMove(board, d) != -1) {
+                if (whitePlayer.playerMove(board, d) > 0 ) {
                     playCount++;
                 }
             } else {
 
-                if (blackPlayer.playerMove(board, d) != -1) {
+                if (blackPlayer.playerMove(board, d) > 0) {
                     playCount++;
                 }
             }
         }
-
+        
         while (!finishedGame) {
             switch (board.getTurn()) {
                 case ('W'):
@@ -93,7 +94,7 @@ public class BgTwoPlayers {
                     d.rollDice();
                     do {
                         board.printBoard();
-                        if (whitePlayer.playerMove(board, d) != -1) {
+                        if (whitePlayer.playerMove(board, d) > 0) {
                             endTurn = true;
                             playCount++;
                         }
@@ -109,7 +110,7 @@ public class BgTwoPlayers {
                     d.rollDice();
                     do {
                         board.printBoard();
-                        if (blackPlayer.playerMove(board, d) != -1) {
+                        if (blackPlayer.playerMove(board, d) > 0) {
                             endTurn = true;
                             playCount++;
                         }

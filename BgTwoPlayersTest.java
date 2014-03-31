@@ -21,10 +21,7 @@ public class BgTwoPlayersTest {
         BgTwoPlayers table = new BgTwoPlayers(1);
         
         table.game();
-        
-        
-        
-        
+
     }
     
 }

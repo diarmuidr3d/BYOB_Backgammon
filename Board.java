@@ -4,11 +4,13 @@
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 package backgammon;
+
 /**
  *
  * @author BYOB
  */
 public class Board {
+
     Point[] boardPins = new Point[24]; // 0-23 pins are the actual pins. Setting refers to: http://en.wikipedia.org/wiki/File:Bg-movement.svg
     /* Counters for the bar and the off */
     int whiteBar;
@@ -32,47 +34,41 @@ public class Board {
      * This constant represents the Black Bar.
      */
     public static final int BLACK_BAR = 27;
-    
-     /**
+
+    /**
      * This constant represents the Invalid Point error code.
      */
     public static final int INVALID_POINT = -101;
-        
-     /**
+
+    /**
      * This constant represents the Empty Point error code.
      */
     public static final int EMPTY_POINT = -102;
-        
-     /**
+
+    /**
      * This constant represents the Wrong Die error code.
      */
     public static final int WRONG_DIE = -103;
-    
-        
-     /**
+
+    /**
      * This constant represents the Blocked Point error code.
      */
     public static final int BLOCKED_POINT = -104;
-    
-        
-     /**
+
+    /**
      * This constant represents the can't bear off error code.
      */
     public static final int NO_BEAROFF = -105;
-    
-        
-     /**
+
+    /**
      * This constant represents the bear off with higher roll error code.
      */
     public static final int HIGHER_ROLL = -106;
-    
-        
-     /**
+
+    /**
      * This constant represents the empty the bar first error code.
      */
     public static final int EMPTY_BAR = -107;
-    
-    
 
     /**
      * Sets an empty board.
@@ -82,34 +78,39 @@ public class Board {
             boardPins[j] = new Point();
         }
     }
+
     
-    @Override
-    public Board clone(){
-        
+    public Board copy() {
+
         Board newBoard = new Board();
         for (int j = 0; j < 24; j++) {
-            newBoard.boardPins[j].setPin(boardPins[j].getColour(), boardPins[j].getCheckers());
+            newBoard.boardPins[j].setPin(this.boardPins[j].getColour(), this.boardPins[j].getCheckers());
         }
-       
+
         newBoard.whiteBar = whiteBar;
         newBoard.blackBar = blackBar;
         newBoard.whiteOff = whiteOff;
         newBoard.blackOff = blackOff;
         return newBoard;
-        
+
     }
+
     /**
      * Gets which player's turn it is.
-     * @return Returns a capital character B (Black) or W (White) depending which player's turn it is
+     *
+     * @return Returns a capital character B (Black) or W (White) depending
+     * which player's turn it is
      */
     public char getTurn() {
         return playerTurn;
     }
-    
+
     /**
      * Set's which player's turn it is
      * <p>
-     * The method takes in a character 'B' (black) or 'W' (white) depending on which player's turn it is and assigns the current player turn to tat player.
+     * The method takes in a character 'B' (black) or 'W' (white) depending on
+     * which player's turn it is and assigns the current player turn to tat
+     * player.
      * <p>
      * @param playerChar
      */
@@ -140,9 +141,10 @@ public class Board {
         whiteOff = 0;
         blackOff = 0;
     }
-    
+
     /**
-     * Useful for jumping to bear off stages / other stages of a game for testing!
+     * Useful for jumping to bear off stages / other stages of a game for
+     * testing!
      */
     public void setBoardTestBO() {
         for (int j = 0; j < 24; j++) {
@@ -155,7 +157,7 @@ public class Board {
         boardPins[20].setPin('W', 3);
         boardPins[22].setPin('W', 5);
         boardPins[12].setPin('B', 5);
-        
+
         whiteBar = 0;
         blackBar = 0;
         whiteOff = 0;
@@ -225,22 +227,21 @@ public class Board {
      * and printBottomOfBoard() to create the strings for the top and bottom of
      * the board respectively.
      */
-     public void printBoard() {
-    	    if(this.getTurn()=='W'){
-       		    System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
-       	     System.out.println(printTopOfBoard());
-       	     System.out.println("\n");
-       	     System.out.println(printBottomOfBoard());
-       	     System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
-       	     System.out.println("\n\n");
-    	    }
-    	    else{
-           		System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
-           		System.out.println(printBottomOfBoard());
-           		System.out.println("\n");
-           		System.out.println(printTopOfBoard());
-           		System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
-           		System.out.println("\n\n");
+    public void printBoard() {
+        if (this.getTurn() == 'W') {
+            System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+            System.out.println(printTopOfBoard());
+            System.out.println("\n");
+            System.out.println(printBottomOfBoard());
+            System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
+            System.out.println("\n\n");
+        } else {
+            System.out.println("12--+---+---+---+---07  BAR 06--+---+---+---+---01  OFF");
+            System.out.println(printBottomOfBoard());
+            System.out.println("\n");
+            System.out.println(printTopOfBoard());
+            System.out.println("13--+---+---+---+---18  BAR 19--+---+---+---+---24  OFF");
+            System.out.println("\n\n");
         }
     }
 
@@ -364,8 +365,11 @@ public class Board {
             retVal = 0;
         } else {
             System.out.println("Invalid Move");
-            if( boardPins[destination].getCheckers() > 1) retVal = BLOCKED_POINT; 
-            else retVal = INVALID_POINT;
+            if (boardPins[destination].getCheckers() > 1) {
+                retVal = BLOCKED_POINT;
+            } else {
+                retVal = INVALID_POINT;
+            }
         }
         /*end of the game*/
         if ((whiteOff == 15) || (blackOff == 15)) {
@@ -388,48 +392,63 @@ public class Board {
         }
         return retVal;
     }
-    
+
     /**
      * Gives the score of the game
+     *
      * @param opposingPlayer is the loser of the game
      * @return a string with the result (Single, Gammon or Backgammon)
      */
-    private String getResult (char opposingPlayer) {
+    private String getResult(char opposingPlayer) {
         int lastCheckerLocation = lastChecker(opposingPlayer);
         String result;
         if (opposingPlayer == 'W') {
-            if (lastCheckerLocation >= 17) result = "Single";
-            else if (lastCheckerLocation >= 6) result = "Gammon";
-            else result = "Backgammon";
+            if (lastCheckerLocation >= 17) {
+                result = "Single";
+            } else if (lastCheckerLocation >= 6) {
+                result = "Gammon";
+            } else {
+                result = "Backgammon";
+            }
         } else {
-            if ((lastCheckerLocation <= 5) || (lastCheckerLocation == BLACK_BAR)) result = "Single";
-            else if (lastCheckerLocation <= 16) result = "Gammon";
-            else result = "Backgammon";
+            if ((lastCheckerLocation <= 5) || (lastCheckerLocation == BLACK_BAR)) {
+                result = "Single";
+            } else if (lastCheckerLocation <= 16) {
+                result = "Gammon";
+            } else {
+                result = "Backgammon";
+            }
         }
         return result;
     }
-    
+
     /**
      * Gets the colour of the pieces on a point
+     *
      * @param position
      * @return Returns the colour ('B' or 'W') of the pieces on a Point
      */
-    public char getColour(int position){
+    public char getColour(int position) {
         char c;
-        
-        if (position == WHITE_BAR || position == WHITE_OFF ) c = 'W';
-        else if (position == BLACK_BAR || position == BLACK_OFF ) c = 'B';
-        else c = boardPins[position].getColour();
-        
+
+        if (position == WHITE_BAR || position == WHITE_OFF) {
+            c = 'W';
+        } else if (position == BLACK_BAR || position == BLACK_OFF) {
+            c = 'B';
+        } else {
+            c = boardPins[position].getColour();
+        }
+
         return c;
     }
-   
+
     /**
      * Checks if a player can bear off or not
+     *
      * @param player
      * @return Returns true if a player can bear off, false if not
      */
-    public boolean checkBearOff(char player){
+    public boolean checkBearOff(char player) {
         boolean ableToBearOff = false;
         int lastCheckerLocation = lastChecker(player);
         if ((player == 'W') && (lastCheckerLocation >= 17) && (lastCheckerLocation <= 23)) {
@@ -439,19 +458,20 @@ public class Board {
         }
         return ableToBearOff;
     }
-    
+
     /**
      * Figures out where a player's last (furthest from home) checker is
+     *
      * @param player
      * @return Returns the location of the player's last checker
      */
-    public int lastChecker (char player) {
+    public int lastChecker(char player) {
         int locationOfLastChecker = -1;
         if (player == 'W') {
             if (whiteBar > 0) {
                 locationOfLastChecker = WHITE_BAR;
             } else {
-                int i=0;
+                int i = 0;
                 while ((i <= 23) && (boardPins[i].getColour() != 'W')) {
                     i++;
                 }
@@ -461,37 +481,190 @@ public class Board {
             if (blackBar > 0) {
                 locationOfLastChecker = BLACK_BAR;
             } else {
-                int i=23;
+                int i = 23;
                 while ((i >= 0) && (boardPins[i].getColour() != 'B')) {
                     i--;
                 }
                 locationOfLastChecker = i;
             }
-            
+
         } else {
             System.out.println("Error, this is not a player");
         }
         return locationOfLastChecker;
     }
-    
+
     /**
      * Returns the number of checkers on the specified bar
+     *
      * @param p is the player
-     * @return retVal: the number of checkers on the p bar or -1 if wrong player input
+     * @return retVal: the number of checkers on the p bar or -1 if wrong player
+     * input
      */
-    public int getBar (char p) {
+    public int getBar(char p) {
         int retVal = -1;
-        if (p == 'W') retVal = whiteBar;
-        else if (p == 'B') retVal = blackBar;
+        if (p == 'W') {
+            retVal = whiteBar;
+        } else if (p == 'B') {
+            retVal = blackBar;
+        }
         return retVal;
     }
-    
-    public int isValidMove(int move[], Dice d){
-        int retVal = -1;
-        Board tmpBoard = this.clone();
+
+    public void printErrorCode(int errCode, String msg) {
+        String s;
+
+        switch (errCode) {
+            case BLOCKED_POINT:
+                s = msg + "Can't move to that point!";
+                break;
+            case EMPTY_BAR:
+                s = msg + "Empty the bar first...";
+                break;
+            case EMPTY_POINT:
+                s = msg + "No checkers on the source point!";
+                break;
+            case HIGHER_ROLL:
+                s = msg + "Can only bear off with an higher roll...";
+                break;
+            case INVALID_POINT:
+                s = msg + "Wrong colour point!";
+                break;
+            case NO_BEAROFF:
+                s = msg + "Can't bear off yet!";
+                break;
+            case WRONG_DIE:
+                s = msg + "You don't have that roll...";
+                break;
+            default: 
+                s = "WRONG ERROR CODE...";
+                break;
+
+        }
+
+        System.out.println(s);
+
+    }
+
+    public boolean isValidMove(int moves[][], Dice d, char p) {
         
+        Board tmpBoard = this.copy();
+        Dice tmpDice = d.copy();
+        int[][] movesArray = new int[moves.length][2];
+        int usedDie;
+        boolean moveIsValid = true;
         
+        tmpDice.printDice();
         
-        return retVal;
+        for(int k = 0; k < moves.length; k++){
+            System.arraycopy(moves[k], 0, movesArray[k], 0, 2);
+        } 
+        
+        int i;
+
+        if (movesArray != null) {
+            if (getTurn() == 'W') {
+                for (i = 0; i < movesArray.length; i++) {
+                    movesArray[i][0]--;
+                    if (movesArray[i][0] == 24) {
+                        movesArray[i][0] = Board.WHITE_BAR;
+                        movesArray[i][1] = movesArray[i][1] - 1;
+                    } else if (movesArray[i][0] + movesArray[i][1] > 24) {
+                        movesArray[i][1] = Board.WHITE_OFF;
+                    } else {
+                        movesArray[i][1] = movesArray[i][0] + movesArray[i][1];
+                    }
+                }
+            } else if (getTurn() == 'B') {
+                for (i = 0; i < movesArray.length; i++) {
+                    movesArray[i][0]--;
+                    if (movesArray[i][0] == 24) {
+                        movesArray[i][0] = Board.BLACK_BAR;
+                        movesArray[i][1] = 24 - movesArray[i][1];
+                    } else if (movesArray[i][0] - movesArray[i][1] < 0) {
+                        movesArray[i][1] = Board.BLACK_OFF;
+                    } else {
+                        movesArray[i][1] = movesArray[i][0] - movesArray[i][1];
+                    }
+                }
+            }
+        }
+            
+        i = 0;
+
+        for (int[] move : movesArray) {
+            switch (p) {
+                case ('W'):
+                    if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.boardPins[move[0]].getColour() == 'B')) {
+                        moveIsValid = false;
+                        printErrorCode(INVALID_POINT, "Move " + i + ":");
+                    } else if (tmpBoard.boardPins[move[0]].isEmpty()) {
+                        moveIsValid = false;
+                        printErrorCode(EMPTY_POINT, "Move " + i + ":");
+                    } else if ((usedDie = tmpDice.isMatchFor(moves[i][1], tmpBoard)) < 0) {
+                        moveIsValid = false;
+                        tmpDice.resetDieCheck(usedDie);
+                        printErrorCode(WRONG_DIE, "Move " + i + ":");
+                    } else if (!checkBearOff('W') && move[1] == WHITE_OFF) {
+                        moveIsValid = false;
+                        printErrorCode(NO_BEAROFF, "Move " + i + ":");
+                        break;
+                    } else if (move[0] > tmpBoard.lastChecker('W') && move[1] == WHITE_OFF){
+                        moveIsValid = false;
+                        printErrorCode(HIGHER_ROLL, "Move " + i + ":");
+                        break;
+                    } else if (tmpBoard.getBar('W')>0 && move[0] != WHITE_BAR){
+                        moveIsValid = false;
+                        printErrorCode(EMPTY_BAR, "Move " + i + ":");
+                        break;  
+                    } else if ( move[1] != Board.WHITE_OFF && tmpBoard.boardPins[move[1]].getColour() == 'B' && tmpBoard.boardPins[move[1]].getCheckers() > 1 ){
+                        moveIsValid = false;
+                        printErrorCode(BLOCKED_POINT, "Move " + i + ":");
+                        break;
+                    } else {
+                        tmpBoard.makeMove(move[0], move[1]);
+                    }
+               break;
+                
+                case ('B'):
+                     if ((move[0] < 0 || (move[0] > 23 && move[0] != BLACK_BAR)) || (move[1] > 23 && move[1] != BLACK_OFF)||(tmpBoard.boardPins[move[0]].getColour() == 'W')) {
+                        moveIsValid = false;
+                        printErrorCode(INVALID_POINT, "Move " + i + ":");
+                    } else if (tmpBoard.boardPins[move[0]].isEmpty()) {
+                         moveIsValid = false;
+                        printErrorCode(EMPTY_POINT, "Move " + i + ":");
+                    } else if ((usedDie = tmpDice.isMatchFor(moves[i][1], tmpBoard)) < 0) {
+                        moveIsValid = false;
+                        tmpDice.resetDieCheck(usedDie);
+                        printErrorCode(WRONG_DIE, "Move " + i + ":");
+                    } else if (!checkBearOff('B') && move[1] == BLACK_OFF) {
+                        moveIsValid = false;
+                        printErrorCode(NO_BEAROFF, "Move " + i + ":");
+                        break;
+                    } else if (move[0] < tmpBoard.lastChecker('B') && move[1] == BLACK_OFF){
+                        moveIsValid = false;
+                        printErrorCode(HIGHER_ROLL, "Move " + i + ":");
+                        break;
+                    } else if (tmpBoard.getBar('B')>0 && move[0] != BLACK_BAR){
+                        moveIsValid = false;
+                        printErrorCode(EMPTY_BAR, "Move " + i + ":");
+                        break;  
+                    } else if (tmpBoard.boardPins[move[1]].getColour() == 'W' && tmpBoard.boardPins[move[1]].getCheckers() > 1 ){
+                        moveIsValid = false;
+                        printErrorCode(BLOCKED_POINT, "Move " + i + ":");
+                        break;
+                    } else {
+                        tmpBoard.makeMove(move[0], move[1]);
+                    }
+                break;
+            }
+            i++;
+        }
+        return moveIsValid;
     }
 }
+
+
+        
+    
+    

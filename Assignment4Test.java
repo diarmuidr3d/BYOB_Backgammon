@@ -18,7 +18,7 @@ public class Assignment4Test {
         Board b = new Board();
         b.setBoard();
         
-        Board newBoard = b.clone();
+        Board newBoard = b.copy();
         
         b.makeMove(0, 4);
         newBoard.makeMove(23, 3);
