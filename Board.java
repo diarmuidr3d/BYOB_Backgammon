@@ -530,7 +530,7 @@ public class Board {
                 s = msg + "No checkers on the source point!";
                 break;
             case HIGHER_ROLL:
-                s = msg + "Can only bear off with an higher roll...";
+                s = msg + "Can't bear this piece off";
                 break;
             case INVALID_POINT:
                 s = msg + "Wrong colour point!";
