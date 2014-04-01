@@ -8,9 +8,14 @@ package backgammon;
 
 /**
  *
- * @author diarmuid
+ * @author BYOB
  */
 class OutOfBoundsException extends java.lang.RuntimeException {
+   
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
     public OutOfBoundsException() {
     }
