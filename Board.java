@@ -674,6 +674,26 @@ public class Board {
         }
         return moveIsValid;
     }
+    
+    /**
+     * incomplete
+     * @param d
+     * @param b
+     * @return
+     */
+    public int[][] allPossiblePlays(Dice d, Board b) {
+    	return null;
+    }
+    
+    /**
+     * incomplete
+     * @param d
+     * @param source
+     * @return
+     */
+    public int[][] searchForPlays(Dice d, Board b, int[] sourcePoints) {
+     return null;
+    }
 }
 
 
