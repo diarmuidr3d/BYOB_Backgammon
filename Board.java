@@ -91,6 +91,7 @@ public class Board {
         newBoard.blackBar = blackBar;
         newBoard.whiteOff = whiteOff;
         newBoard.blackOff = blackOff;
+        newBoard.playerTurn = this.getTurn();
         return newBoard;
 
     }
@@ -691,12 +692,7 @@ public class Board {
      * @param source
      * @return
      */
-    public int[][] searchForPlays(Dice d, Board b, int[] sourcePoints) {
-     return null;
+    public int[][] searchForPlays(Dice d, Board boardCopy, int[] sourcePoints) {
+    	return null;
     }
 }
-
-
-        
-    
-    
