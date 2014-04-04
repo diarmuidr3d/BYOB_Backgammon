@@ -1,11 +1,9 @@
- /*
+/*
  * COMP20050 - Software Engineering Project 2 - 2014
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 package backgammon;
-
-import java.util.List;
 
 /**
  *
@@ -154,17 +152,17 @@ public class Board {
             boardPins[j].setPin(' ', 0);
         }
         boardPins[23].setPin('W', 2);
-        boardPins[5].setPin('B', 5);
+        boardPins[5].setPin('B', 0);
         boardPins[19].setPin('W', 5);
-        boardPins[7].setPin('B', 3);
-        boardPins[20].setPin('W', 3);
-        boardPins[22].setPin('W', 5);
-        boardPins[12].setPin('B', 5);
+        boardPins[7].setPin('B', 0);
+        boardPins[20].setPin('W', 0);
+        boardPins[22].setPin('W', 0);
+        boardPins[1].setPin('B', 1);
 
         whiteBar = 0;
         blackBar = 0;
         whiteOff = 0;
-        blackOff = 0;
+        blackOff = 14;
     }
 
     private String printTopOfBoard() {
@@ -566,7 +564,7 @@ public class Board {
         Board tmpBoard = this.copy();
         Dice tmpDice = d.copy();
         int[][] movesArray = new int[moves.length][2];
-        int usedDie = -5;
+        int usedDie;
         boolean moveIsValid = true;
         
         tmpDice.printDice();
@@ -664,7 +662,7 @@ public class Board {
                         moveIsValid = false;
                         printErrorCode(EMPTY_BAR, "Move " + i + ":");
                         break;  
-                    } else if (tmpBoard.boardPins[move[1]].getColour() == 'W' && tmpBoard.boardPins[move[1]].getCheckers() > 1 ){
+                    } else if (move[1] != Board.BLACK_OFF && tmpBoard.boardPins[move[1]].getColour() == 'W' && tmpBoard.boardPins[move[1]].getCheckers() > 1 ){
                         moveIsValid = false;
                         printErrorCode(BLOCKED_POINT, "Move " + i + ":");
                         break;
@@ -674,9 +672,6 @@ public class Board {
                 break;
             }
             i++;
-            if (!moveIsValid && usedDie > 0) {
-            	tmpDice.resetDieCheck(usedDie);
-            }
         }
         return moveIsValid;
     }
@@ -692,76 +687,12 @@ public class Board {
     }
     
     /**
-     * Checks all moves a player could make against isValidMove, returns all valid moves
-     * @param d is the dice
-     * @param boardCopy is a copy of the board
-     * @param sourcePoints are all points that the player has a checker on
-     * @return a List of integer arrays consisting of source and destination of all possible valid moves
+     * incomplete
+     * @param d
+     * @param source
+     * @return
      */
-    public List<int[]> searchForPlays(Dice d, Board boardCopy, int[] sourcePoints) {
-    	int moves[][] = new int [4][2];
-    	List<int[]> retVal = null;
-    	int dice1, dice2;
-    	if (boardCopy.getTurn() == 'B') {
-    		dice1 = 0-d.getFirstDice();
-    		dice2 = 0-d.getSecondDice();
-    	} else {
-    		dice1 = d.getFirstDice();
-    		dice2 = d.getSecondDice();
-    	}
-    	if (!d.isDoubleRoll()) {
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = moves[0][0] + dice1;
-    		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-    			retVal.add(moves[0]);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = moves[1][0] + dice2;
-    			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-        			retVal.add(moves[1]);
-    			}
-    		}
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = moves[0][0] + dice2;
-    		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-    			retVal.add(moves[0]);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = moves[1][0] + dice1;
-    			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-        			retVal.add(moves[1]);
-    			}
-    		}
-    	} else {
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = moves[0][0] + dice1;
-    		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-    			retVal.add(moves[0]);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = moves[1][0] + dice2;
-    			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-        			retVal.add(moves[1]);
-    				moves[2][0] = moves[1][1];
-    				moves[2][1] = moves[2][0] + dice2;
-    				if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-    	    			retVal.add(moves[2]);
-    					moves[3][0] = moves[2][1];
-    					moves[3][1] = moves[3][0] + dice2;
-    					if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
-    		    			retVal.add(moves[3]);
-    					}
-    				}
-    			}
-    		}
-    	}
-    	if (sourcePoints.length > 1) {
-    		int[] sourcePointsShorter = new int[sourcePoints.length-1];
-    		for (int i=0; i < sourcePointsShorter.length; i++) {
-    			sourcePointsShorter[i] = sourcePoints[i+1];
-    		}
-    		List<int[]> recursiveReturn = boardCopy.searchForPlays(d, boardCopy, sourcePoints);
-    		while (recursiveReturn.iterator().hasNext()) {
-    			retVal.add(recursiveReturn.iterator().next());
-    		}
-    	}
-    	return retVal;
+    public int[][] searchForPlays(Dice d, Board boardCopy, int[] sourcePoints) {
+    	return null;
     }
 }
