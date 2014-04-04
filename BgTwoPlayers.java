@@ -94,12 +94,15 @@ public class BgTwoPlayers {
                     d.rollDice();
                     do {
                         board.printBoard();
-                        if (whitePlayer.playerMove(board, d) > 0) {
+                        if (whitePlayer.playerMove(board, d) > 0 ) {
                             endTurn = true;
                             playCount++;
+                            finishedGame = (board.whiteOff == 15);
                         }
-                        finishedGame = (board.whiteOff == 15);
-                        winner = 'W';
+                        
+                        if (finishedGame){
+                            winner = 'W';
+                        }
 
                     } while (!endTurn);
 
@@ -107,16 +110,19 @@ public class BgTwoPlayers {
 
                 case ('B'):
                     endTurn = false;
-                    d.rollDice();
+                    d.  rollDice();
                     do {
                         board.printBoard();
-                        if (blackPlayer.playerMove(board, d) > 0) {
+                        if (blackPlayer.playerMove(board, d) > 0 ) {
                             endTurn = true;
                             playCount++;
+                            finishedGame = (board.blackOff == 15);
                         }
-                        finishedGame = (board.blackOff == 15);
-                        winner = 'B';
+                         if (finishedGame){
+                            winner = 'B';
+                        }
                     } while (!endTurn);
+                    
                     break;
 
                 default:
@@ -124,6 +130,7 @@ public class BgTwoPlayers {
             }
 
         }
+        System.out.println("The winner is: " + winner + " with a " + board.getResult(winner));
         return winner;
     }
 }
