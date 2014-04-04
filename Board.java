@@ -71,6 +71,11 @@ public class Board {
      * This constant represents the empty the bar first error code.
      */
     public static final int EMPTY_BAR = -107;
+    
+    /**
+     * This constant represents the case where a player was not 'B' or 'W' error code.
+     */
+    public static final int NOT_A_PLAYER = -108;
 
     /**
      * Sets an empty board.
@@ -508,7 +513,7 @@ public class Board {
      * input
      */
     public int getBar(char p) {
-        int retVal = -1;
+        int retVal = NOT_A_PLAYER;
         if (p == 'W') {
             retVal = whiteBar;
         } else if (p == 'B') {
@@ -685,25 +690,43 @@ public class Board {
     }
     
     /**
-     * incomplete
+     * This move gets an array of points that 
      * @param d
      * @param b
      * @return
      */
-    public int[][] allPossiblePlays(Dice d, Board b) {
-    	return null;
+    public List<int[]> allPossiblePlays(Dice d, Board b) {
+    	Board boardCopy = b.copy();
+    	int[] source = new int[15];
+    	int sourceCounter = 0;
+    	if (boardCopy.getBar(boardCopy.getTurn()) > 0) {
+    		for (int i = 0; i < boardCopy.getBar(boardCopy.getTurn()); i++) {
+    			source[sourceCounter] = BLACK_BAR;
+    			sourceCounter++;
+    		}
+    	}
+    	if (!(boardCopy.getBar(boardCopy.getTurn()) > 3 && d.isDoubleRoll()) && !(boardCopy.getBar(boardCopy.getTurn()) > 1 && !d.isDoubleRoll())) {
+	    	for (int i = 0; i <= 23; i++) {
+	    		if (boardCopy.getColour(i) == b.getTurn()) {
+	    			source[sourceCounter] = i;
+	    			sourceCounter++;
+	    		}
+	    	}
+    	}
+    	List<int[]> allPlays = searchForPlays(d, boardCopy, source);
+    	return allPlays;
     }
 
     /**
-     ** Checks all moves a player could make against isValidMove, returns all valid moves
+     * Checks all moves a player could make against isValidMove, returns all valid moves
      * @param d is the dice
      * @param boardCopy is a copy of the board
      * @param sourcePoints are all points that the player has a checker on
      * @return a List of integer arrays consisting of source and destination of all possible valid moves
      */
-    public List<int[]> searchForPlays(Dice d, Board boardCopy, int[] sourcePoints) {
-    	int moves[][] = new int [4][2];
-    	List<int[]> retVal = null;c
+    private List<int[]> searchForPlays(Dice d, int playCounter, Board boardCopy, int[] sourcePoints) {
+    	int moves[][] = new int [4][3];
+    	List<int[]> retVal = null;
     	int dice1, dice2;
     	if (boardCopy.getTurn() == 'B') {
     		dice1 = 0-d.getFirstDice();
@@ -713,37 +736,46 @@ public class Board {
     		dice2 = d.getSecondDice();
     	}
     	if (!d.isDoubleRoll()) {
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = moves[0][0] + dice1;
+    		moves [0][0] = playCounter; //something like this, but to be fixed
+    		moves [0][1] = sourcePoints[0];
+    		moves [0][2] = moves[0][1] + dice1;
     		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     			retVal.add(moves[0]);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = moves[1][0] + dice2;
+    			moves[1][0] = playCounter;
+    			moves[1][1] = moves[0][2];
+    			moves[1][2] = moves[1][1] + dice2;
     			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     				retVal.add(moves[1]);
     			}
+    			playCounter++;
     		}
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = moves[0][0] + dice2;
+    		moves [0][0] = playCounter;
+    		moves [0][1] = sourcePoints[0];
+    		moves [0][2] = moves[0][0] + dice2;
     		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     			retVal.add(moves[0]);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = moves[1][0] + dice1;
+    			moves[1][0] = playCounter;
+    			moves[1][1] = moves[0][2];
+    			moves[1][2] = moves[1][1] + dice1;
     			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     				retVal.add(moves[1]);
     			}
+    			playCounter++;
     		}
     	} else {
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = moves[0][0] + dice1;
+    		moves[0][0] = playCounter;
+    		moves[0][1] = sourcePoints[0];
+    		moves[0][2] = moves[0][1] + dice1;
     		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     			retVal.add(moves[0]);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = moves[1][0] + dice2;
+    			moves[1][0] = playCounter;
+    			moves[1][1] = moves[0][2];
+    			moves[1][2] = moves[1][1] + dice2;
     			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     				retVal.add(moves[1]);
-    				moves[2][0] = moves[1][1];
-    				moves[2][1] = moves[2][0] + dice2;
+        			moves[2][0] = playCounter;
+    				moves[2][1] = moves[1][1];
+    				moves[2][2] = moves[2][0] + dice2;
     				if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
     					retVal.add(moves[2]);
     					moves[3][0] = moves[2][1];
