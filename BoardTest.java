@@ -12,8 +12,12 @@ package backgammon;
 public class BoardTest {
 	public static void main(String[] args) {
 		Board b = new Board();
-		System.out.println("checks the display of the board");
+		Dice d = new Dice();
 		b.setBoard();
+		d.rollDice();
+		System.out.println("All Possible Plays: "+b.allPossiblePlays(d, b).get(2)[1]);
+		
+		System.out.println("checks the display of the board");
 		b.printBoard();
 
 		System.out.println("checks if blacks can move onto each other");
@@ -67,5 +71,6 @@ public class BoardTest {
 		System.out.println("checks if resets Board");
 		b.setBoard();
 		b.printBoard();
+		
 	}
 }

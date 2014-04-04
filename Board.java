@@ -862,7 +862,7 @@ public class Board {
     		for (int i=0; i < sourcePointsShorter.length; i++) {
     			sourcePointsShorter[i] = sourcePoints[i+1];
     		}
-    		List<int[]> recursiveReturn = boardCopy.searchForPlays(d, playCounter, boardCopy, sourcePoints);
+    		List<int[]> recursiveReturn = boardCopy.searchForPlays(d, playCounter, boardCopy, sourcePointsShorter);
     		while (recursiveReturn.iterator().hasNext()) {
     			retVal.add(recursiveReturn.iterator().next());
     		}
