@@ -1,4 +1,4 @@
-/*
+ /*
  * COMP20050 - Software Engineering Project 2 - 2014
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
@@ -79,7 +79,10 @@ public class Board {
         }
     }
 
-    
+    /**
+     * Makes an identical copy of the actual Board, instantiating a new object.
+     * @return the copy of the board.
+     */
     public Board copy() {
 
         Board newBoard = new Board();
@@ -153,7 +156,7 @@ public class Board {
         }
         boardPins[23].setPin('W', 2);
         boardPins[5].setPin('B', 0);
-        boardPins[19].setPin('W', 5);
+        boardPins[19].setPin('W', 0);
         boardPins[7].setPin('B', 0);
         boardPins[20].setPin('W', 0);
         boardPins[22].setPin('W', 0);
@@ -161,7 +164,7 @@ public class Board {
 
         whiteBar = 0;
         blackBar = 0;
-        whiteOff = 0;
+        whiteOff = 13;
         blackOff = 14;
     }
 
