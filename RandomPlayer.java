@@ -9,12 +9,13 @@ package backgammon;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class RandomPlayer{
 
     private char playerColour;
-
-
+    private List<int[]> possible_moves;
+    
     public RandomPlayer() {
 
     }
@@ -28,25 +29,26 @@ public class RandomPlayer{
         playerColour = c;
     }
     
-    public int getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
-    	List<int[]> possible_moves;
+    public int[] getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
     	possible_moves = b.allPossiblePlays(d,b);
-    	int random_play = 0;
-
-    	if(!d.isDoubleRoll()){
-    		int moves1[][] = new int [2][2];
-    		for(int i= 0; i<10;i++){
-    			random_play = (int) (Math.random()*possible_moves.size());
-        		System.out.println("\n The Random play is : "+random_play+"\n\n");
+    	Random generator = new Random(); 
+    	int randomPlay = generator.nextInt(possible_moves.size());
+    	int[] play = possible_moves.get(randomPlay);
+    	while (possible_moves.get(randomPlay-1)[0] == play[0]) {
+    		randomPlay--;
+    		play = possible_moves.get(randomPlay);
+    	}
+    	int retVal[] = new int[2];
+    	retVal[0] = play[1];
+    	retVal[1] = play[2];
+    	if (!d.isDoubleRoll()) {
+    		for (int i =0; i < possible_moves.size(); i++) {
+    			if (Math.abs(possible_moves.get(i)[1] - possible_moves.get(i)[2]) == Math.abs(play[1] - play[2])) {
+    				possible_moves.remove(i);
+    				i--;
+    			}
     		}
-    		//player.computeMoves(moves1[][], b);
     	}
-    	else{
-    		int moves1[][] = new int [4][2];
-    		
-    		//player.computeMoves(moves1[][], b);
-    	}
-    	
-    	return 0;
+    	return retVal;
     }
 }
