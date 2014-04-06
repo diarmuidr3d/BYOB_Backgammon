@@ -14,6 +14,10 @@ public class BoardTest {
 		Board b = new Board();
 		Dice d = new Dice();
 		b.setBoard();
+		b.playerTurn = 'B';
+		d.rollDice();
+		b.allPossiblePlays(d, b);
+		
 		b.playerTurn = 'W';
 		d.rollDice();
 		b.allPossiblePlays(d, b);
