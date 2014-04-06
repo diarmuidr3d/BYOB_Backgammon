@@ -1,11 +1,10 @@
- /*
+/*
  * COMP20050 - Software Engineering Project 2 - 2014
  * Team: BYOB
  * Members: Michael Dalton (12328661), Stefano Forti(13201749), Diarmuid Ryan (11363776)
  */
 package backgammon;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -726,7 +725,6 @@ public class Board {
         }
 
     }
-
     
     /**
      * Gets an array of points for all a player's checkers on the board.
@@ -740,7 +738,6 @@ public class Board {
     	int[] source = new int[15];
     	int sourceCounter = 0;
     	int playCounter = 0;
-    	int j = 0;
     	int overAllMax = 0, currentPlayMax = 0, biggestMove = 0;
     	if (boardCopy.getBar(boardCopy.getTurn()) > 0) {
     		for (int i = 0; i < boardCopy.getBar(boardCopy.getTurn()); i++) {
@@ -777,40 +774,24 @@ public class Board {
 			overAllMax = currentPlayMax;
 			currentPlayMax = 0;
 		}
-    	playCounter=allPlays.get(0)[0];
-    	for (int i = 0; i < allPlays.size(); i++) {
-    		if ((allPlays.get(i)[0]) == playCounter) {
-    			currentPlayMax++;
-    		} else {
-    			if (currentPlayMax < overAllMax) {
-    				currentPlayMax = 1;
-    				j = i-1;
-    				while ((allPlays.get(j)[0]) == playCounter) {
-    					allPlays.remove(j);
-    					j--;
-    				}
-    				i = j+1;
-    			}
-    			playCounter = allPlays.get(i)[0];
+    	if ((allPlays.size() == 2) && (allPlays.get(0)[1] == allPlays.get(1)[1])) {
+    		if (Math.abs(allPlays.get(0)[1] - allPlays.get(0)[2]) > Math.abs(allPlays.get(1)[1] - allPlays.get(1)[2])) {
+    			allPlays.remove(1);
+    		} else if (Math.abs(allPlays.get(0)[1] - allPlays.get(0)[2]) < Math.abs(allPlays.get(1)[1] - allPlays.get(1)[2])) {
+    			allPlays.remove(0);
     		}
     	}
     	if (overAllMax == 1) {
     		for (int i = 0; i < allPlays.size(); i++) {
     			if ((Math.abs(allPlays.get(i)[1] - allPlays.get(i)[2])) > biggestMove) {
     				biggestMove = Math.abs(allPlays.get(i)[1] - allPlays.get(i)[2]);
-    			}
+    			} 
     		}
     		for (int i = 0; i < allPlays.size(); i++) {
     			if ((Math.abs(allPlays.get(i)[1] - allPlays.get(i)[2])) < biggestMove) {
     				allPlays.remove(i);
     				i--;
     			}
-    		}
-    	}
-    	for (int i = 1; i < allPlays.size(); i++) {
-    		if ((allPlays.get(i)[0] == allPlays.get(i-1)[0]) && (allPlays.get(i)[1] == allPlays.get(i-1)[1]) && (allPlays.get(i)[2] == allPlays.get(i-1)[2])) {
-    			allPlays.remove(i);
-    			i--;
     		}
     	}
     	for (int i = 0; i < allPlays.size(); i++) {
@@ -858,8 +839,8 @@ public class Board {
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
     				int moveToRetVal2[] = new int[3];
         			moveToRetVal2[0] = playCounter;
-        			moveToRetVal2[1] = sourcePoints[0] + d.getFirstDice();
-        			moveToRetVal2[2] = sourcePoints[0] + dice2;
+        			moveToRetVal2[1] = sourcePoints[0] + dice1;
+        			moveToRetVal2[2] = sourcePoints[0] + dice2 + dice1;
         			retVal.add(index, moveToRetVal2);
         			index++;
     			}
@@ -894,44 +875,44 @@ public class Board {
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			int moveToRetVal5[] = new int[3];
     			moveToRetVal5[0] = playCounter;
-    			moveToRetVal5[1] = moves1[0][0];
-    			moveToRetVal5[2] = moves1[0][0] + dice1;
+    			moveToRetVal5[1] = sourcePoints[0];
+    			moveToRetVal5[2] = sourcePoints[0] + dice1;
     			retVal.add(moveToRetVal5);
-    			moves2[0][0] = moves1[0][0];
-    			moves2[0][1] = moves1[0][1];
-    			moves2[1][0] = moves1[0][1] + moves1[0][0];
+    			moves2[0][0] = sourcePoints[0];
+    			moves2[0][1] = d.getFirstDice();
+    			moves2[1][0] = dice1 + sourcePoints[0];
     			moves2[1][1] = d.getSecondDice();
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
     				int moveToRetVal6[] = new int[3];
     				moveToRetVal6[0] = playCounter;
-        			moveToRetVal6[1] = moves2[1][0];
-        			moveToRetVal6[2] = moves2[1][0] + dice2;
+        			moveToRetVal6[1] = dice1 + sourcePoints[0];
+        			moveToRetVal6[2] = dice1 + sourcePoints[0] + dice2;
         			retVal.add(moveToRetVal6);
-        			moves3[0][0] = moves2[0][0];
-        			moves3[0][1] = moves2[0][1];
-        			moves3[1][0] = moves2[1][0];
-        			moves3[1][1] = moves2[1][1];
-    				moves3[2][0] = moves2[1][1] + moves2[1][0];
+        			moves3[0][0] = sourcePoints[0];
+        			moves3[0][1] = d.getFirstDice();
+        			moves3[1][0] = dice1 + sourcePoints[0];
+        			moves3[1][1] = d.getSecondDice();
+    				moves3[2][0] = dice1 + sourcePoints[0] + dice2;
     				moves3[2][1] = d.getSecondDice();
     				if (boardCopy.isValidMove(moves3, d, boardCopy.getTurn())) {
     					int moveToRetVal7[] = new int[3];
     					moveToRetVal7[0] = playCounter;
-            			moveToRetVal7[1] = moves3[2][0];
-            			moveToRetVal7[2] = moves3[2][0] + dice2;
+            			moveToRetVal7[1] = dice1 + sourcePoints[0] + dice2;
+            			moveToRetVal7[2] = dice1 + sourcePoints[0] + dice2 + dice2;
             			retVal.add(moveToRetVal7);
-            			moves4[0][0] = moves3[0][0];
-            			moves4[0][1] = moves3[0][1];
-            			moves4[1][0] = moves3[1][0];
-            			moves4[1][1] = moves3[1][1];
-            			moves4[2][0] = moves3[2][0];
-            			moves4[2][1] = moves3[2][1];
-    					moves4[3][0] = moves3[2][1] + moves3[2][0];
+            			moves4[0][0] = sourcePoints[0];
+            			moves4[0][1] = d.getFirstDice();
+            			moves4[1][0] = dice1 + sourcePoints[0];
+            			moves4[1][1] = d.getSecondDice();
+            			moves4[2][0] = dice1 + sourcePoints[0] + dice2;
+            			moves4[2][1] = d.getSecondDice();
+    					moves4[3][0] = dice2 + dice1 + sourcePoints[0] + dice2;
     					moves4[3][1] = d.getSecondDice();
     					if (boardCopy.isValidMove(moves4, d, boardCopy.getTurn())) {
     						int moveToRetVal8[] = new int[3];
     						moveToRetVal8[0] = playCounter;
-    	        			moveToRetVal8[1] = moves4[3][0];
-    	        			moveToRetVal8[2] = moves4[3][0] + dice2;
+    	        			moveToRetVal8[1] = dice2 + dice1 + sourcePoints[0] + dice2;
+    	        			moveToRetVal8[2] = dice2 + dice1 + sourcePoints[0] + dice2 + dice2;
     	        			retVal.add(moveToRetVal8);
     					}
     				}
@@ -951,4 +932,4 @@ public class Board {
     	}
     	return retVal;
     }
-} 
+}
