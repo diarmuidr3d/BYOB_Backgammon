@@ -777,7 +777,7 @@ public class Board {
     		}
     	}
     	for (int i = 0; i < allPlays.size(); i++) {
-    		System.out.println(allPlays.get(i)[0]+"-"+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+    		System.out.println("Play option "+allPlays.get(i)[0]+": "+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
     	}
     	return allPlays;
     }
