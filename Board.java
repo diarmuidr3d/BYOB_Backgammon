@@ -579,6 +579,9 @@ public class Board {
         boolean moveIsValid = true;
         
         tmpDice.printDice();
+        for (int[] move: moves) {
+        	System.out.println("Source: "+move[0]+", Dice: "+move[1]);
+        }
         
         for(int k = 0; k < moves.length; k++){
             System.arraycopy(moves[k], 0, movesArray[k], 0, 2);
@@ -587,19 +590,19 @@ public class Board {
         int i;
 
         if (movesArray != null) {
-            if (getTurn() == 'W') {
+            if (p == 'W') {
                 for (i = 0; i < movesArray.length; i++) {
                     movesArray[i][0]--;
                     if (movesArray[i][0] == 24) {
                         movesArray[i][0] = Board.WHITE_BAR;
-                        movesArray[i][1] = movesArray[i][1] - 1;
+                       movesArray[i][1] = movesArray[i][1] - 1;
                     } else if (movesArray[i][0] + movesArray[i][1] > 24) {
                         movesArray[i][1] = Board.WHITE_OFF;
                     } else {
                         movesArray[i][1] = movesArray[i][0] + movesArray[i][1];
                     }
                 }
-            } else if (getTurn() == 'B') {
+            } else if (p == 'B') {
                 for (i = 0; i < movesArray.length; i++) {
                     movesArray[i][0]--;
                     if (movesArray[i][0] == 24) {
@@ -617,7 +620,7 @@ public class Board {
         i = 0;
 
         for (int[] move : movesArray) {
-            switch (p) {
+        	switch (p) {
                 case ('W'):
                     if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.boardPins[move[0]].getColour() == 'B')) {
                         moveIsValid = false;
@@ -713,12 +716,15 @@ public class Board {
     	if (!(boardCopy.getBar(boardCopy.getTurn()) > 3 && d.isDoubleRoll()) && !(boardCopy.getBar(boardCopy.getTurn()) > 1 && !d.isDoubleRoll())) {
 	    	for (int i = 0; i <= 23; i++) {
 	    		if (boardCopy.getColour(i) == b.getTurn()) {
-	    			source[sourceCounter] = i;
+	    			source[sourceCounter] = i+1;
 	    			sourceCounter++;
 	    		}
 	    	}
     	}
     	List<int[]> allPlays = searchForPlays(d, playCounter, boardCopy, source);
+    	for (int i = 0; i < allPlays.size(); i++) {
+    		System.out.println(allPlays.get(i)[0]+"-"+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+    	}
     	playCounter=0;
     	for (int i = 0; i < allPlays.size(); i++) {
     		if ((allPlays.get(i)[0]) == playCounter) {
@@ -735,7 +741,7 @@ public class Board {
 			overAllMax = currentPlayMax;
 			currentPlayMax = 0;
 		}
-    	playCounter=0;
+    	playCounter=allPlays.get(0)[0];
     	for (int i = 0; i < allPlays.size(); i++) {
     		if ((allPlays.get(i)[0]) == playCounter) {
     			currentPlayMax++;
@@ -765,6 +771,16 @@ public class Board {
     			}
     		}
     	}
+    	for (int i = 1; i < allPlays.size(); i++) {
+    		if ((allPlays.get(i)[0] == allPlays.get(i-1)[0]) && (allPlays.get(i)[1] == allPlays.get(i-1)[1]) && (allPlays.get(i)[2] == allPlays.get(i-1)[2])) {
+    			allPlays.remove(i);
+    			i--;
+    		}
+    	}
+    	System.out.println("Round 2");
+    	for (int i = 0; i < allPlays.size(); i++) {
+    		System.out.println(allPlays.get(i)[0]+"-"+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+    	}
     	return allPlays;
     }
 
@@ -793,85 +809,102 @@ public class Board {
     	if (!d.isDoubleRoll()) {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
-    		HumanPlayer.computeMoves(moves1, boardCopy);
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			moveToRetVal[0] = playCounter;
     			moveToRetVal[1] = moves1[0][0];
     			moveToRetVal[2] = moves1[0][0] + dice1;
+    			System.out.println("added to retVal");
     			retVal.add(moveToRetVal);
-    			moves2 = moves1;
-    			moves2[1][0] = moves1[0][1];
+    			for (int i =0; i<retVal.size(); i++) {
+    	    		System.out.println(retVal.get(i)[0]+"-"+retVal.get(i)[1]+"-"+retVal.get(i)[2]);
+    	    	}
+    			moves2[0][0] = moves1[0][0];
+    			moves2[0][1] = moves1[0][1];
+    			moves2[1][0] = moves1[0][1] + moves1[0][0];
     			moves2[1][1] = d.getSecondDice();
-    			HumanPlayer.computeMoves(moves2, boardCopy);
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
         			moveToRetVal[0] = playCounter;
         			moveToRetVal[1] = moves2[1][0];
         			moveToRetVal[2] = moves2[1][0] + dice2;
+        			System.out.println("added to retVal");
         			retVal.add(moveToRetVal);
     			}
     			playCounter++;
     		}
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getSecondDice();
-    		HumanPlayer.computeMoves(moves1, boardCopy);
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			moveToRetVal[0] = playCounter;
     			moveToRetVal[1] = moves1[0][0];
     			moveToRetVal[2] = moves1[0][0] + dice2;
+    			System.out.println("added to retVal");
     			retVal.add(moveToRetVal);
-    			moves2 = moves1;
-    			moves2[1][0] = moves1[0][1];
+    			moves2[0][0] = moves1[0][0];
+    			moves2[0][1] = moves1[0][1];
+    			moves2[1][0] = moves1[0][1] + moves1[0][0];
     			moves2[1][1] = d.getFirstDice();
-    			HumanPlayer.computeMoves(moves2, boardCopy);
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
         			moveToRetVal[0] = playCounter;
         			moveToRetVal[1] = moves2[1][0];
         			moveToRetVal[2] = moves2[1][0] + dice1;
         			retVal.add(moveToRetVal);
+        			System.out.println("added to retVal");
     			}
     			playCounter++;
     		}
     	} else {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
-    		HumanPlayer.computeMoves(moves1, boardCopy);
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			moveToRetVal[0] = playCounter;
     			moveToRetVal[1] = moves1[0][0];
     			moveToRetVal[2] = moves1[0][0] + dice1;
     			retVal.add(moveToRetVal);
-    			moves2 = moves1;
-    			moves2[1][0] = moves1[0][1];
+    			System.out.println("added to retVal");
+    			moves2[0][0] = moves1[0][0];
+    			moves2[0][1] = moves1[0][1];
+    			moves2[1][0] = moves1[0][1] + moves1[0][0];
     			moves2[1][1] = d.getSecondDice();
-    			HumanPlayer.computeMoves(moves2, boardCopy);
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
     				moveToRetVal[0] = playCounter;
         			moveToRetVal[1] = moves2[1][0];
         			moveToRetVal[2] = moves2[1][0] + dice2;
         			retVal.add(moveToRetVal);
-        			moves3 = moves2;
-    				moves3[2][0] = moves2[1][1];
+        			System.out.println("added to retVal");
+        			moves3[0][0] = moves2[0][0];
+        			moves3[0][1] = moves2[0][1];
+        			moves3[1][0] = moves2[1][0];
+        			moves3[1][1] = moves2[1][1];
+    				moves3[2][0] = moves2[1][1] + moves2[1][0];
     				moves3[2][1] = d.getSecondDice();
-    				HumanPlayer.computeMoves(moves3, boardCopy);
     				if (boardCopy.isValidMove(moves3, d, boardCopy.getTurn())) {
     					moveToRetVal[0] = playCounter;
             			moveToRetVal[1] = moves3[2][0];
             			moveToRetVal[2] = moves3[2][0] + dice2;
             			retVal.add(moveToRetVal);
-            			moves4 = moves3;
-    					moves4[3][0] = moves3[2][1];
+            			System.out.println("added to retVal");
+            			moves4[0][0] = moves2[0][0];
+            			moves4[0][1] = moves2[0][1];
+            			moves4[1][0] = moves2[1][0];
+            			moves4[1][1] = moves2[1][1];
+            			moves4[2][0] = moves2[2][0];
+            			moves4[2][1] = moves2[2][1];
+    					moves4[3][0] = moves3[2][1] + moves3[2][0];
     					moves4[3][1] = d.getSecondDice();
-    					HumanPlayer.computeMoves(moves4, boardCopy);
     					if (boardCopy.isValidMove(moves4, d, boardCopy.getTurn())) {
     						moveToRetVal[0] = playCounter;
     	        			moveToRetVal[1] = moves4[3][0];
     	        			moveToRetVal[2] = moves4[3][0] + dice2;
     	        			retVal.add(moveToRetVal);
+    	        			System.out.println("added to retVal");
     					}
     				}
     			}
     			playCounter++;
     		}
+    	}
+    	for (int i =0; i<retVal.size(); i++) {
+    		System.out.println(retVal.get(i)[0]+"-"+retVal.get(i)[1]+"-"+retVal.get(i)[2]);
     	}
     	if (sourcePoints.length > 1) {
     		int[] sourcePointsShorter = new int[sourcePoints.length-1];
@@ -879,8 +912,8 @@ public class Board {
     			sourcePointsShorter[i] = sourcePoints[i+1];
     		}
     		List<int[]> recursiveReturn = boardCopy.searchForPlays(d, playCounter, boardCopy, sourcePointsShorter);
-    		while (recursiveReturn.iterator().hasNext()) {
-    			retVal.add(recursiveReturn.iterator().next());
+    		for (int i = 0; i < recursiveReturn.size(); i ++) {
+    			retVal.add(recursiveReturn.get(i));
     		}
     	}
     	return retVal;
