@@ -691,6 +691,43 @@ public class Board {
         return moveIsValid;
     }
     
+    
+    public void computeMoves(int[][] movesArray, Board b) {
+
+        int i;
+
+        if (movesArray != null) {
+            if (b.getTurn() == 'W') {
+                for (i = 0; i < movesArray.length; i++) {
+                    movesArray[i][0]--;
+                    if (movesArray[i][0] == 24) {
+                        movesArray[i][0] = Board.WHITE_BAR;
+                        movesArray[i][1] = movesArray[i][1] - 1;
+                    } else if (movesArray[i][0] + movesArray[i][1] > 24) {
+                        movesArray[i][1] = Board.WHITE_OFF;
+                    } else {
+                        movesArray[i][1] = movesArray[i][0] + movesArray[i][1];
+                    }
+                }
+            } else if (b.getTurn() == 'B') {
+                for (i = 0; i < movesArray.length; i++) {
+                    movesArray[i][0]--;
+                    if (movesArray[i][0] == 24) {
+                        movesArray[i][0] = Board.BLACK_BAR;
+                        movesArray[i][1] = 24 - movesArray[i][1];
+                    } else if (movesArray[i][0] - movesArray[i][1] < 0) {
+                        movesArray[i][1] = Board.BLACK_OFF;
+                    } else {
+                        movesArray[i][1] = movesArray[i][0] - movesArray[i][1];
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    
     /**
      * Gets an array of points for all a player's checkers on the board.
      * Passes this to searchForPlays. Gets the return from this and processes it to remove unwanted moves.
