@@ -86,7 +86,12 @@ public class HumanPlayer {
 
         return movesArray;
     }
-
+/**
+ * To be called before Board.makeMove(), it changes the format of each element 
+ * in movesArray into [sourcePoint; destPoint].
+ * @param movesArray the array to be modified
+ * @param b the actual board
+ */
     public static void computeMoves(int[][] movesArray, Board b) {
 
         int i;
