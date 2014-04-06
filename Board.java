@@ -5,6 +5,7 @@
  */
 package backgammon;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -579,9 +580,6 @@ public class Board {
         boolean moveIsValid = true;
         
         tmpDice.printDice();
-        for (int[] move: moves) {
-        	System.out.println("Source: "+move[0]+", Dice: "+move[1]);
-        }
         
         for(int k = 0; k < moves.length; k++){
             System.arraycopy(moves[k], 0, movesArray[k], 0, 2);
@@ -721,10 +719,11 @@ public class Board {
 	    		}
 	    	}
     	}
-    	List<int[]> allPlays = searchForPlays(d, playCounter, boardCopy, source);
-    	for (int i = 0; i < allPlays.size(); i++) {
-    		System.out.println(allPlays.get(i)[0]+"-"+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+    	int[] sourcePoints = new int[sourceCounter];
+    	for (int i = 0; i < sourceCounter; i++) {
+    		sourcePoints[i] = source[i];
     	}
+    	List<int[]> allPlays = searchForPlays(d, playCounter, boardCopy, sourcePoints);
     	playCounter=0;
     	for (int i = 0; i < allPlays.size(); i++) {
     		if ((allPlays.get(i)[0]) == playCounter) {
@@ -777,7 +776,6 @@ public class Board {
     			i--;
     		}
     	}
-    	System.out.println("Round 2");
     	for (int i = 0; i < allPlays.size(); i++) {
     		System.out.println(allPlays.get(i)[0]+"-"+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
     	}
@@ -796,7 +794,7 @@ public class Board {
     	int moves2[][] = new int [2][2];
     	int moves3[][] = new int [3][2];
     	int moves4[][] = new int [4][2];
-    	int moveToRetVal[] = new int[3];
+    	int index = 0;
     	List<int[]> retVal = new LinkedList<int[]>();
     	int dice1, dice2;
     	if (boardCopy.getTurn() == 'B') {
@@ -810,45 +808,46 @@ public class Board {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
+    			int moveToRetVal[] = new int[3];
     			moveToRetVal[0] = playCounter;
-    			moveToRetVal[1] = moves1[0][0];
-    			moveToRetVal[2] = moves1[0][0] + dice1;
-    			System.out.println("added to retVal");
-    			retVal.add(moveToRetVal);
-    			for (int i =0; i<retVal.size(); i++) {
-    	    		System.out.println(retVal.get(i)[0]+"-"+retVal.get(i)[1]+"-"+retVal.get(i)[2]);
-    	    	}
-    			moves2[0][0] = moves1[0][0];
-    			moves2[0][1] = moves1[0][1];
-    			moves2[1][0] = moves1[0][1] + moves1[0][0];
+    			moveToRetVal[1] = sourcePoints[0];
+    			moveToRetVal[2] = sourcePoints[0] + dice1;
+    			retVal.add(index, moveToRetVal);
+    			index++;
+    			moves2[0][0] = sourcePoints[0];
+    			moves2[0][1] = d.getFirstDice();
+    			moves2[1][0] = sourcePoints[0] + dice1;
     			moves2[1][1] = d.getSecondDice();
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
-        			moveToRetVal[0] = playCounter;
-        			moveToRetVal[1] = moves2[1][0];
-        			moveToRetVal[2] = moves2[1][0] + dice2;
-        			System.out.println("added to retVal");
-        			retVal.add(moveToRetVal);
+    				int moveToRetVal2[] = new int[3];
+        			moveToRetVal2[0] = playCounter;
+        			moveToRetVal2[1] = sourcePoints[0] + d.getFirstDice();
+        			moveToRetVal2[2] = sourcePoints[0] + dice2;
+        			retVal.add(index, moveToRetVal2);
+        			index++;
     			}
     			playCounter++;
     		}
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getSecondDice();
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
-    			moveToRetVal[0] = playCounter;
-    			moveToRetVal[1] = moves1[0][0];
-    			moveToRetVal[2] = moves1[0][0] + dice2;
-    			System.out.println("added to retVal");
-    			retVal.add(moveToRetVal);
-    			moves2[0][0] = moves1[0][0];
-    			moves2[0][1] = moves1[0][1];
-    			moves2[1][0] = moves1[0][1] + moves1[0][0];
+    			int moveToRetVal3[] = new int[3];
+    			moveToRetVal3[0] = playCounter;
+    			moveToRetVal3[1] = sourcePoints[0];
+    			moveToRetVal3[2] = sourcePoints[0] + dice2;
+    			retVal.add(index, moveToRetVal3);
+    			index++;
+    			moves2[0][0] = sourcePoints[0];
+    			moves2[0][1] = d.getSecondDice();
+    			moves2[1][0] = sourcePoints[0] + dice2;
     			moves2[1][1] = d.getFirstDice();
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
-        			moveToRetVal[0] = playCounter;
-        			moveToRetVal[1] = moves2[1][0];
-        			moveToRetVal[2] = moves2[1][0] + dice1;
-        			retVal.add(moveToRetVal);
-        			System.out.println("added to retVal");
+    				int moveToRetVal4[] = new int[3];
+        			moveToRetVal4[0] = playCounter;
+        			moveToRetVal4[1] = sourcePoints[0] + dice2;
+        			moveToRetVal4[2] = sourcePoints[0] + dice2 + dice1;
+        			retVal.add(index, moveToRetVal4);
+        			index++;
     			}
     			playCounter++;
     		}
@@ -856,21 +855,21 @@ public class Board {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
-    			moveToRetVal[0] = playCounter;
-    			moveToRetVal[1] = moves1[0][0];
-    			moveToRetVal[2] = moves1[0][0] + dice1;
-    			retVal.add(moveToRetVal);
-    			System.out.println("added to retVal");
+    			int moveToRetVal5[] = new int[3];
+    			moveToRetVal5[0] = playCounter;
+    			moveToRetVal5[1] = moves1[0][0];
+    			moveToRetVal5[2] = moves1[0][0] + dice1;
+    			retVal.add(moveToRetVal5);
     			moves2[0][0] = moves1[0][0];
     			moves2[0][1] = moves1[0][1];
     			moves2[1][0] = moves1[0][1] + moves1[0][0];
     			moves2[1][1] = d.getSecondDice();
     			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
-    				moveToRetVal[0] = playCounter;
-        			moveToRetVal[1] = moves2[1][0];
-        			moveToRetVal[2] = moves2[1][0] + dice2;
-        			retVal.add(moveToRetVal);
-        			System.out.println("added to retVal");
+    				int moveToRetVal6[] = new int[3];
+    				moveToRetVal6[0] = playCounter;
+        			moveToRetVal6[1] = moves2[1][0];
+        			moveToRetVal6[2] = moves2[1][0] + dice2;
+        			retVal.add(moveToRetVal6);
         			moves3[0][0] = moves2[0][0];
         			moves3[0][1] = moves2[0][1];
         			moves3[1][0] = moves2[1][0];
@@ -878,33 +877,30 @@ public class Board {
     				moves3[2][0] = moves2[1][1] + moves2[1][0];
     				moves3[2][1] = d.getSecondDice();
     				if (boardCopy.isValidMove(moves3, d, boardCopy.getTurn())) {
-    					moveToRetVal[0] = playCounter;
-            			moveToRetVal[1] = moves3[2][0];
-            			moveToRetVal[2] = moves3[2][0] + dice2;
-            			retVal.add(moveToRetVal);
-            			System.out.println("added to retVal");
-            			moves4[0][0] = moves2[0][0];
-            			moves4[0][1] = moves2[0][1];
-            			moves4[1][0] = moves2[1][0];
-            			moves4[1][1] = moves2[1][1];
-            			moves4[2][0] = moves2[2][0];
-            			moves4[2][1] = moves2[2][1];
+    					int moveToRetVal7[] = new int[3];
+    					moveToRetVal7[0] = playCounter;
+            			moveToRetVal7[1] = moves3[2][0];
+            			moveToRetVal7[2] = moves3[2][0] + dice2;
+            			retVal.add(moveToRetVal7);
+            			moves4[0][0] = moves3[0][0];
+            			moves4[0][1] = moves3[0][1];
+            			moves4[1][0] = moves3[1][0];
+            			moves4[1][1] = moves3[1][1];
+            			moves4[2][0] = moves3[2][0];
+            			moves4[2][1] = moves3[2][1];
     					moves4[3][0] = moves3[2][1] + moves3[2][0];
     					moves4[3][1] = d.getSecondDice();
     					if (boardCopy.isValidMove(moves4, d, boardCopy.getTurn())) {
-    						moveToRetVal[0] = playCounter;
-    	        			moveToRetVal[1] = moves4[3][0];
-    	        			moveToRetVal[2] = moves4[3][0] + dice2;
-    	        			retVal.add(moveToRetVal);
-    	        			System.out.println("added to retVal");
+    						int moveToRetVal8[] = new int[3];
+    						moveToRetVal8[0] = playCounter;
+    	        			moveToRetVal8[1] = moves4[3][0];
+    	        			moveToRetVal8[2] = moves4[3][0] + dice2;
+    	        			retVal.add(moveToRetVal8);
     					}
     				}
     			}
     			playCounter++;
     		}
-    	}
-    	for (int i =0; i<retVal.size(); i++) {
-    		System.out.println(retVal.get(i)[0]+"-"+retVal.get(i)[1]+"-"+retVal.get(i)[2]);
     	}
     	if (sourcePoints.length > 1) {
     		int[] sourcePointsShorter = new int[sourcePoints.length-1];
@@ -918,4 +914,4 @@ public class Board {
     	}
     	return retVal;
     }
-}
+} 
