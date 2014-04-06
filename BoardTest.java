@@ -16,7 +16,7 @@ public class BoardTest {
 		b.setBoard();
 		b.playerTurn = 'W';
 		d.rollDice();
-		System.out.println("All Possible Plays: "+b.allPossiblePlays(d, b).get(2)[1]);
+		b.allPossiblePlays(d, b);
 		
 		System.out.println("checks the display of the board");
 		b.printBoard();
