@@ -14,6 +14,7 @@ public class BoardTest {
 		Board b = new Board();
 		Dice d = new Dice();
 		b.setBoard();
+		b.playerTurn = 'W';
 		d.rollDice();
 		System.out.println("All Possible Plays: "+b.allPossiblePlays(d, b).get(2)[1]);
 		

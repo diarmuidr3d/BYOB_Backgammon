@@ -87,7 +87,7 @@ public class HumanPlayer {
         return movesArray;
     }
 
-    public void computeMoves(int[][] movesArray, Board b) {
+    public static void computeMoves(int[][] movesArray, Board b) {
 
         int i;
 

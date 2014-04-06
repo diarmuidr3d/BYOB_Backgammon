@@ -411,7 +411,7 @@ public class Board {
      * @param opposingPlayer is the loser of the game
      * @return a string with the result (Single, Gammon or Backgammon)
      */
-    private String getResult(char opposingPlayer) {
+    public String getResult(char opposingPlayer) {
         int lastCheckerLocation = lastChecker(opposingPlayer);
         String result;
         if (opposingPlayer == 'W') {
@@ -776,7 +776,10 @@ public class Board {
      * @return a List of integer arrays consisting of source and destination of all possible valid moves
      */
     private List<int[]> searchForPlays(Dice d, int playCounter, Board boardCopy, int[] sourcePoints) {
-    	int moves[][] = new int [4][2];
+    	int moves1[][] = new int [1][2];
+    	int moves2[][] = new int [2][2];
+    	int moves3[][] = new int [3][2];
+    	int moves4[][] = new int [4][2];
     	int moveToRetVal[] = new int[3];
     	List<int[]> retVal = new LinkedList<int[]>();
     	int dice1, dice2;
@@ -788,68 +791,81 @@ public class Board {
     		dice2 = d.getSecondDice();
     	}
     	if (!d.isDoubleRoll()) {
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = d.getFirstDice();
-    		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+    		moves1[0][0] = sourcePoints[0];
+    		moves1[0][1] = d.getFirstDice();
+    		HumanPlayer.computeMoves(moves1, boardCopy);
+    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			moveToRetVal[0] = playCounter;
-    			moveToRetVal[1] = moves[0][0];
-    			moveToRetVal[2] = moves[0][0] + dice1;
+    			moveToRetVal[1] = moves1[0][0];
+    			moveToRetVal[2] = moves1[0][0] + dice1;
     			retVal.add(moveToRetVal);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = d.getSecondDice();
-    			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+    			moves2 = moves1;
+    			moves2[1][0] = moves1[0][1];
+    			moves2[1][1] = d.getSecondDice();
+    			HumanPlayer.computeMoves(moves2, boardCopy);
+    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
         			moveToRetVal[0] = playCounter;
-        			moveToRetVal[1] = moves[1][0];
-        			moveToRetVal[2] = moves[1][0] + dice2;
+        			moveToRetVal[1] = moves2[1][0];
+        			moveToRetVal[2] = moves2[1][0] + dice2;
         			retVal.add(moveToRetVal);
     			}
     			playCounter++;
     		}
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = d.getSecondDice();
-    		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+    		moves1[0][0] = sourcePoints[0];
+    		moves1[0][1] = d.getSecondDice();
+    		HumanPlayer.computeMoves(moves1, boardCopy);
+    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			moveToRetVal[0] = playCounter;
-    			moveToRetVal[1] = moves[0][0];
-    			moveToRetVal[2] = moves[0][0] + dice2;
+    			moveToRetVal[1] = moves1[0][0];
+    			moveToRetVal[2] = moves1[0][0] + dice2;
     			retVal.add(moveToRetVal);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = d.getFirstDice();
-    			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+    			moves2 = moves1;
+    			moves2[1][0] = moves1[0][1];
+    			moves2[1][1] = d.getFirstDice();
+    			HumanPlayer.computeMoves(moves2, boardCopy);
+    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
         			moveToRetVal[0] = playCounter;
-        			moveToRetVal[1] = moves[1][0];
-        			moveToRetVal[2] = moves[1][0] + dice1;
+        			moveToRetVal[1] = moves2[1][0];
+        			moveToRetVal[2] = moves2[1][0] + dice1;
         			retVal.add(moveToRetVal);
     			}
     			playCounter++;
     		}
     	} else {
-    		moves [0][0] = sourcePoints[0];
-    		moves [0][1] = d.getFirstDice();
-    		if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+    		moves1[0][0] = sourcePoints[0];
+    		moves1[0][1] = d.getFirstDice();
+    		HumanPlayer.computeMoves(moves1, boardCopy);
+    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			moveToRetVal[0] = playCounter;
-    			moveToRetVal[1] = moves[0][0];
-    			moveToRetVal[2] = moves[0][0] + dice1;
+    			moveToRetVal[1] = moves1[0][0];
+    			moveToRetVal[2] = moves1[0][0] + dice1;
     			retVal.add(moveToRetVal);
-    			moves[1][0] = moves[0][1];
-    			moves[1][1] = d.getSecondDice();
-    			if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+    			moves2 = moves1;
+    			moves2[1][0] = moves1[0][1];
+    			moves2[1][1] = d.getSecondDice();
+    			HumanPlayer.computeMoves(moves2, boardCopy);
+    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
     				moveToRetVal[0] = playCounter;
-        			moveToRetVal[1] = moves[1][0];
-        			moveToRetVal[2] = moves[1][0] + dice2;
+        			moveToRetVal[1] = moves2[1][0];
+        			moveToRetVal[2] = moves2[1][0] + dice2;
         			retVal.add(moveToRetVal);
-    				moves[2][0] = moves[1][1];
-    				moves[2][1] = d.getSecondDice();
-    				if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+        			moves3 = moves2;
+    				moves3[2][0] = moves2[1][1];
+    				moves3[2][1] = d.getSecondDice();
+    				HumanPlayer.computeMoves(moves3, boardCopy);
+    				if (boardCopy.isValidMove(moves3, d, boardCopy.getTurn())) {
     					moveToRetVal[0] = playCounter;
-            			moveToRetVal[1] = moves[2][0];
-            			moveToRetVal[2] = moves[2][0] + dice2;
+            			moveToRetVal[1] = moves3[2][0];
+            			moveToRetVal[2] = moves3[2][0] + dice2;
             			retVal.add(moveToRetVal);
-    					moves[3][0] = moves[2][1];
-    					moves[3][1] = d.getSecondDice();
-    					if (boardCopy.isValidMove(moves, d, boardCopy.getTurn())) {
+            			moves4 = moves3;
+    					moves4[3][0] = moves3[2][1];
+    					moves4[3][1] = d.getSecondDice();
+    					HumanPlayer.computeMoves(moves4, boardCopy);
+    					if (boardCopy.isValidMove(moves4, d, boardCopy.getTurn())) {
     						moveToRetVal[0] = playCounter;
-    	        			moveToRetVal[1] = moves[3][0];
-    	        			moveToRetVal[2] = moves[3][0] + dice2;
+    	        			moveToRetVal[1] = moves4[3][0];
+    	        			moveToRetVal[2] = moves4[3][0] + dice2;
     	        			retVal.add(moveToRetVal);
     					}
     				}
