@@ -5,6 +5,8 @@
  */
 package backgammon;
 
+import java.io.IOException;
+
 public class BgOnePlayer{
 	
     Board board;
@@ -51,6 +53,81 @@ public class BgOnePlayer{
         }
     }
 	
+    /**
+     * It starts a new game between two human players and manage it.
+     * <p>
+     * Manage the first turn and the following ones. Count the number of turns.
+     * <p>
+     * @return It the returns the winner of the game.
+     * @throws java.io.IOException
+     */
+    public char game() throws IOException {
+        Dice d = new Dice();
+        boolean finishedGame = false;
+        boolean endTurn;
+        char winner = 'N';
+        
+        firstPlay(d);
+        
+        while (playCount == 0) {
+            board.printBoard();
+            if (board.getTurn() == 'W') {
+                if (whitePlayer.playerMove(board, d) > 0 ) {
+                    playCount++;
+                }
+            } else {
+
+                if(blackPlayer.getPlay(d,board) > 0) {
+                    playCount++;
+                }
+            }
+        }
+        
+        while (!finishedGame) {
+            switch (board.getTurn()) {
+                case ('W'):
+                    endTurn = false;
+                    d.rollDice();
+                    do {
+                        board.printBoard();
+                        if(whitePlayer.playerMove(board, d) > 0 ){
+                            endTurn = true;
+                            playCount++;
+                            finishedGame = (board.whiteOff == 15);
+                        }
+                        
+                        if (finishedGame){
+                            winner = 'W';
+                        }
+
+                    } while (!endTurn);
+
+                    break;
+
+                case ('B'):
+                    endTurn = false;
+                    d.  rollDice();
+                    do {
+                        board.printBoard();
+                        if(blackPlayer.getPlay(d,board) > 0 ) {
+                            endTurn = true;
+                            playCount++;
+                            finishedGame = (board.blackOff == 15);
+                        }
+                         if (finishedGame){
+                            winner = 'B';
+                        }
+                    } while (!endTurn);
+                    
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+        System.out.println("The winner is: " + winner + " with a " + board.getResult(winner));
+        return winner;
+    }
 
 }
-
