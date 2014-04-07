@@ -37,7 +37,7 @@ random and returns it to the calling method
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public int[] getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
+    public int[][] getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
     	List<int[]> possible_moves = b.allPossiblePlays(d,b);
     	Random generator = new Random(); 
     	int randomPlay = generator.nextInt(possible_moves.size());
@@ -46,9 +46,9 @@ random and returns it to the calling method
     		randomPlay--;
     		play = possible_moves.get(randomPlay);
     	}
-    	int retVal[] = new int[2];
-    	retVal[0] = play[1];
-    	retVal[1] = play[2];
+    	int retVal[][] = new int[1][2];
+    	retVal[0][0] = play[1];
+    	retVal[0][1] = play[2];
     	return retVal;
     }
 }
