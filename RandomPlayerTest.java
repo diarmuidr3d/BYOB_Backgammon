@@ -27,6 +27,9 @@ public class RandomPlayerTest {
 			entry = r.getPlay(d, b);
 			for(int i=0;i<4;i++){
 				b.makeMove(entry[i][0], entry[i][1]);
+				entry[i][0]++;
+				entry[i][1]++;
+				System.out.println("RandomPlayer moving from "+entry[i][0]+" to "+entry[i][1]);
 			}
 		}
 		else{
@@ -34,6 +37,9 @@ public class RandomPlayerTest {
 			entry = r.getPlay(d, b);
 			for(int i=0;i<2;i++){
 				b.makeMove(entry[i][0], entry[i][1]);
+				entry[i][0]++;
+				entry[i][1]++;
+				System.out.println("RandomPlayer moving from "+entry[i][0]+" to "+entry[i][1]);
 			}
 		}
 		b.printBoard();

@@ -21,7 +21,7 @@ public class BgTwoPlayers {
         board = new Board();
         if (test==0)
             board.setBoard();
-        else board.setBoardTestBO();
+        else board.setBoardTest();
         blackPlayer = new HumanPlayer();
         blackPlayer.setPlayerColour('B');
         whitePlayer = new HumanPlayer();

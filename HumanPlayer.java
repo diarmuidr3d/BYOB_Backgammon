@@ -175,7 +175,7 @@ public class HumanPlayer {
             int[][] moves = readMoves(b);
            
             if (moves != null) {
-                boolean valid = b.isValidMove(moves, d, b.getTurn());
+                boolean valid = b.isValidMove(moves, d, b.getTurn(), false);
                 if (!valid) {
                     System.out.println("One or more of your moves are not valid...Retype them!");
                 } else if (moves.length <= movesCounter && valid) {

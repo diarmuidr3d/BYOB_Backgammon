@@ -547,7 +547,6 @@ public class Board {
      */
     public void printErrorCode(int errCode, String msg) {
         String s;
-
         switch (errCode) {
             case BLOCKED_POINT:
                 s = msg + "Can't move to that point!";
@@ -573,11 +572,8 @@ public class Board {
             default: 
                 s = "WRONG ERROR CODE...";
                 break;
-
         }
-
         System.out.println(s);
-
     }
 
     /**
@@ -587,22 +583,16 @@ public class Board {
      * @param p is the player
      * @return true if it is a valid move, false if not
      */
-    public boolean isValidMove(int moves[][], Dice d, char p) {
-        
+    public boolean isValidMove(int moves[][], Dice d, char p, boolean silent) {
         Board tmpBoard = this.copy();
         Dice tmpDice = d.copy();
         int[][] movesArray = new int[moves.length][2];
         int usedDie = -5;
-        boolean moveIsValid = true;
-        
-        tmpDice.printDice();
-        
+        boolean moveIsValid = true;        
         for(int k = 0; k < moves.length; k++){
             System.arraycopy(moves[k], 0, movesArray[k], 0, 2);
         } 
-        
         int i;
-
         if (movesArray != null) {
             if (p == 'W') {
                 for (i = 0; i < movesArray.length; i++) {
@@ -630,37 +620,35 @@ public class Board {
                 }
             }
         }
-            
         i = 0;
-
         for (int[] move : movesArray) {
         	switch (p) {
                 case ('W'):
                     if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.getColour(move[0]) == 'B')) {
                         moveIsValid = false;
-                        printErrorCode(INVALID_POINT, "Move " + i + ":");
+                        if (!silent) printErrorCode(INVALID_POINT, "Move " + i + ":");
                     } else if (tmpBoard.isEmpty(move[0])) {
                         moveIsValid = false;
-                        printErrorCode(EMPTY_POINT, "Move " + i + ":");
+                        if (!silent) printErrorCode(EMPTY_POINT, "Move " + i + ":");
                     } else if ((usedDie = tmpDice.isMatchFor(moves[i][1], tmpBoard)) < 0) {
                         moveIsValid = false;
                         tmpDice.resetDieCheck(usedDie);
-                        printErrorCode(WRONG_DIE, "Move " + i + ":");
+                        if (!silent) printErrorCode(WRONG_DIE, "Move " + i + ":");
                     } else if (!checkBearOff('W') && move[1] == WHITE_OFF) {
                         moveIsValid = false;
-                        printErrorCode(NO_BEAROFF, "Move " + i + ":");
+                        if (!silent) printErrorCode(NO_BEAROFF, "Move " + i + ":");
                         break;
                     } else if (move[0] > tmpBoard.lastChecker('W') && move[1] == WHITE_OFF){
                         moveIsValid = false;
-                        printErrorCode(HIGHER_ROLL, "Move " + i + ":");
+                        if (!silent) printErrorCode(HIGHER_ROLL, "Move " + i + ":");
                         break;
                     } else if (tmpBoard.getBar('W')>0 && move[0] != WHITE_BAR){
                         moveIsValid = false;
-                        printErrorCode(EMPTY_BAR, "Move " + i + ":");
+                        if (!silent) printErrorCode(EMPTY_BAR, "Move " + i + ":");
                         break;  
                     } else if ( move[1] != Board.WHITE_OFF && tmpBoard.boardPins[move[1]].getColour() == 'B' && tmpBoard.boardPins[move[1]].getCheckers() > 1 ){
                         moveIsValid = false;
-                        printErrorCode(BLOCKED_POINT, "Move " + i + ":");
+                        if (!silent) printErrorCode(BLOCKED_POINT, "Move " + i + ":");
                         break;
                     } else {
                         tmpBoard.makeMove(move[0], move[1]);
@@ -670,29 +658,29 @@ public class Board {
                 case ('B'):
                      if ((move[0] < 0 || (move[0] > 23 && move[0] != BLACK_BAR)) || (move[1] > 23 && move[1] != BLACK_OFF)||(tmpBoard.boardPins[move[0]].getColour() == 'W')) {
                         moveIsValid = false;
-                        printErrorCode(INVALID_POINT, "Move " + i + ":");
+                        if (!silent) printErrorCode(INVALID_POINT, "Move " + i + ":");
                     } else if (tmpBoard.boardPins[move[0]].isEmpty()) {
                          moveIsValid = false;
-                        printErrorCode(EMPTY_POINT, "Move " + i + ":");
+                         if (!silent) printErrorCode(EMPTY_POINT, "Move " + i + ":");
                     } else if ((usedDie = tmpDice.isMatchFor(moves[i][1], tmpBoard)) < 0) {
                         moveIsValid = false;
                         tmpDice.resetDieCheck(usedDie);
-                        printErrorCode(WRONG_DIE, "Move " + i + ":");
+                        if (!silent) printErrorCode(WRONG_DIE, "Move " + i + ":");
                     } else if (!checkBearOff('B') && move[1] == BLACK_OFF) {
                         moveIsValid = false;
-                        printErrorCode(NO_BEAROFF, "Move " + i + ":");
+                        if (!silent) printErrorCode(NO_BEAROFF, "Move " + i + ":");
                         break;
                     } else if (move[0] < tmpBoard.lastChecker('B') && move[1] == BLACK_OFF){
                         moveIsValid = false;
-                        printErrorCode(HIGHER_ROLL, "Move " + i + ":");
+                        if (!silent) printErrorCode(HIGHER_ROLL, "Move " + i + ":");
                         break;
                     } else if (tmpBoard.getBar('B')>0 && move[0] != BLACK_BAR){
                         moveIsValid = false;
-                        printErrorCode(EMPTY_BAR, "Move " + i + ":");
+                        if (!silent) printErrorCode(EMPTY_BAR, "Move " + i + ":");
                         break;  
                     } else if (move[1] != Board.BLACK_OFF && tmpBoard.boardPins[move[1]].getColour() == 'W' && tmpBoard.boardPins[move[1]].getCheckers() > 1 ){
                         moveIsValid = false;
-                        printErrorCode(BLOCKED_POINT, "Move " + i + ":");
+                        if (!silent) printErrorCode(BLOCKED_POINT, "Move " + i + ":");
                         break;
                     } else {
                         tmpBoard.makeMove(move[0], move[1]);
@@ -848,6 +836,7 @@ public class Board {
     	int moves3[][] = new int [3][2];
     	int moves4[][] = new int [4][2];
     	int index = 0;
+    	boolean silent = true;
     	List<int[]> retVal = new LinkedList<int[]>();
     	int dice1, dice2;
     	if (boardCopy.getTurn() == 'B') {
@@ -860,7 +849,7 @@ public class Board {
     	if (!d.isDoubleRoll()) {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
-    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
+    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn(), silent)) {
     			int moveToRetVal[] = new int[3];
     			moveToRetVal[0] = playCounter;
     			moveToRetVal[1] = sourcePoints[0];
@@ -871,7 +860,7 @@ public class Board {
     			moves2[0][1] = d.getFirstDice();
     			moves2[1][0] = sourcePoints[0] + dice1;
     			moves2[1][1] = d.getSecondDice();
-    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
+    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn(), silent)) {
     				int moveToRetVal2[] = new int[3];
         			moveToRetVal2[0] = playCounter;
         			moveToRetVal2[1] = sourcePoints[0] + dice1;
@@ -883,7 +872,7 @@ public class Board {
     		}
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getSecondDice();
-    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
+    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn(), silent)) {
     			int moveToRetVal3[] = new int[3];
     			moveToRetVal3[0] = playCounter;
     			moveToRetVal3[1] = sourcePoints[0];
@@ -894,7 +883,7 @@ public class Board {
     			moves2[0][1] = d.getSecondDice();
     			moves2[1][0] = sourcePoints[0] + dice2;
     			moves2[1][1] = d.getFirstDice();
-    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
+    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn(), silent)) {
     				int moveToRetVal4[] = new int[3];
         			moveToRetVal4[0] = playCounter;
         			moveToRetVal4[1] = sourcePoints[0] + dice2;
@@ -907,7 +896,7 @@ public class Board {
     	} else {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
-    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
+    		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn(), silent)) {
     			int moveToRetVal5[] = new int[3];
     			moveToRetVal5[0] = playCounter;
     			moveToRetVal5[1] = sourcePoints[0];
@@ -917,7 +906,7 @@ public class Board {
     			moves2[0][1] = d.getFirstDice();
     			moves2[1][0] = dice1 + sourcePoints[0];
     			moves2[1][1] = d.getSecondDice();
-    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn())) {
+    			if (boardCopy.isValidMove(moves2, d, boardCopy.getTurn(), silent)) {
     				int moveToRetVal6[] = new int[3];
     				moveToRetVal6[0] = playCounter;
         			moveToRetVal6[1] = dice1 + sourcePoints[0];
@@ -929,7 +918,7 @@ public class Board {
         			moves3[1][1] = d.getSecondDice();
     				moves3[2][0] = dice1 + sourcePoints[0] + dice2;
     				moves3[2][1] = d.getSecondDice();
-    				if (boardCopy.isValidMove(moves3, d, boardCopy.getTurn())) {
+    				if (boardCopy.isValidMove(moves3, d, boardCopy.getTurn(), silent)) {
     					int moveToRetVal7[] = new int[3];
     					moveToRetVal7[0] = playCounter;
             			moveToRetVal7[1] = dice1 + sourcePoints[0] + dice2;
@@ -943,7 +932,7 @@ public class Board {
             			moves4[2][1] = d.getSecondDice();
     					moves4[3][0] = dice2 + dice1 + sourcePoints[0] + dice2;
     					moves4[3][1] = d.getSecondDice();
-    					if (boardCopy.isValidMove(moves4, d, boardCopy.getTurn())) {
+    					if (boardCopy.isValidMove(moves4, d, boardCopy.getTurn(), silent)) {
     						int moveToRetVal8[] = new int[3];
     						moveToRetVal8[0] = playCounter;
     	        			moveToRetVal8[1] = dice2 + dice1 + sourcePoints[0] + dice2;
