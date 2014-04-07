@@ -66,6 +66,8 @@ public class BgOnePlayer{
         boolean finishedGame = false;
         boolean endTurn;
         char winner = 'N';
+        int entry1[][] = new int[2][2];
+        int entry2[][] = new int[4][2];
         
         firstPlay(d);
         
@@ -77,9 +79,11 @@ public class BgOnePlayer{
                 }
             } else {
 
-                if(blackPlayer.getPlay(d,board) > 0) {
-                    playCount++;
-                }
+            	entry1 = blackPlayer.getPlay(d,board);
+            	for(int i=0;i<2;i++){
+            		board.makeMove(entry1[i][0], entry1[i][1]);
+            	}
+                playCount++;
             }
         }
         
@@ -109,12 +113,23 @@ public class BgOnePlayer{
                     d.  rollDice();
                     do {
                         board.printBoard();
-                        if(blackPlayer.getPlay(d,board) > 0 ) {
-                            endTurn = true;
-                            playCount++;
-                            finishedGame = (board.blackOff == 15);
-                        }
-                         if (finishedGame){
+                        if(d.isDoubleRoll()){
+                			entry2 = blackPlayer.getPlay(d, board);
+                			for(int i=0;i<4;i++){
+                				board.makeMove(entry2[i][0], entry2[i][1]);
+                			}
+                		}
+                		else{
+                			entry1 = blackPlayer.getPlay(d, board);
+                			for(int i=0;i<2;i++){
+                				board.makeMove(entry1[i][0], entry1[i][1]);
+                			}
+                		}
+                        endTurn = true;
+                        playCount++;
+                        finishedGame = (board.blackOff == 15);
+                       
+                        if (finishedGame){
                             winner = 'B';
                         }
                     } while (!endTurn);
