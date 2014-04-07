@@ -860,7 +860,6 @@ public class Board {
     	if (!d.isDoubleRoll()) {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
-    		System.out.println("SRC: "+sourcePoints[0]+" D: "+d.getFirstDice());
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			int moveToRetVal[] = new int[3];
     			moveToRetVal[0] = playCounter;

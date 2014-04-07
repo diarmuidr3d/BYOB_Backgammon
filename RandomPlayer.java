@@ -38,10 +38,12 @@ random and returns it to the calling method
      * @throws IOException
      */
     public int[][] getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
-    	List<int[]> possible_moves = b.allPossiblePlays(d,b);
     	int retVal1[][] = new int[2][2];
     	int retVal2[][] = new int[4][2];
-    	Random generator = new Random(); 
+    	Random generator = new Random();
+    	Board boardCopy = b.copy();
+    	Dice diceCopy = d.copy();
+    	List<int[]> possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
     	int randomPlay = generator.nextInt(possible_moves.size());
     	int[] play = possible_moves.get(randomPlay);
     	if(play[0] == possible_moves.get(0)[0]){
@@ -53,16 +55,15 @@ random and returns it to the calling method
         		play = possible_moves.get(randomPlay);
         	}
     	}
+    	for (int i=0; i < possible_moves.size(); i++) {
+        	System.out.println("Play option "+possible_moves.get(i)[0]+": "+possible_moves.get(i)[1]+"-"+possible_moves.get(i)[2]);
+        }
     	if(!d.isDoubleRoll()){
 		   	retVal1[0][0] = play[1]-1;
 		    retVal1[0][1] = play[2]-1;
-			for (int i =0; i < possible_moves.size(); i++) {
-				if (Math.abs(possible_moves.get(i)[1] - possible_moves.get(i)[2]) == Math.abs(play[1] - play[2])) {
-			   		possible_moves.remove(i);
-			   		i--;
-			   	}
-		    }
-			d.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), b);
+			diceCopy.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), boardCopy);
+			boardCopy.makeMove(retVal1[0][0], retVal1[0][1]);
+			possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
 			
 			// For Testing Only!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			System.out.println("\n\nRound 2\n");
@@ -84,14 +85,17 @@ random and returns it to the calling method
 	    	}
 	    	retVal1[1][0] = play[1]-1;
 		    retVal1[1][1] = play[2]-1;
-		    d.isMatchFor(Math.abs(retVal1[1][1] - retVal1[1][0]), b);
+		    diceCopy.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), boardCopy);
+			boardCopy.makeMove(retVal1[1][0], retVal1[1][1]);
+			possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
     	}
     	else{
 		   	for(int i=0;i<4;i++){
 			   	retVal2[i][0] = play[1]-1;
 			    retVal2[i][1] = play[2]-1;
-			    d.isMatchFor(Math.abs(retVal2[i][0]-retVal2[i][1]), b);
-			    possible_moves.remove(randomPlay);
+			    diceCopy.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), boardCopy);
+				boardCopy.makeMove(retVal1[0][0], retVal1[0][1]);
+				possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
 				randomPlay = generator.nextInt(possible_moves.size());
 		    	play = possible_moves.get(randomPlay);
 		    	if(play[0] == 0){
@@ -105,6 +109,9 @@ random and returns it to the calling method
 		    	}
 		   	}
     	}
+    	for (int i=0; i < possible_moves.size(); i++) {
+        	System.out.println("Play option "+possible_moves.get(i)[0]+": "+possible_moves.get(i)[1]+"-"+possible_moves.get(i)[2]);
+        }
     	
     	// For Testing Only!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     	if(!d.isDoubleRoll()){
