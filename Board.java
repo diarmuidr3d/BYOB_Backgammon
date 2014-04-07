@@ -158,22 +158,17 @@ public class Board {
      * Useful for jumping to bear off stages / other stages of a game for
      * testing!
      */
-    public void setBoardTestBO() {
+    public void setBoardTest() {
         for (int j = 0; j < 24; j++) {
             boardPins[j].setPin(' ', 0);
         }
         boardPins[23].setPin('W', 2);
-        boardPins[5].setPin('B', 0);
-        boardPins[19].setPin('W', 0);
-        boardPins[7].setPin('B', 0);
-        boardPins[20].setPin('W', 0);
-        boardPins[22].setPin('W', 0);
         boardPins[1].setPin('B', 1);
 
-        whiteBar = 0;
+        whiteBar = 1;
         blackBar = 0;
-        whiteOff = 13;
-        blackOff = 14;
+        whiteOff = 12;
+        blackOff = 12;
     }
 
     private String printTopOfBoard() {
@@ -455,6 +450,28 @@ public class Board {
     }
 
     /**
+     * Gets the colour of the pieces on a point
+     *
+     * @param position
+     * @return Returns the colour ('B' or 'W') of the pieces on a Point
+     */
+    public boolean isEmpty(int position) {
+        boolean retVal = false;
+        if (position == WHITE_BAR) {
+            if (whiteBar == 0) retVal = true;
+        } else if (position == WHITE_OFF) {
+        	if (whiteOff == 0) retVal = true;
+        } else if (position == BLACK_BAR) {
+        	if (blackBar == 0) retVal = true;
+        } else if (position == BLACK_OFF) {
+        	if (blackOff == 0) retVal = true;
+        } else if (position >= 0 && position < 24){
+           retVal = boardPins[position].isEmpty();
+        }
+        return retVal;
+    }
+
+    /**
      * Checks if a player can bear off or not
      *
      * @param player
@@ -590,9 +607,9 @@ public class Board {
             if (p == 'W') {
                 for (i = 0; i < movesArray.length; i++) {
                     movesArray[i][0]--;
-                    if (movesArray[i][0] == 24) {
-                        movesArray[i][0] = Board.WHITE_BAR;
-                       movesArray[i][1] = movesArray[i][1] - 1;
+                    if (movesArray[i][0] > 23) {
+                    	movesArray[i][0] = Board.WHITE_BAR;
+                    	movesArray[i][1] = movesArray[i][1] - 1;
                     } else if (movesArray[i][0] + movesArray[i][1] > 24) {
                         movesArray[i][1] = Board.WHITE_OFF;
                     } else {
@@ -602,7 +619,7 @@ public class Board {
             } else if (p == 'B') {
                 for (i = 0; i < movesArray.length; i++) {
                     movesArray[i][0]--;
-                    if (movesArray[i][0] == 24) {
+                    if (movesArray[i][0] > 23) {
                         movesArray[i][0] = Board.BLACK_BAR;
                         movesArray[i][1] = 24 - movesArray[i][1];
                     } else if (movesArray[i][0] - movesArray[i][1] < 0) {
@@ -619,10 +636,10 @@ public class Board {
         for (int[] move : movesArray) {
         	switch (p) {
                 case ('W'):
-                    if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.boardPins[move[0]].getColour() == 'B')) {
+                    if ((move[0] < 0 || (move[0] > 23 && move[0] != WHITE_BAR)) || (move[1] > 23 && move[1] != WHITE_OFF) || (tmpBoard.getColour(move[0]) == 'B')) {
                         moveIsValid = false;
                         printErrorCode(INVALID_POINT, "Move " + i + ":");
-                    } else if (tmpBoard.boardPins[move[0]].isEmpty()) {
+                    } else if (tmpBoard.isEmpty(move[0])) {
                         moveIsValid = false;
                         printErrorCode(EMPTY_POINT, "Move " + i + ":");
                     } else if ((usedDie = tmpDice.isMatchFor(moves[i][1], tmpBoard)) < 0) {
@@ -690,11 +707,14 @@ public class Board {
         return moveIsValid;
     }
     
-    
+    /**
+     * To be called before Board.makeMove(), it changes the format of each element 
+     * in movesArray into [sourcePoint; destPoint].
+     * @param movesArray the array to be modified
+     * @param b the actual board
+     */
     public void computeMoves(int[][] movesArray, Board b) {
-
         int i;
-
         if (movesArray != null) {
             if (b.getTurn() == 'W') {
                 for (i = 0; i < movesArray.length; i++) {
@@ -721,9 +741,7 @@ public class Board {
                     }
                 }
             }
-
         }
-
     }
     
     /**
@@ -741,7 +759,11 @@ public class Board {
     	int overAllMax = 0, currentPlayMax = 0, biggestMove = 0;
     	if (boardCopy.getBar(boardCopy.getTurn()) > 0) {
     		for (int i = 0; i < boardCopy.getBar(boardCopy.getTurn()); i++) {
-    			source[sourceCounter] = BLACK_BAR;
+    			if (boardCopy.getTurn() == 'B') {
+    				source[sourceCounter] = BLACK_BAR;
+    			} else {
+    				source[sourceCounter] = WHITE_BAR;
+    			}
     			sourceCounter++;
     		}
     	}
@@ -799,6 +821,22 @@ public class Board {
     	}
     	return allPlays;
     }
+    
+    /**
+     * Method only used in searchForPlays, for replacing integers with constants for Bar and Off
+     * @param source is the source point
+     * @param dice is the dice (negative for black)
+     * @return is the constant or normal
+     */
+    private int barAndOffSFP (int source, int dice) {
+    	int retVal;
+    	if (source == BLACK_BAR) retVal = 25 + dice;
+		else if (source == WHITE_BAR) retVal = dice;
+		else if (source + dice > 24) retVal = WHITE_OFF;
+		else if (source + dice < 1) retVal = BLACK_OFF;
+		else retVal = source + dice;
+    	return retVal;
+    }
 
     /**
      * Checks all moves a player could make against isValidMove, returns all valid moves
@@ -825,11 +863,12 @@ public class Board {
     	if (!d.isDoubleRoll()) {
     		moves1[0][0] = sourcePoints[0];
     		moves1[0][1] = d.getFirstDice();
+    		System.out.println("SRC: "+sourcePoints[0]+" D: "+d.getFirstDice());
     		if (boardCopy.isValidMove(moves1, d, boardCopy.getTurn())) {
     			int moveToRetVal[] = new int[3];
     			moveToRetVal[0] = playCounter;
     			moveToRetVal[1] = sourcePoints[0];
-    			moveToRetVal[2] = sourcePoints[0] + dice1;
+    			moveToRetVal[2] = barAndOffSFP (sourcePoints[0], dice1);
     			retVal.add(index, moveToRetVal);
     			index++;
     			moves2[0][0] = sourcePoints[0];
@@ -840,7 +879,7 @@ public class Board {
     				int moveToRetVal2[] = new int[3];
         			moveToRetVal2[0] = playCounter;
         			moveToRetVal2[1] = sourcePoints[0] + dice1;
-        			moveToRetVal2[2] = sourcePoints[0] + dice2 + dice1;
+        			moveToRetVal2[2] = barAndOffSFP (sourcePoints[0], dice1+dice2);
         			retVal.add(index, moveToRetVal2);
         			index++;
     			}
@@ -852,7 +891,7 @@ public class Board {
     			int moveToRetVal3[] = new int[3];
     			moveToRetVal3[0] = playCounter;
     			moveToRetVal3[1] = sourcePoints[0];
-    			moveToRetVal3[2] = sourcePoints[0] + dice2;
+    			moveToRetVal3[2] = barAndOffSFP (sourcePoints[0], dice2);
     			retVal.add(index, moveToRetVal3);
     			index++;
     			moves2[0][0] = sourcePoints[0];
@@ -863,7 +902,7 @@ public class Board {
     				int moveToRetVal4[] = new int[3];
         			moveToRetVal4[0] = playCounter;
         			moveToRetVal4[1] = sourcePoints[0] + dice2;
-        			moveToRetVal4[2] = sourcePoints[0] + dice2 + dice1;
+        			moveToRetVal4[2] = barAndOffSFP (sourcePoints[0], dice1+dice2);
         			retVal.add(index, moveToRetVal4);
         			index++;
     			}
@@ -876,7 +915,7 @@ public class Board {
     			int moveToRetVal5[] = new int[3];
     			moveToRetVal5[0] = playCounter;
     			moveToRetVal5[1] = sourcePoints[0];
-    			moveToRetVal5[2] = sourcePoints[0] + dice1;
+    			moveToRetVal5[2] = barAndOffSFP (sourcePoints[0], dice1);
     			retVal.add(moveToRetVal5);
     			moves2[0][0] = sourcePoints[0];
     			moves2[0][1] = d.getFirstDice();
@@ -886,7 +925,7 @@ public class Board {
     				int moveToRetVal6[] = new int[3];
     				moveToRetVal6[0] = playCounter;
         			moveToRetVal6[1] = dice1 + sourcePoints[0];
-        			moveToRetVal6[2] = dice1 + sourcePoints[0] + dice2;
+        			moveToRetVal6[2] = barAndOffSFP (sourcePoints[0], dice1+dice2);
         			retVal.add(moveToRetVal6);
         			moves3[0][0] = sourcePoints[0];
         			moves3[0][1] = d.getFirstDice();
@@ -898,7 +937,7 @@ public class Board {
     					int moveToRetVal7[] = new int[3];
     					moveToRetVal7[0] = playCounter;
             			moveToRetVal7[1] = dice1 + sourcePoints[0] + dice2;
-            			moveToRetVal7[2] = dice1 + sourcePoints[0] + dice2 + dice2;
+            			moveToRetVal7[2] = barAndOffSFP (sourcePoints[0], dice1+dice2+dice2);
             			retVal.add(moveToRetVal7);
             			moves4[0][0] = sourcePoints[0];
             			moves4[0][1] = d.getFirstDice();
@@ -912,7 +951,7 @@ public class Board {
     						int moveToRetVal8[] = new int[3];
     						moveToRetVal8[0] = playCounter;
     	        			moveToRetVal8[1] = dice2 + dice1 + sourcePoints[0] + dice2;
-    	        			moveToRetVal8[2] = dice2 + dice1 + sourcePoints[0] + dice2 + dice2;
+    	        			moveToRetVal8[2] = barAndOffSFP (sourcePoints[0], dice1+dice2+dice1+dice2);
     	        			retVal.add(moveToRetVal8);
     					}
     				}
