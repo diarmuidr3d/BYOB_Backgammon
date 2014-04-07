@@ -6,17 +6,20 @@
 package backgammon;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class BgOnePlayer{
 	
-    Board board;
-    HumanPlayer whitePlayer;
-    RandomPlayer blackPlayer;
+	private Dice d;
+    private Board board;
+    private HumanPlayer whitePlayer;
+    private RandomPlayer blackPlayer;
     int playCount;
 	
-	public BgOnePlayer(){
+	private BgOnePlayer(){
 	    board = new Board();
 	    board.setBoard();
+	    d = new Dice();
 	    blackPlayer = new RandomPlayer();
 	    blackPlayer.setPlayerColour('B');
 	    whitePlayer = new HumanPlayer();
@@ -33,7 +36,7 @@ public class BgOnePlayer{
      * <p>
      * @param d is the dice
      */
-    public void firstPlay(Dice d) {
+    private void firstPlay() {
         d.rollDice();
         boolean endFirstPlay = false;
 
@@ -61,15 +64,14 @@ public class BgOnePlayer{
      * @return It the returns the winner of the game.
      * @throws java.io.IOException
      */
-    public char game() throws IOException {
-        Dice d = new Dice();
+    private char game() throws IOException {
         boolean finishedGame = false;
         boolean endTurn;
         char winner = 'N';
         int entry1[][] = new int[2][2];
         int entry2[][] = new int[4][2];
         
-        firstPlay(d);
+        firstPlay();
         
         while (playCount == 0) {
             board.printBoard();
@@ -105,7 +107,7 @@ public class BgOnePlayer{
                         }
 
                     } while (!endTurn);
-
+                    board.setTurn('B');
                     break;
 
                 case ('B'):
@@ -117,12 +119,14 @@ public class BgOnePlayer{
                 			entry2 = blackPlayer.getPlay(d, board);
                 			for(int i=0;i<4;i++){
                 				board.makeMove(entry2[i][0], entry2[i][1]);
+                				System.out.println("RandomPlayer moving from "+entry2[i][0]+" to "+entry2[i][1]);
                 			}
                 		}
                 		else{
                 			entry1 = blackPlayer.getPlay(d, board);
                 			for(int i=0;i<2;i++){
                 				board.makeMove(entry1[i][0], entry1[i][1]);
+                				System.out.println("RandomPlayer moving from "+entry1[i][0]+" to "+entry1[i][1]);
                 			}
                 		}
                         endTurn = true;
@@ -133,7 +137,7 @@ public class BgOnePlayer{
                             winner = 'B';
                         }
                     } while (!endTurn);
-                    
+                    board.setTurn('W');
                     break;
 
                 default:
@@ -144,5 +148,22 @@ public class BgOnePlayer{
         System.out.println("The winner is: " + winner + " with a " + board.getResult(winner));
         return winner;
     }
+    
+    public static void main(String[] args) throws IOException {
+		BgOnePlayer newGame = new BgOnePlayer();
+		boolean playAgain = true;
+		Scanner input;
+		String answer;
+		while (playAgain) {
+			newGame.game();
+			System.out.println("Do you want to play again?");
+			input = new Scanner(System.in);
+			answer = input.nextLine(); 
+			answer.trim();
+			if (!answer.equals("y") || !answer.equals("Y") || !answer.equals("Yes") || !answer.equals("yes")|| !answer.equals("YES")) {
+				playAgain = false;
+			}
+		}
+	}
 
 }

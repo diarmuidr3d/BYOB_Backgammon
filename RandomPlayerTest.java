@@ -20,7 +20,6 @@ public class RandomPlayerTest {
 		b.setBoard();
 		b.playerTurn = 'W';
 		d.rollDice();
-		HumanPlayer p = new HumanPlayer();
 		RandomPlayer r = new RandomPlayer();
 		if(d.isDoubleRoll()){
 			int entry[][] = new int[4][2];
