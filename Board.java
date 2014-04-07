@@ -579,7 +579,7 @@ public class Board {
 
     /**
      * Checks if a move is valid
-     * @param moves the moves being made
+     * @param moves the moves being made as the user inputs them [src, dieRoll]
      * @param d is the dice
      * @param p is the player
      * @return true if it is a valid move, false if not
