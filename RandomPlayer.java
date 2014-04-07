@@ -14,16 +14,11 @@ import java.util.Random;
 public class RandomPlayer{
 
     private char playerColour;
-    private List<int[]> possible_moves;
     
     public RandomPlayer() {
 
     }
-    
-    private void newTurn(Dice d, Board b) {
-    	possible_moves = b.allPossiblePlays(d,b);
-    }
-    
+        
     /**
      * Sets the player colour
      *
@@ -33,7 +28,17 @@ public class RandomPlayer{
         playerColour = c;
     }
     
+    /**
+     * Calls the allPossiblePlays method, selects one of these plays at 
+random and returns it to the calling method
+     * @param d
+     * @param b
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public int[] getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
+    	List<int[]> possible_moves = b.allPossiblePlays(d,b);
     	Random generator = new Random(); 
     	int randomPlay = generator.nextInt(possible_moves.size());
     	int[] play = possible_moves.get(randomPlay);
@@ -41,18 +46,9 @@ public class RandomPlayer{
     		randomPlay--;
     		play = possible_moves.get(randomPlay);
     	}
-    	possible_moves.remove(randomPlay);
     	int retVal[] = new int[2];
     	retVal[0] = play[1];
     	retVal[1] = play[2];
-    	if (!d.isDoubleRoll()) {
-    		for (int i =0; i < possible_moves.size(); i++) {
-    			if (Math.abs(possible_moves.get(i)[1] - possible_moves.get(i)[2]) == Math.abs(play[1] - play[2])) {
-    				possible_moves.remove(i);
-    				i--;
-    			}
-    		}
-    	}
     	return retVal;
     }
 }
