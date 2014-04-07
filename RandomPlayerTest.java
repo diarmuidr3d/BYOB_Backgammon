@@ -16,13 +16,26 @@ public class RandomPlayerTest {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Board b = new Board();
 		Dice d = new Dice();
+		
 		b.setBoard();
 		b.playerTurn = 'W';
 		d.rollDice();
 		HumanPlayer p = new HumanPlayer();
 		RandomPlayer r = new RandomPlayer();
-		
-		r.getPlay(d, b);
+		if(d.isDoubleRoll()){
+			int entry[][] = new int[4][2];
+			entry = r.getPlay(d, b);
+			for(int i=0;i<4;i++){
+				b.makeMove(entry[i][0], entry[i][1]);
+			}
+		}
+		else{
+			int entry[][] = new int[2][2];
+			entry = r.getPlay(d, b);
+			for(int i=0;i<2;i++){
+				b.makeMove(entry[i][0], entry[i][1]);
+			}
+		}
 		b.printBoard();
 		
 	}
