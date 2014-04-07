@@ -126,15 +126,13 @@ public class BgOnePlayer{
                 		else{
                 			entry1 = blackPlayer.getPlay(d, board);
                 			for(int i=0;i<2;i++){
+                				if (entry1[i][1] == Board.WHITE_OFF) entry1[i][1] = Board.BLACK_OFF;
                 				board.makeMove(entry1[i][0], entry1[i][1]);
-                				entry2[i][0]++;
-                				entry2[i][1]++;
                 				System.out.println("RandomPlayer moving from "+entry1[i][0]+" to "+entry1[i][1]);
                 			}
                 		}
                         endTurn = true;
                         playCount++;
-                        System.out.println("BlackOff: "+board.blackOff);
                         finishedGame = (board.blackOff == 15);
                         if (finishedGame){
                             winner = 'B';
@@ -148,6 +146,7 @@ public class BgOnePlayer{
             }
 
         }
+        board.printBoard();
         System.out.println("The winner is: " + winner + " with a " + board.getResult(winner));
         return winner;
     }

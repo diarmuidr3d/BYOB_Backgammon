@@ -44,7 +44,7 @@ random and returns it to the calling method
     	Board boardCopy = b.copy();
     	Dice diceCopy = d.copy();
     	List<int[]> possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
-    	int randomPlay = generator.nextInt(possible_moves.size());
+    	int randomPlay = generator.nextInt(Math.abs(possible_moves.size()));
     	int[] play = possible_moves.get(randomPlay);
     	if(play[0] == possible_moves.get(0)[0]){
     		play = possible_moves.get(0);
@@ -57,24 +57,26 @@ random and returns it to the calling method
     	}
     	if(!d.isDoubleRoll()){
 		   	retVal1[0][0] = play[1]-1;
-		    retVal1[0][1] = play[2]-1;
+		   	if (retVal1[0][1] != Board.BLACK_OFF) retVal1[0][1] = play[2]-1;
+		   	else retVal1[0][1] = play[2];
 			diceCopy.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), boardCopy);
 			boardCopy.makeMove(retVal1[0][0], retVal1[0][1]);
 			possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
 			randomPlay = generator.nextInt(possible_moves.size());
-	    	play = possible_moves.get(randomPlay);
-	    	if(play[0] == possible_moves.get(0)[0]){
-	    		play = possible_moves.get(0);
-	    	}
-	    	else{
-	    		while(possible_moves.get(randomPlay-1)[0] == play[0]) {
-	        		randomPlay--;
-	        		play = possible_moves.get(randomPlay);
-	        	}
-	    	}
-	    	retVal1[1][0] = play[1]-1;
-		    retVal1[1][1] = play[2]-1;
-		    diceCopy.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), boardCopy);
+			play = possible_moves.get(randomPlay);
+			if(play[0] == possible_moves.get(0)[0]){
+				play = possible_moves.get(0);
+			}
+			else{
+				while(possible_moves.get(randomPlay-1)[0] == play[0]) {
+					randomPlay--;
+					play = possible_moves.get(randomPlay);
+				}
+			}
+			retVal1[1][0] = play[1]-1;
+			if (retVal1[0][1] != Board.BLACK_OFF) retVal1[1][1] = play[2]-1;
+			else retVal1[1][1] = play[2];
+			diceCopy.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), boardCopy);
 			boardCopy.makeMove(retVal1[1][0], retVal1[1][1]);
 			possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
     	}
