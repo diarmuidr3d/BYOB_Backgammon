@@ -20,6 +20,10 @@ public class RandomPlayer{
 
     }
     
+    private void newTurn(Dice d, Board b) {
+    	possible_moves = b.allPossiblePlays(d,b);
+    }
+    
     /**
      * Sets the player colour
      *
@@ -30,7 +34,6 @@ public class RandomPlayer{
     }
     
     public int[] getPlay(Dice d, Board b) throws FileNotFoundException, IOException{
-    	possible_moves = b.allPossiblePlays(d,b);
     	Random generator = new Random(); 
     	int randomPlay = generator.nextInt(possible_moves.size());
     	int[] play = possible_moves.get(randomPlay);
@@ -38,6 +41,7 @@ public class RandomPlayer{
     		randomPlay--;
     		play = possible_moves.get(randomPlay);
     	}
+    	possible_moves.remove(randomPlay);
     	int retVal[] = new int[2];
     	retVal[0] = play[1];
     	retVal[1] = play[2];
