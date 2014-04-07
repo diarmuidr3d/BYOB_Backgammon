@@ -138,7 +138,7 @@ public class BgOnePlayer{
                             winner = 'B';
                         }
                     } while (!endTurn);
-                    //board.setTurn('W');
+                    board.setTurn('W');
                     break;
 
                 default:
