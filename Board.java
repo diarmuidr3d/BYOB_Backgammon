@@ -379,6 +379,7 @@ public class Board {
             }
         }
         /*end of the game*/
+        /*
         if ((whiteOff == 15) || (blackOff == 15)) {
             String result;
             char opposingPlayer;
@@ -396,7 +397,7 @@ public class Board {
             System.out.println("Result: " + result + "\n");
             System.out.println("Thanks for playing\n");
             System.exit(0);
-        }
+        } */
         return retVal;
     }
 

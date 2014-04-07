@@ -153,19 +153,7 @@ public class BgOnePlayer{
     
     public static void main(String[] args) throws IOException {
 		BgOnePlayer newGame = new BgOnePlayer();
-		boolean playAgain = true;
-		Scanner input;
-		String answer;
-		while (playAgain) {
-			newGame.game();
-			System.out.println("Do you want to play again?");
-			input = new Scanner(System.in);
-			answer = input.nextLine(); 
-			answer.trim();
-			if (!answer.equals("y") || !answer.equals("Y") || !answer.equals("Yes") || !answer.equals("yes")|| !answer.equals("YES")) {
-				playAgain = false;
-			}
-		}
+		newGame.game();
 	}
 
 }
