@@ -90,10 +90,10 @@ public class BgOnePlayer{
         }
         
         while (!finishedGame) {
+        	d.rollDice();
             switch (board.getTurn()) {
-                case ('W'):
+            	case ('W'):
                     endTurn = false;
-                    d.rollDice();
                     do {
                         board.printBoard();
                         if(whitePlayer.playerMove(board, d) > 0 ){
@@ -112,13 +112,14 @@ public class BgOnePlayer{
 
                 case ('B'):
                     endTurn = false;
-                    d.  rollDice();
                     do {
                         board.printBoard();
                         if(d.isDoubleRoll()){
                 			entry2 = blackPlayer.getPlay(d, board);
                 			for(int i=0;i<4;i++){
                 				board.makeMove(entry2[i][0], entry2[i][1]);
+                				entry2[i][0]++;
+                				entry2[i][1]++;
                 				System.out.println("RandomPlayer moving from "+entry2[i][0]+" to "+entry2[i][1]);
                 			}
                 		}
@@ -126,18 +127,20 @@ public class BgOnePlayer{
                 			entry1 = blackPlayer.getPlay(d, board);
                 			for(int i=0;i<2;i++){
                 				board.makeMove(entry1[i][0], entry1[i][1]);
+                				entry2[i][0]++;
+                				entry2[i][1]++;
                 				System.out.println("RandomPlayer moving from "+entry1[i][0]+" to "+entry1[i][1]);
                 			}
                 		}
                         endTurn = true;
                         playCount++;
+                        System.out.println("BlackOff: "+board.blackOff);
                         finishedGame = (board.blackOff == 15);
-                       
                         if (finishedGame){
                             winner = 'B';
                         }
                     } while (!endTurn);
-                    board.setTurn('W');
+                    //board.setTurn('W');
                     break;
 
                 default:

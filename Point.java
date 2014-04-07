@@ -54,7 +54,7 @@ public class Point {
     */     
     public int setCheckersNumber(int number){
         int retValue = 0;
-        if ( number + checkersCounter <= 15 && number >= 0){
+        if ( number <= 15 && number >= 0){
                 checkersCounter = number;
                 if ( checkersCounter == 0 ) colour = ' ';
             }

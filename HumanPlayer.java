@@ -188,7 +188,11 @@ public class HumanPlayer {
                     for (int[] move : moves) {
                         b.makeMove(move[0], move[1]);
                         b.printBoard();
-                        System.out.println("Moving from " + (1+move[0]) + " to " +(1+move[1]));
+                        allPlays = b.allPossiblePlays(d, b);
+                        System.out.println("Moving from " + (1+move[0]) + " to " +(1+move[1])+". Here are your new possible plays: ");
+                        for (int i=0; i < allPlays.size(); i++) {
+                        	System.out.println("Play option "+allPlays.get(i)[0]+": "+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+                        }
                         System.out.println();
                         movesCounter--;
                     }
