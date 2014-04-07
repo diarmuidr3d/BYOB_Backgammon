@@ -87,7 +87,7 @@ random and returns it to the calling method
 				possible_moves = boardCopy.allPossiblePlays(diceCopy,boardCopy);
 				randomPlay = generator.nextInt(possible_moves.size());
 		    	play = possible_moves.get(randomPlay);
-		    	if(play[0] == 0){
+		    	if(play[0] == possible_moves.get(0)[0]){
 		    		play = possible_moves.get(0);
 		    	}
 		    	else{
