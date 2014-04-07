@@ -7,6 +7,7 @@ package backgammon;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -153,13 +154,21 @@ public class HumanPlayer {
                 System.out.println("It's Black's turn.");
                 break;
         }
-
+        List<int[]> allPlays = b.allPossiblePlays(d, b);
         if (d.isDoubleRoll()) {
             movesCounter = 4;
-            System.out.println("Double " + d.getFirstDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
+            System.out.println("Double " + d.getFirstDice() + "!"+" Here are your possible moves:");
+            for (int i=0; i < allPlays.size(); i++) {
+            	System.out.println("Play option "+allPlays.get(i)[0]+": "+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+            }
+            System.out.println("Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
         } else {
             movesCounter = 2;
-            System.out.println("You got " + d.getFirstDice() + "," + d.getSecondDice() + "! Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
+            System.out.println("You got " + d.getFirstDice() + " and "+ d.getSecondDice() +"!"+" Here are your possible moves:");
+            for (int i=0; i < allPlays.size(); i++) {
+            	System.out.println("Play option "+allPlays.get(i)[0]+": "+allPlays.get(i)[1]+"-"+allPlays.get(i)[2]);
+            }
+            System.out.println("Input your " + movesCounter + " moves in the format startPoint-steps or q to quit or p to pass: ");
         }
 
         while (movesCounter > 0) {
