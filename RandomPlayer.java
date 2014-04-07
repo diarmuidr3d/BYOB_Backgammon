@@ -52,8 +52,8 @@ random and returns it to the calling method
         	}
     	}
     	int retVal[][] = new int[1][2];
-    	retVal[0][0] = play[1];
-    	retVal[0][1] = play[2];
+    	retVal[0][0] = play[1]-1;
+    	retVal[0][1] = play[2]-1;
     	return retVal;
     }
 }
