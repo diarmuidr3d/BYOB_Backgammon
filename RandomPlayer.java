@@ -62,7 +62,7 @@ random and returns it to the calling method
 			   		i--;
 			   	}
 		    }
-			
+			d.isMatchFor(Math.abs(retVal1[0][1] - retVal1[0][0]), b);
 			
 			// For Testing Only!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			System.out.println("\n\nRound 2\n");
@@ -84,11 +84,14 @@ random and returns it to the calling method
 	    	}
 	    	retVal1[1][0] = play[1]-1;
 		    retVal1[1][1] = play[2]-1;
+		    d.isMatchFor(Math.abs(retVal1[1][1] - retVal1[1][0]), b);
     	}
     	else{
 		   	for(int i=0;i<4;i++){
 			   	retVal2[i][0] = play[1]-1;
 			    retVal2[i][1] = play[2]-1;
+			    d.isMatchFor(Math.abs(retVal2[i][0]-retVal2[i][1]), b);
+			    possible_moves.remove(randomPlay);
 				randomPlay = generator.nextInt(possible_moves.size());
 		    	play = possible_moves.get(randomPlay);
 		    	if(play[0] == 0){
@@ -102,6 +105,7 @@ random and returns it to the calling method
 		    	}
 		   	}
     	}
+    	
     	// For Testing Only!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     	if(!d.isDoubleRoll()){
     		System.out.println("\n\nsource: "+retVal1[0][0]+" destination: "+retVal1[0][1]+"\n\n");
