@@ -817,7 +817,7 @@ public class Board {
     	int retVal;
     	if (source == BLACK_BAR) retVal = 25 + dice;
 		else if (source == WHITE_BAR) retVal = dice;
-		else if (source + dice > 24) retVal = WHITE_OFF;
+		else if (source + dice > 23) retVal = WHITE_OFF;
 		else if (source + dice < 1) retVal = BLACK_OFF;
 		else retVal = source + dice;
     	return retVal;
