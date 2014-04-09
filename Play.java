@@ -1,3 +1,5 @@
+package backgammon;
+
 import java.util.ArrayList;
 
 public class Play {

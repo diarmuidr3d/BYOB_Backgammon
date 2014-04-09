@@ -1,4 +1,6 @@
- public class BgOnePlayer {
+package backgammon; 
+
+public class BgOnePlayer {
 
 		
 	private static final int HUMAN_ID = Board.X_PLAYER_ID;

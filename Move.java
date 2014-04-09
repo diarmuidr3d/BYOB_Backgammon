@@ -1,3 +1,5 @@
+package backgammon;
+
 public class Move {
 	private int fromPip = 0;
 	private int byPips = 0;;
