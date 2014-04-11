@@ -101,10 +101,10 @@ public class AiPlayer {
 		int bestBoard = 0, i = 0;
 		float max;
                 int size = allBoardsList.size();
-                int[] boardScores = new int[size];
+                float[] boardScores = new  float[size];
                 
                 for( Board b : allBoardsList ){
-                    boardScores[i] = (int) this.computeHeuristic(b);
+                    boardScores[i] = this.computeHeuristic(b);
                     i++;
                 }
                
