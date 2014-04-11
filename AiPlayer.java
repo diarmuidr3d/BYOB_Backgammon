@@ -31,17 +31,30 @@ public class AiPlayer {
     	else return Board.O_PLAYER_ID;
     }
 	
-	private int blotEval(Board b){
-            int playerBlots=0, adversaryBlots=0, score;
+	        /**
+         * This function evaluates the number of blots and hitters for both players and 
+         * try to maximise the score for a board where the AIPlayer has got more hitters
+         * than blots and the adversary has got more blots than hitters.
+         * @param b the board to be evaluated
+         * @return 
+         */
+	private float blotEval(Board b){
+            int playerBlots=0, adversaryBlots=0, playerHitters = 0, adversaryHitters = 0, score;
+            int adversary = this.getAdversaryId();
+            int player = this.getPlayerId();
             
             for(int i = 0; i < Board.NUM_PIPS; i++){
-                if (b.checkers[this.getAdversaryId()][i] == 1) adversaryBlots++;
-                else if (b.checkers[this.getPlayerId()][i] == 1) playerBlots++;
+                if (b.checkers[adversary][i] == 1) adversaryBlots++;
+                else if (b.checkers[player][i] == 1) playerBlots++;
+                
+                if (b.checkers[adversary][i] > 2) adversaryHitters++;
+                else if (b.checkers[player][i] > 2) playerHitters++;
+                
             }
             
-            score = adversaryBlots - playerBlots;
+            score = (adversaryBlots - playerBlots);
             
-            System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
+            //System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
             
             return score;
         }
@@ -57,20 +70,20 @@ public class AiPlayer {
         	return 0;
         }
         
-        private int runEval(Board b){
+        private float runEval(Board b){
             return 0;
         }
         
-        private int bearOffEval(Board b){
+        private float bearOffEval(Board b){
             return 0;
         }
         
-        private int spacingEval(Board b){
+        private float spacingEval(Board b){
             return 0;
         }
         
-        private int computeHeuristic(Board b){
-            int heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore;
+        private float computeHeuristic(Board b){
+            float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore;
             
             blotScore = this.blotEval(b);
             blockScore = this.blockEval(b);
@@ -84,7 +97,8 @@ public class AiPlayer {
         }
         
 	private int findBestBoard (ArrayList<Board> allBoardsList) {
-		int bestBoard = 0, i = 0, max;
+		int bestBoard = 0, i = 0;
+		float max;
                 int size = allBoardsList.size();
                 int[] boardScores = new int[size];
                 
