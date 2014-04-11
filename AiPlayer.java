@@ -86,8 +86,66 @@ public class AiPlayer {
             return 0;
         }
         
+       /**
+ * This function evaluates the number of checkers in each part of the board and
+ * finds the board with the highest probability of bearing of for the AiPlayer.
+ * @param b
+ * @return 
+ */      
         private float bearOffEval(Board b){
-            return 0;
+            int playerHome = 0, adversaryHome = 0;
+            int player75 = 0, adversary75 = 0;
+            int player50 = 0, adversary50 = 0;
+            int player25 = 0, adversary25 = 0;
+            float score, P, A;
+            int player = this.getPlayerId();
+            int adversary = this.getAdversaryId();
+            
+            if ( player == Board.O_PLAYER_ID){
+                for(int i = 19; i < 25; i++){
+                    playerHome+=b.checkers[player][i];
+                    adversary25+=b.checkers[adversary][i];
+                    
+                }
+                for (int i = 13; i < 19; i++){
+                    player75+=b.checkers[player][i];
+                    adversary50+=b.checkers[adversary][i];
+                }
+                for(int i = 7; i < 13; i++){
+                    player50+=b.checkers[player][i];
+                    adversary75+=b.checkers[adversary][i];
+                }
+                for(int i = 1; i < 7; i++){
+                    player25+=b.checkers[player][i];
+                    adversaryHome+=b.checkers[adversary][i];
+                }
+            }
+            else if (this.getPlayerId() == Board.X_PLAYER_ID){
+                for(int i = 19; i < 25; i++){
+                    player25+=b.checkers[player][i];
+                    adversaryHome+=b.checkers[adversary][i];
+                    
+                }
+                for (int i = 13; i < 19; i++){
+                    player50+=b.checkers[player][i];
+                    adversary75+=b.checkers[adversary][i];
+                }
+                for(int i = 7; i < 13; i++){
+                    player75+=b.checkers[player][i];
+                    adversary50+=b.checkers[adversary][i];
+                }
+                for(int i = 1; i < 7; i++){
+                    playerHome+=b.checkers[player][i];
+                    adversary25+=b.checkers[adversary][i];
+                }
+            }
+            P = (float) (playerHome + 0.75*player75 + 0.5*player50 + 0.25*player25) + b.checkers[player][0];
+            A = (float) (adversaryHome + 0.75*adversary75 + 0.5*adversary50 + 0.25*adversary25) + b.checkers[adversary][0];
+            
+            score = P - A;
+            System.out.println("bearOff" + score);
+            
+            return score;
         }
         
         private float spacingEval(Board b){
