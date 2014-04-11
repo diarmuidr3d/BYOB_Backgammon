@@ -430,5 +430,9 @@ public class Board {
 	    
 	    return finished;
 	}
+        
+        public int returnWinner(){
+            return this.winnerId;
+        }
 
 }
