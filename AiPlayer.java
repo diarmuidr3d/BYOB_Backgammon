@@ -41,8 +41,7 @@ public class AiPlayer {
             
             score = adversaryBlots - playerBlots;
             
-            System.out.println("blotScore: " + score);
-            
+            System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
             
             return score;
         }
@@ -78,20 +77,25 @@ public class AiPlayer {
         }
         
 	private int findBestBoard (ArrayList<Board> allBoardsList) {
-		int bestBoard = 0, i = 0, max = 0;
-                int[] boardScores = new int[allBoardsList.size()];
+		int bestBoard = 0, i = 0, max;
+                int size = allBoardsList.size();
+                int[] boardScores = new int[size];
                 
                 for( Board b : allBoardsList ){
                     boardScores[i] = this.computeHeuristic(b);
                     i++;
                 }
-                
-                for (i=0; i<boardScores.length; i++){
-                    if (boardScores[i]>max){
+               
+                max = boardScores[0];
+                for (i=0; i < size; i++){
+                    if (boardScores[i] > max){
+                        System.out.println(boardScores[i]>max);
                         max = boardScores[i];
                         bestBoard = i;
                     }
                 }
+                
+                System.out.println(boardScores[bestBoard]);
                 
 		return bestBoard;
 	}
