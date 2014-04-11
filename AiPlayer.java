@@ -26,10 +26,10 @@ public class AiPlayer {
 		return playerId;
 	}
         
-        private int getAdversaryId(){
-            if (playerId == Board.O_PLAYER_ID) return Board.X_PLAYER_ID;
-            else return Board.O_PLAYER_ID;
-        }
+    private int getAdversaryId(){
+    	if (playerId == Board.O_PLAYER_ID) return Board.X_PLAYER_ID;
+    	else return Board.O_PLAYER_ID;
+    }
 	
 	private int blotEval(Board b){
             int playerBlots=0, adversaryBlots=0, score;
@@ -48,7 +48,14 @@ public class AiPlayer {
         }
         
         private int blockEval(Board b){
-            return 0;
+            ArrayList<Play> plays = b.allPossiblePlays(getPlayerId(), gameDice);
+            Play p = new Play();
+            for (int i = 0; i < plays.size(); i++) {
+            	p = plays.get(i);
+            	for (int j = 0; j < p.length(); j++)
+            		p.getMove(j).getFromPip()
+            }
+        	return 0;
         }
         
         private int runEval(Board b){
