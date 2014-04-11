@@ -1,5 +1,6 @@
 package backgammon;
 
+
 //
 // Team Name: BYOB
 // Version:
@@ -65,7 +66,7 @@ public class AiPlayer {
             for (int i = 0; i < plays.size(); i++) {
             	p = plays.get(i);
             	for (int j = 0; j < p.length(); j++)
-            		p.getMove(j).getFromPip()
+            		p.getMove(j).getFromPip();
             }
         	return 0;
         }
@@ -103,7 +104,7 @@ public class AiPlayer {
                 int[] boardScores = new int[size];
                 
                 for( Board b : allBoardsList ){
-                    boardScores[i] = this.computeHeuristic(b);
+                    boardScores[i] = (int) this.computeHeuristic(b);
                     i++;
                 }
                
