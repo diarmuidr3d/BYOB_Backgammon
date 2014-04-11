@@ -152,17 +152,31 @@ public class AiPlayer {
         private float spacingEval(Board b){
             return 0;
         }
-        
+/**
+ * This function maximises the score for the boards where the AiPlayer has less checkers 
+ * on the bar and the adversary has more checkers.
+ * @param b
+ * @return 
+ */        
+        private float barEval(Board b){
+            return (b.checkers[this.getAdversaryId()][25] - b.checkers[this.getPlayerId()][25]);
+        }
+/**
+ * This function computes the overall heuristic score, taking the bar into account.
+ * @param b
+ * @return 
+ */ 
         private float computeHeuristic(Board b){
-            float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore;
+            float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore, barScore;
             
             blotScore = this.blotEval(b);
             blockScore = this.blockEval(b);
             runScore = this.runEval(b);
             bearOffScore = this.bearOffEval(b);
             spacingScore = this.spacingEval(b);
-            
-            heuristicScore = blotScore + blockScore + runScore + bearOffScore + spacingScore - b.checkers[this.getPlayerId()][25] + b.checkers[this.getAdversaryId()][25];
+            barScore = this.barEval(b);
+            /* sum of all the evaluation functions*/
+            heuristicScore = blotScore + blockScore + runScore + bearOffScore + spacingScore + barScore;
             
             return heuristicScore;
         }
