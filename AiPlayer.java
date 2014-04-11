@@ -32,19 +32,20 @@ public class AiPlayer {
     	else return Board.O_PLAYER_ID;
     }
 	
-	        /**
+/**
          * This function evaluates the number of blots and hitters for both players and 
-         * try to maximise the score for a board where the AIPlayer has got more hitters
-         * than blots and the adversary has got more blots than hitters.
-         * @param b the board to be evaluated
+         * maximises the score for a board where the AIPlayer has got more hitters than blots
+         * and the adversary has got more blots than hitters.
+         * @param b the board state to be evaluated
          * @return 
          */
 	private float blotEval(Board b){
-            int playerBlots=0, adversaryBlots=0, playerHitters = 0, adversaryHitters = 0, score;
+            int playerBlots=0, adversaryBlots=0, playerHitters = 0, adversaryHitters = 0;
+            float score, A, P;
             int adversary = this.getAdversaryId();
             int player = this.getPlayerId();
             
-            for(int i = 0; i < Board.NUM_PIPS; i++){
+            for(int i = 1; i < Board.NUM_PIPS-1; i++){
                 if (b.checkers[adversary][i] == 1) adversaryBlots++;
                 else if (b.checkers[player][i] == 1) playerBlots++;
                 
@@ -53,9 +54,19 @@ public class AiPlayer {
                 
             }
             
-            score = (adversaryBlots - playerBlots);
+            P = playerHitters - playerBlots; // this is > 0 only if playerHitters > playerBlots
+            A = adversaryBlots - adversaryHitters; // this is > 0 only if adversaryBlots > aversaryHitters
             
-            //System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
+            
+            /* // alternative to be tested:
+            P = playerHitters - adversaryHitters; // this is > 0 only if playerHitters > adversaryHitters
+            A = adversaryBlots - playerBlots;     // this is > 0 only if adversaryBlots > playerBots
+            */
+            
+            // try with different percentages
+            score = (float) ( 0.5 * A +  0.5 * P );
+            
+            System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
             
             return score;
         }
