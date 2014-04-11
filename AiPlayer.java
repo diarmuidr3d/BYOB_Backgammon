@@ -60,7 +60,7 @@ public class AiPlayer {
         }
         
 	private int findBestBoard (ArrayList<Board> allBoardsList) {
-		int bestBoard = 0, i = 0, max = 0, iMax = 0;
+		int bestBoard = 0, i = 0, max = 0;
                 int[] boardScores = new int[allBoardsList.size()];
                 
                 for( Board b : allBoardsList ){
@@ -71,11 +71,11 @@ public class AiPlayer {
                 for (i=0; i<boardScores.length; i++){
                     if (boardScores[i]>max){
                         max = boardScores[i];
-                        iMax = i;
+                        bestBoard = i;
                     }
                 }
                 
-		return iMax;
+		return bestBoard;
 	}	
 	
 	public Play getPlay () {
