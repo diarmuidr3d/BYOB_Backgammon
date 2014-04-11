@@ -1,6 +1,6 @@
 //
-// Team Name:
-// Version:
+// Team Name: BYOB
+// Version: 
 //
 
 package backgammon;
@@ -76,13 +76,7 @@ public class AiPlayer {
                 }
                 
 		return iMax;
-	}
-	
-	private int findBestBoard (ArrayList<Board> allBoardsList) {
-		int bestBoard = 0;
-		return bestBoard;
-	}
-	
+	}	
 	
 	public Play getPlay () {
 		ArrayList<Play> allPlayList;
