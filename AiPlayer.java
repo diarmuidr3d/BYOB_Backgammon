@@ -32,7 +32,7 @@ public class AiPlayer {
     	else return Board.O_PLAYER_ID;
     }
 	
-/**
+        /**
          * This function evaluates the number of blots and hitters for both players and 
          * maximises the score for a board where the AIPlayer has got more hitters than blots
          * and the adversary has got more blots than hitters.
@@ -66,10 +66,11 @@ public class AiPlayer {
             // try with different percentages
             score = (float) ( 0.5 * A +  0.5 * P );
             
-            System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
+            //System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
             
             return score;
         }
+        
         
         private int blockEval(Board b){
             ArrayList<Play> plays = b.allPossiblePlays(getPlayerId(), gameDice);
@@ -86,7 +87,7 @@ public class AiPlayer {
             return 0;
         }
         
-       /**
+ /**
  * This function evaluates the number of checkers in each part of the board and
  * finds the board with the highest probability of bearing of for the AiPlayer.
  * @param b
@@ -139,11 +140,11 @@ public class AiPlayer {
                     adversary25+=b.checkers[adversary][i];
                 }
             }
-            P = (float) (playerHome + 0.75*player75 + 0.5*player50 + 0.25*player25) + b.checkers[player][0];
-            A = (float) (adversaryHome + 0.75*adversary75 + 0.5*adversary50 + 0.25*adversary25) + b.checkers[adversary][0];
+            P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0*player25) + b.checkers[player][0];
+            A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0*adversary25) + b.checkers[adversary][0];
             
             score = P - A;
-            System.out.println("bearOff" + score);
+            //System.out.println("bearOff" + score);
             
             return score;
         }
@@ -161,16 +162,16 @@ public class AiPlayer {
             bearOffScore = this.bearOffEval(b);
             spacingScore = this.spacingEval(b);
             
-            heuristicScore = blotScore + blockScore + runScore + bearOffScore + spacingScore;
+            heuristicScore = blotScore + blockScore + runScore + bearOffScore + spacingScore - b.checkers[this.getPlayerId()][25] + b.checkers[this.getAdversaryId()][25];
             
             return heuristicScore;
         }
         
 	private int findBestBoard (ArrayList<Board> allBoardsList) {
 		int bestBoard = 0, i = 0;
-		float max;
                 int size = allBoardsList.size();
-                float[] boardScores = new  float[size];
+                float max;
+                float[] boardScores = new float[size];
                 
                 for( Board b : allBoardsList ){
                     boardScores[i] = this.computeHeuristic(b);
@@ -180,17 +181,16 @@ public class AiPlayer {
                 max = boardScores[0];
                 for (i=0; i < size; i++){
                     if (boardScores[i] > max){
-                        System.out.println(boardScores[i]>max);
+                        //System.out.println(i + " " + (boardScores[i]>max));
                         max = boardScores[i];
                         bestBoard = i;
                     }
                 }
                 
-                System.out.println(boardScores[bestBoard]);
+                //System.out.println(boardScores[bestBoard]);
                 
 		return bestBoard;
 	}
-	
 	
 	public Play getPlay () {
 		ArrayList<Play> allPlayList;
