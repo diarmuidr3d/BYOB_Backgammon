@@ -1,9 +1,9 @@
+package backgammon;
+
 //
 // Team Name: BYOB
-// Version: 
+// Version:
 //
-
-package backgammon;
 
 import java.util.ArrayList;
 
@@ -18,15 +18,33 @@ public class AiPlayer {
 		playerId = setPlayerId;
 		gameBoard = setBoard;
 		gameDice = setDice;
-	    return;
+	    
 	}
 	
 	
 	public int getPlayerId () {
 		return playerId;
 	}
-		private int blotEval(Board b){
-            return 0;
+        
+        private int getAdversaryId(){
+            if (playerId == Board.O_PLAYER_ID) return Board.X_PLAYER_ID;
+            else return Board.O_PLAYER_ID;
+        }
+	
+	private int blotEval(Board b){
+            int playerBlots=0, adversaryBlots=0, score;
+            
+            for(int i = 0; i < Board.NUM_PIPS; i++){
+                if (b.checkers[this.getAdversaryId()][i] == 1) adversaryBlots++;
+                else if (b.checkers[this.getPlayerId()][i] == 1) playerBlots++;
+            }
+            
+            score = adversaryBlots - playerBlots;
+            
+            System.out.println("blotScore: " + score);
+            
+            
+            return score;
         }
         
         private int blockEval(Board b){
@@ -76,7 +94,8 @@ public class AiPlayer {
                 }
                 
 		return bestBoard;
-	}	
+	}
+	
 	
 	public Play getPlay () {
 		ArrayList<Play> allPlayList;
