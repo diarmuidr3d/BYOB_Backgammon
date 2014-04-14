@@ -134,8 +134,8 @@ public class AiPlayer {
 			}
 		}
 
-		P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0.25*player25);
-		A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0.25*adversary25);
+		P = (float) playerHome + player75 + player50 + player25;
+		A = (float) adversaryHome + adversary75 + adversary50 + adversary25;
 
 		score = P - A;
 		//System.out.println("blockEval" + score);
