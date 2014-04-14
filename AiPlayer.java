@@ -71,30 +71,76 @@ public class AiPlayer {
 
 
 	private float blockEval(Board b) {
-		float blocksInRow = 0;
-		float blockScore = 0;
-		boolean opponentFoundThisTurn;
-		float weight = (float) 0.50;
-		for (int i = 1; i < 25; i++) {
-			opponentFoundThisTurn = false;
-			if (b.checkers[b.opposingPlayer(getPlayerId())][i] > 0) {
-				weight = 1;
-				opponentFoundThisTurn = true;
+		int playerHome = 0, adversaryHome = 0;
+		int player75 = 0, adversary75 = 0;
+		int player50 = 0, adversary50 = 0;
+		int player25 = 0, adversary25 = 0;
+		float score, P, A;
+		int player = this.getPlayerId();
+		int adversary = this.getAdversaryId();
+                
+		if ( player == Board.O_PLAYER_ID){
+			for(int i = 19; i < 25; i++){
+				if (b.checkers[player][i] == 0) playerHome = 0;
+                                else if (b.checkers[player][i] >= 2) playerHome++;
+				if (b.checkers[adversary][i] == 0)adversary25 = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversary25++;
+
 			}
-			if (!opponentFoundThisTurn) {
-				if (weight == 0.5) {
-					if (blocksInRow < 3) {
-						blocksInRow += weight;
-					}
-				} else if (blocksInRow < 6){
-					blocksInRow += weight;
-				}
-			} else {
-				blockScore += blocksInRow;
-				blocksInRow = 0;
+			for (int i = 13; i < 19; i++){
+				if (b.checkers[player][i] == 0) player75 = 0;
+                                else if (b.checkers[player][i] >= 2) player75++;
+				if (b.checkers[adversary][i] == 0)adversary50 = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversary50++;
+			}
+			for(int i = 7; i < 13; i++){
+				if (b.checkers[player][i] == 0) player50 = 0;
+                                else if (b.checkers[player][i] >= 2) player50++;
+				if (b.checkers[adversary][i] == 0)adversary75 = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversary75++;
+			}
+			for(int i = 1; i < 7; i++){
+				if (b.checkers[player][i] == 0) player25= 0;
+                                else if (b.checkers[player][i] >= 2) player25++;
+				if (b.checkers[adversary][i] == 0)adversaryHome = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversaryHome++;
 			}
 		}
-		return blockScore;
+		else if (this.getPlayerId() == Board.X_PLAYER_ID){
+			for(int i = 19; i < 25; i++){
+				if (b.checkers[player][i] == 0) player25 = 0;
+                                else if (b.checkers[player][i] >= 2) player25++;
+				if (b.checkers[adversary][i] == 0)adversaryHome = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversaryHome++;
+
+			}
+			for (int i = 13; i < 19; i++){
+				if (b.checkers[player][i] == 0) player50 = 0;
+                                else if (b.checkers[player][i] >= 2) player50++;
+				if (b.checkers[adversary][i] == 0)adversary75 = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversary75++;
+			}
+			for(int i = 7; i < 13; i++){
+				if (b.checkers[player][i] == 0) player75 = 0;
+                                else if (b.checkers[player][i] >= 2) player75++;
+				if (b.checkers[adversary][i] == 0)adversary50 = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversary50++;
+			}
+			for(int i = 1; i < 7; i++){
+				if (b.checkers[player][i] == 0) playerHome = 0;
+                                else if (b.checkers[player][i] >= 2) playerHome++;
+				if (b.checkers[adversary][i] == 0)adversary25 = 0;
+                                else if (b.checkers[adversary][i] >= 2)adversary25++;
+			}
+		}
+
+		P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0.25*player25);
+		A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0.25*adversary25);
+
+		score = P - A;
+		//System.out.println("blockEval" + score);
+
+		return score;
 	}
 
 	private float runEval(Board b){
@@ -115,7 +161,7 @@ public class AiPlayer {
 		float score, P, A;
 		int player = this.getPlayerId();
 		int adversary = this.getAdversaryId();
-
+                
 		if ( player == Board.O_PLAYER_ID){
 			for(int i = 19; i < 25; i++){
 				playerHome+=b.checkers[player][i];
@@ -154,8 +200,11 @@ public class AiPlayer {
 				adversary25+=b.checkers[adversary][i];
 			}
 		}
-		P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0*player25) + b.checkers[player][0];
-		A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0*adversary25) + b.checkers[adversary][0];
+                
+                
+                
+		P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0.25*player25) + b.checkers[player][0];
+		A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0.25*adversary25) + b.checkers[adversary][0];
 
 		score = P - A;
 		//System.out.println("bearOff" + score);
