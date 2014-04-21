@@ -144,7 +144,17 @@ public class AiPlayer {
 	}
 
 	private float runEval(Board b){
-		return 0;
+		int myScore = 0;
+		int opposeScore = 0;
+		for (int i = 1; i < 26; i++) {
+			if (b.checkers[getPlayerId()][i] > 0) {
+				myScore += i;
+			}
+			if (b.checkers[b.opposingPlayer(getPlayerId())][i] > 0) {
+				opposeScore += i;
+			}
+		}
+		return opposeScore - myScore;
 	}
 
 	/**
