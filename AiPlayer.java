@@ -1,3 +1,5 @@
+
+
 package backgammon;
 
 //
@@ -18,6 +20,7 @@ public class AiPlayer {
 		gameDice = setDice;
 	    
 	}
+
 	
 	public int getPlayerId () {
 		return playerId;
@@ -138,7 +141,7 @@ public class AiPlayer {
 				opposeScore += i;
 			}
 		}
-		return opposeScore - myScore;
+		return (opposeScore/325) - (myScore/325);
 	}
 
 	/**
@@ -191,8 +194,8 @@ public class AiPlayer {
 				adversary25+=b.checkers[adversary][i];
 			}
 		}      
-		P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0.25*player25) + b.checkers[player][0];
-		A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0.25*adversary25) + b.checkers[adversary][0];
+		P = (float) (0.75*playerHome + 0.5*player75 + 0.25*player50 + 0.0*player25) + b.checkers[player][0];
+		A = (float) (0.75*adversaryHome + 0.5*adversary75 + 0.25*adversary50 + 0.0*adversary25) + b.checkers[adversary][0];
 		score = P - A;
 		//System.out.println("bearOff" + score);
 		return score;
@@ -219,7 +222,7 @@ public class AiPlayer {
 	 */ 
 	private float computeHeuristic(Board b){
 		float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore, barScore;
-
+		float[] w = {1,1,1,1,0,1};
 		blotScore = this.blotEval(b);
 		blockScore = this.blockEval(b);
 		runScore = this.runEval(b);
@@ -227,7 +230,7 @@ public class AiPlayer {
 		spacingScore = this.spacingEval(b);
 		barScore = this.barEval(b);
 		/* sum of all the evaluation functions*/
-		heuristicScore = blotScore + blockScore + runScore + bearOffScore + spacingScore + barScore;
+		heuristicScore = w[0]*blotScore + w[1]*blockScore + w[2]*runScore + w[3]*bearOffScore + w[4]*spacingScore + w[5]*barScore;
 
 		return heuristicScore;
 	}
@@ -281,3 +284,4 @@ public class AiPlayer {
 
 
 }
+
