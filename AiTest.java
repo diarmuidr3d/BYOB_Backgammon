@@ -11,6 +11,7 @@ public class AiTest {
 		float ai_wins = 0;
 		float percentage_win_Random = 0;
 		float percentage_win_Ai = 0;
+		System.out.println("Games Started");
 		for(int i=0; i<NUMBER_OF_GAMES;i++){
 			Board gameBoard = new Board();
 			Dice gameDice = new Dice();
@@ -19,31 +20,30 @@ public class AiTest {
 			AiPlayer bot = new AiPlayer(AI_ID, gameBoard, gameDice);
 			int winner;	
 			boolean finished = false, firstMove = true;
-			
 			do {
 				winner = gameDice.rollDieEach();
-				gameDice.displayDieEach();
+				//gameDice.displayDieEach();
 			} while (winner == Dice.DRAW);
 			
 			do {
-				if (firstMove) {
+				/*if (firstMove) {
 					gameBoard.displayBoard(RANDOM_ID);
-				}
+				}*/
 				if ( (!firstMove) || (firstMove && (winner == AI_ID)) ) {
 					gameDice.rollDice();
-					gameDice.displayDice(AI_ID);
+					//gameDice.displayDice(AI_ID);
 					currentPlay = bot.getPlay();
-					currentPlay.displayPlay(AI_ID);
+					//currentPlay.displayPlay(AI_ID);
 					finished = gameBoard.doPlay(AI_ID, currentPlay);
-					gameBoard.displayBoard(RANDOM_ID);
+					//gameBoard.displayBoard(RANDOM_ID);
 				}
 				if (!finished) {
 					gameDice.rollDice();
-					gameDice.displayDice(RANDOM_ID);
+					//gameDice.displayDice(RANDOM_ID);
 					currentPlay = random.getPlay();
-					currentPlay.displayPlay(RANDOM_ID);
+					//currentPlay.displayPlay(RANDOM_ID);
 					finished = gameBoard.doPlay(RANDOM_ID, currentPlay);
-					gameBoard.displayBoard(AI_ID);
+					//gameBoard.displayBoard(AI_ID);
 				}
 				firstMove = false;
 			} while (!finished);
@@ -55,9 +55,9 @@ public class AiTest {
 			else{
 				ai_wins++;
 			}
-                        System.out.println(random_wins + " " + ai_wins);
-			gameBoard.displayResult();
-			System.out.println("Game Complete");
+            //System.out.println(random_wins + " " + ai_wins);
+			//gameBoard.displayResult();
+			//System.out.println("Game Complete");
 		}
 		percentage_win_Random = (random_wins/NUMBER_OF_GAMES)*100;
 		percentage_win_Ai = (ai_wins/NUMBER_OF_GAMES)*100;

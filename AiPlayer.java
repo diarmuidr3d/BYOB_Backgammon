@@ -202,7 +202,32 @@ public class AiPlayer {
 	}
 
 	private float spacingEval(Board b){
-		return 0;
+		float retVal = 0, retValOpp = 0;
+		int piece1 = -1, piece2 = -1, numberOfSpaces = 0;
+		int piece1Opp = -1, piece2Opp = -1, numberOfSpacesOpp = 0;
+		for (int i = 0; i < 25; i++) {
+			if (b.checkers[getPlayerId()][i] > 0) {
+				if (piece1 == -1) piece1 = i;
+				else {
+					piece2 = i;
+					retVal = retVal + ( piece2 - piece1 );
+					numberOfSpaces++;
+					piece1 = piece2;
+				}
+			}
+			if (b.checkers[b.opposingPlayer(getPlayerId())][i] > 0) {
+				if (piece1Opp == -1) piece1Opp = i;
+				else {
+					piece2Opp = i;
+					retValOpp = retVal + ( piece2Opp - piece1Opp );
+					numberOfSpacesOpp++;
+					piece1Opp = piece2Opp;
+				}
+			}
+		}
+		retVal = retVal / numberOfSpaces;
+		retValOpp = retValOpp / numberOfSpacesOpp;
+		return retValOpp - retVal;
 	}
 	
 	/**
@@ -222,7 +247,7 @@ public class AiPlayer {
 	 */ 
 	private float computeHeuristic(Board b){
 		float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore, barScore;
-		float[] w = {1,1,1,1,0,1};
+		float[] w = {1,1,1,1,1,1};
 		blotScore = this.blotEval(b);
 		blockScore = this.blockEval(b);
 		runScore = this.runEval(b);
