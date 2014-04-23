@@ -262,9 +262,9 @@ public class AiPlayer {
 	 * @param b
 	 * @return 
 	 */ 
-	private float computeHeuristic(Board b){
+	private float computeHeuristic(Board b, float[] wb){
 		float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore, barScore;
-		float[] w = {1,1,1,1,1,1};
+		float[] w = {(float) 0.5,1,1,1,(float) 0.143,1};
 		blotScore = this.blotEval(b);
 		blockScore = this.blockEval(b);
 		runScore = this.runEval(b);
@@ -277,14 +277,15 @@ public class AiPlayer {
 		return heuristicScore;
 	}
 
-	private int findBestBoard (ArrayList<Board> allBoardsList) {
+	private int findBestBoard (ArrayList<Board> allBoardsList, float[] wb) {
 		int bestBoard = 0, i = 0;
 		int size = allBoardsList.size();
 		float max;
 		float[] boardScores = new float[size];
 
 		for( Board b : allBoardsList ){
-			boardScores[i] = this.computeHeuristic(b);
+			//boardScores[i] = this.computeHeuristic(b);
+			boardScores[i] = this.computeHeuristic(b, wb);
 			i++;
 		}
 
@@ -302,7 +303,7 @@ public class AiPlayer {
 		return bestBoard;
 	}
 
-	public Play getPlay () {
+	public Play getPlay (float[] wb) {
 		ArrayList<Play> allPlayList;
 		ArrayList<Board> allBoardsList = new ArrayList<Board>();
 		int bestBoard;
@@ -314,7 +315,7 @@ public class AiPlayer {
 				allBoardsList.add(new Board(gameBoard));
 				allBoardsList.get(i).doPlay(playerId, allPlayList.get(i));
 			}
-			bestBoard = findBestBoard(allBoardsList);
+			bestBoard = findBestBoard(allBoardsList, wb);
 			chosenPlay = allPlayList.get(bestBoard);
 		}
 		else {
