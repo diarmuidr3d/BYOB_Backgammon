@@ -201,7 +201,7 @@ public class AiPlayer {
 		return score;
 	}
 
-	private float spacingEval(Board b){
+	/*private float spacingEval(Board b){
 		float retVal = 0, retValOpp = 0;
 		int piece1 = -1, piece2 = -1, numberOfSpaces = 0;
 		int piece1Opp = -1, piece2Opp = -1, numberOfSpacesOpp = 0;
@@ -228,6 +228,23 @@ public class AiPlayer {
 		retVal = retVal / numberOfSpaces;
 		retValOpp = retValOpp / numberOfSpacesOpp;
 		return retValOpp - retVal;
+	} */
+	
+	private float spacingEval(Board b){
+		float sumCheckersByDistance = 0, sumCheckers = 0, centreOfMass, moment2 = 0;
+		for (int i = 1; i < 26; i++) {
+			if (b.checkers[getPlayerId()][i] > 0) {
+				sumCheckersByDistance += (b.checkers[getPlayerId()][i] * i);
+				sumCheckers += b.checkers[getPlayerId()][i];
+			}
+		}
+		centreOfMass = sumCheckersByDistance / sumCheckers;
+		for (int i = 25; i > centreOfMass; i--) {
+			if (b.checkers[getPlayerId()][i] > 0) {
+				moment2 += (b.checkers[getPlayerId()][i] * Math.abs(i - centreOfMass));
+			}
+		}
+		return 0 - moment2;
 	}
 	
 	/**

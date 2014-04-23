@@ -2,7 +2,7 @@ package backgammon;
 
 
 public class AiTest {
-	private static final int NUMBER_OF_GAMES = 1000;
+	private static final int NUMBER_OF_GAMES = 10000;
 	private static final int RANDOM_ID = Board.X_PLAYER_ID;
 	private static final int AI_ID = Board.O_PLAYER_ID;
 	
