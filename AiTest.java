@@ -81,6 +81,10 @@ public class AiTest {
 									bestConfiguration[4] = e;
 									bestConfiguration[5] = f;
 								}
+								percentage_win_Random = 0;
+								percentage_win_Ai = 0;
+								ai_wins = 0;
+								random_wins = 0;
 							}}}}}}
 		System.out.println("Best configuration: "+bestConfiguration[0]+", "+bestConfiguration[1]+", "+bestConfiguration[2]+", "+bestConfiguration[3]+", "+bestConfiguration[4]+", "+bestConfiguration[5]);
 	}
