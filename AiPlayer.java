@@ -272,7 +272,7 @@ public class AiPlayer {
 		spacingScore = this.spacingEval(b);
 		barScore = this.barEval(b);
 		/* sum of all the evaluation functions*/
-		heuristicScore = w[0]*blotScore + w[1]*blockScore + w[2]*runScore + w[3]*bearOffScore + w[4]*spacingScore + w[5]*barScore;
+		heuristicScore = wb[0]*blotScore + wb[1]*blockScore + wb[2]*runScore + wb[3]*bearOffScore + wb[4]*spacingScore + wb[5]*barScore;
 
 		return heuristicScore;
 	}
