@@ -1,5 +1,3 @@
-
-
 package backgammon;
 
 //
@@ -9,19 +7,19 @@ package backgammon;
 
 import java.util.ArrayList;
 
-public class AiPlayer {
+public class AiPlayerWeightTest {
 	private int playerId;
 	private Board gameBoard;
 	private Dice gameDice;
-	
-	AiPlayer (int setPlayerId, Board setBoard, Dice setDice) {
+
+	AiPlayerWeightTest (int setPlayerId, Board setBoard, Dice setDice) {
 		playerId = setPlayerId;
 		gameBoard = setBoard;
 		gameDice = setDice;
-	    
+
 	}
 
-	
+
 	public int getPlayerId () {
 		return playerId;
 	}
@@ -30,7 +28,7 @@ public class AiPlayer {
 		if (playerId == Board.O_PLAYER_ID) return Board.X_PLAYER_ID;
 		else return Board.O_PLAYER_ID;
 	}
-	
+
 	/**
 	 * This function evaluates the number of blots and hitters for both players and 
 	 * maximises the score for a board where the AIPlayer has got more hitters than blots
@@ -51,13 +49,7 @@ public class AiPlayer {
 		}
 		P = playerHitters - playerBlots; // this is > 0 only if playerHitters > playerBlots
 		A = adversaryBlots - adversaryHitters; // this is > 0 only if adversaryBlots > aversaryHitters
-		/* // alternative to be tested:
-            P = playerHitters - adversaryHitters; // this is > 0 only if playerHitters > adversaryHitters
-            A = adversaryBlots - playerBlots;     // this is > 0 only if adversaryBlots > playerBots
-		 */
-		// try with different percentages
 		score = (float) ( 0.5 * A +  0.5 * P );
-		//System.out.println("blotScore: " + adversaryBlots + " - " + playerBlots + " = " + score);
 		return score;
 	}
 
@@ -127,24 +119,19 @@ public class AiPlayer {
 		score = P - A;
 		return score;
 	}
-	
-	/**
-	 * Scores the board based on the position of each checker on it for each player (ie a checker on point 23 scores 23, one on 21 scores 21, total score then 44) and returns the opponent’s score minus the AiPlayer’s score 
-	 * @param b is the board
-	 */
 
 	private float runEval(Board b){
 		int myScore = 0;
 		int opposeScore = 0;
 		for (int i = 1; i < 26; i++) {
 			if (b.checkers[getPlayerId()][i] > 0) {
-				myScore += (i*b.checkers[getPlayerId()][i]);
+				myScore += i;
 			}
 			if (b.checkers[b.opposingPlayer(getPlayerId())][i] > 0) {
-				opposeScore += (i*b.checkers[b.opposingPlayer(getPlayerId())][i]);
+				opposeScore += i;
 			}
 		}
-		return (opposeScore - myScore);
+		return (opposeScore/325) - (myScore/325);
 	}
 
 	/**
@@ -202,13 +189,7 @@ public class AiPlayer {
 		score = P - A;
 		return score;
 	}
-	
-	/**
-	 * Attempts to make sure that checkers don’t advance too far forward or get left too far behind. Calculates a centre of mass for the checkers, then calculates the moment of inertia for the checkers behind the centre of mass and returns this as a negative.
-	 * @param b is the board
-	 * @return negative moment
-	 */
-	
+
 	private float spacingEval(Board b){
 		float sumCheckersByDistance = 0, sumCheckers = 0, centreOfMass, moment2 = 0;
 		for (int i = 1; i < 26; i++) {
@@ -225,7 +206,7 @@ public class AiPlayer {
 		}
 		return 0 - moment2;
 	}
-	
+
 	/**
 	 * This function maximises the score for the boards where the AiPlayer has less checkers 
 	 * on the bar and the adversary has more checkers.
@@ -235,15 +216,15 @@ public class AiPlayer {
 	private float barEval(Board b){
 		return (b.checkers[this.getAdversaryId()][25] - b.checkers[this.getPlayerId()][25]);
 	}
-	
+
 	/**
 	 * This function computes the overall heuristic score, taking the bar into account.
 	 * @param b
 	 * @return 
 	 */ 
-	private float computeHeuristic(Board b){
+	private float computeHeuristic(Board b, float[] wb){
 		float heuristicScore, blotScore, blockScore, runScore, bearOffScore, spacingScore, barScore;
-		float[] w = {(float) 0.5,1,(float) 0.1,1,(float) 0.05,1};
+		float[] w = {(float) 0.5,1,1,1,(float) 0.143,1};
 		blotScore = this.blotEval(b);
 		blockScore = this.blockEval(b);
 		runScore = this.runEval(b);
@@ -251,25 +232,19 @@ public class AiPlayer {
 		spacingScore = this.spacingEval(b);
 		barScore = this.barEval(b);
 		/* sum of all the evaluation functions*/
-		heuristicScore = w[0]*blotScore + w[1]*blockScore + w[2]*runScore + w[3]*bearOffScore + w[4]*spacingScore + w[5]*barScore;
+		heuristicScore = wb[0]*blotScore + wb[1]*blockScore + wb[2]*runScore + wb[3]*bearOffScore + wb[4]*spacingScore + wb[5]*barScore;
 
 		return heuristicScore;
 	}
-	
-	/**
-	 * This function takes a list of boards and iterates through them getting a score from computeHeuristic() for each. It finds the board with the highest scorew and returns it.
-	 * @param allBoardsList is the list of Boards
-	 * @return the index of the board with the highest score
-	 */
 
-	private int findBestBoard (ArrayList<Board> allBoardsList) {
+	private int findBestBoard (ArrayList<Board> allBoardsList, float[] wb) {
 		int bestBoard = 0, i = 0;
 		int size = allBoardsList.size();
 		float max;
 		float[] boardScores = new float[size];
 
 		for( Board b : allBoardsList ){
-			boardScores[i] = this.computeHeuristic(b);
+			boardScores[i] = this.computeHeuristic(b, wb);
 			i++;
 		}
 
@@ -283,23 +258,27 @@ public class AiPlayer {
 		return bestBoard;
 	}
 
-	public Play getPlay () {
+	public Play getPlay (float[] wb) {
 		ArrayList<Play> allPlayList;
 		ArrayList<Board> allBoardsList = new ArrayList<Board>();
 		int bestBoard;
 		Play chosenPlay;
+
 		allPlayList = gameBoard.allPossiblePlays (playerId, gameDice);
 		if (!allPlayList.isEmpty()) {
 			for (int i=0; i<allPlayList.size(); i++) {
 				allBoardsList.add(new Board(gameBoard));
 				allBoardsList.get(i).doPlay(playerId, allPlayList.get(i));
 			}
-			bestBoard = findBestBoard(allBoardsList);
+			bestBoard = findBestBoard(allBoardsList, wb);
 			chosenPlay = allPlayList.get(bestBoard);
 		}
 		else {
 			chosenPlay = new Play();
 		}
+
 		return chosenPlay;
 	}
+
+
 }
